@@ -1,0 +1,15 @@
+body{
+	font-size: 12px;
+}
+
+.container{
+	padding: 0px;
+}
+
+.left{
+	text-align: left;
+}
+
+.right{
+	text-align: right;
+}

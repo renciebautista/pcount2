@@ -6,7 +6,6 @@
 		<title>Ahead PCount System</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		{!! Html::style('assets/css/flatten.css') !!}
 
 		<!-- css -->
 		{!! Html::style('css/bootstrap-1.css') !!}
@@ -15,12 +14,8 @@
 		{!! Html::style('css/bootstrap-multiselect.css') !!}
 		{!! HTML::style('css/datepicker/datepicker.css') !!}
 
-		<!-- script -->
-		{!! Html::script('js/jquery-1.11.3.min.js') !!}
-		{!! Html::script('js/bootstrap.js') !!}
-		{!! Html::script('js/bootstrap-multiselect.js') !!}
-		{!! Html::script('js/bootstrap-multiselect-collapsible-groups.js') !!}
-		{!! HTML::script('js/datepicker/datepicker-ui.js') !!}
+		{!! HTML::style('css/pcount.css') !!}
+		
 	</head>
 
 	<body>
@@ -49,6 +44,15 @@
                		</ul>
             	</li>
           	</ul>
+
+          	<ul class="nav navbar-nav">
+            	<li class="dropdown">
+              		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="nav_label_left"><b>Reports</b><span class="caret"></span></a>
+              		<ul class="dropdown-menu">
+                		<li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array('class' => 'submenu-font', 'id' => 'nav_sub_label')) !!}</li>
+               		</ul>
+            	</li>
+          	</ul>
 		  	
 		  	<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
@@ -74,5 +78,22 @@
 	</div>
 		<br/>
 
+		<!-- script -->
+		{!! Html::script('js/jquery-1.11.3.min.js') !!}
+		{!! Html::script('js/bootstrap.js') !!}
+		{!! Html::script('js/bootstrap-multiselect.js') !!}
+		{!! Html::script('js/bootstrap-multiselect-collapsible-groups.js') !!}
+		{!! HTML::script('js/datepicker/datepicker-ui.js') !!}
+
+		<script type="text/javascript">
+		$(document).ready(function() {
+			@section('page-script')
+
+			@show
+		});
+	</script>
+
 	</body>
+
+	
 </html>
