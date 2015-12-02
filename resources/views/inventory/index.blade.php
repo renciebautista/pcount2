@@ -232,7 +232,7 @@
 		@endforeach
 		@else
 		<tr>
-	  		<td colspan="1">No record found.</td>
+	  		<td colspan="11">No record found.</td>
 		</tr>
 		@endif
   	</tbody>
