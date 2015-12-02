@@ -1,0 +1,150 @@
+.content_container
+{
+	margin: 0 auto;
+	border: solid 1px #eee;
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow:1px 2px 3px rgb(136,136,136);
+	padding: 20px;
+}
+#nav
+{
+	background-color: #337AB7;
+}
+#nav_systemname_label
+{
+	color: #fff;
+	font-size: 14px;
+	margin-left: 75px;
+	font-style: italic;
+}
+#nav_label_left 
+{
+	color: #fff;
+	font-size: 12px;
+}
+#nav_label_left:visited
+{
+	color: #fff;
+	background-color: #337AB7;
+	font-size: 12px;
+}
+#nav_label_right
+{
+	color: #fff;
+	font-size: 12px;
+	margin-right: 75px;
+}
+#nav_label_right:visited
+{
+	color: #fff;
+	font-size: 12px;
+	background-color: #337AB7;
+}
+#nav_sub_label
+{
+	font-size: 12px;
+	font-weight: bold;
+}
+#banner
+{
+	font-family: Tahoma;
+	font-size: 14px;
+	/*margin-left: 70px;*/
+}
+
+#banner h3 {
+	margin-top: 0px;
+	margin-bottom:  0px;
+	font-size: 20px;
+}
+#tbl_design
+{
+	width: 85%; 
+	margin: 0 auto; 
+	font-size: 11px;
+}
+#tbl_design_item
+{
+	width: 85%; 
+	margin: 0 auto; 
+	font-size: 11px;
+}
+.btn_form_design
+{
+	font-size: 11px;
+	font-weight: bold;
+}
+#search_input_form_design
+{
+	width: 25%;
+}	
+.btn_form_design_search
+{
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: -85px;
+	margin-left: 270px;
+}
+#count_result
+{
+	margin-left: 75px;
+	font-weight: bold;
+	color: #666;
+}
+.posting_date_input_from
+{
+	height: 30px;
+	width: 230px;
+	border-radius: 3px;
+	border: solid 1px #b4b4b4;
+	text-align: center;
+	font-weight: bold;
+}
+.posting_date_input_to
+{
+	height: 30px;
+	width: 230px;
+	border-radius: 3px;
+	border: solid 1px #b4b4b4;
+	text-align: center;
+	font-weight: bold;
+}
+.btn_design
+{
+	font-size: 11px;
+}
+.btn_design_delete
+{
+	font-size: 11px;
+	height: 29px;
+	width: 50px;
+}
+.select_input
+{
+	font-size: 11px;
+}
+.btn_form_design_export
+{
+	font-size: 11px;
+	font-weight: bold;
+	color: #333;
+	background-color: #fff;
+	border: solid 1px #333;
+}
+.btn_form_design_export:hover
+{
+	font-size: 11px;
+	font-weight: bold;
+	color: #333;
+	background-color: #fff;
+	border: solid 1px #333;
+}
+.btn_form_design_export:visited
+{
+	font-size: 11px;
+	font-weight: bold;
+	color: #333;
+	background-color: #fff;
+	border: solid 1px #333;
+}
