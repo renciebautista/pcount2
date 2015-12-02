@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\User;
+use App\Models\UpdateHash;
 
 class AuthUserController extends Controller
 {
@@ -17,6 +18,8 @@ class AuthUserController extends Controller
         $field = $usernameinput ? 'email' : 'username';
         if(\Auth::attempt(array('username' => $usernameinput, 'password' => $password), false)){
             $user = \Auth::user();
+            $hash = UpdateHash::find(1);
+            $user->hash =  $hash->hash;
             return response()->json($user);
         }else{
             return response()->json(array('msg' => 'user not found', 'status' => 0));

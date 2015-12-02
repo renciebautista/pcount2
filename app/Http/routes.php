@@ -27,7 +27,7 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('auth', 'Api\AuthUserController@auth');
 	Route::get('download', 'Api\DownloadController@index');
 
-	Route::get('uploadpcount', 'Api\UploadController@uploadpcount');
+	Route::post('uploadpcount', 'Api\UploadController@uploadpcount');
 	Route::post('uploadimage', 'Api\UploadController@uploadimage');   
 	Route::get('image/{name}', 'Api\DownloadController@image');
 });

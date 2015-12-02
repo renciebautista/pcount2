@@ -22,6 +22,7 @@ class AddItemInventoriesTable extends Migration
             $table->string('sub_category');
             $table->string('brand');
             $table->string('sku_code');
+            $table->string('other_barcode');
             $table->string('description');
             $table->string('description_long');
             $table->decimal('lpbt', 20,16);
@@ -31,6 +32,7 @@ class AddItemInventoriesTable extends Migration
             $table->integer('sapc');
             $table->integer('whpc');
             $table->integer('whcs');
+            $table->integer('so');
             $table->integer('fso');
             $table->decimal('fso_val', 20,16);
         });

@@ -59,7 +59,7 @@ class DownloadController extends Controller
                 ->select('store_items.id', 'store_items.store_id', 'items.description', 
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
                     'items.lpbt', 'categories.category_long','sub_categories.sub_category', 
-                    'brands.brand', 'divisions.division', 'other_barcodes.other_barcode')
+                    'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 'items.sku_code')
                 ->join('stores', 'stores.id', '=', 'store_items.store_id')
                 ->join('items', 'items.id', '=', 'store_items.item_id')
                 ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
