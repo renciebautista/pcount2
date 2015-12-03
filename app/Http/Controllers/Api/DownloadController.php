@@ -88,7 +88,7 @@ class DownloadController extends Controller
                 $data[7] = $sku->brand;
                 $data[8] = $sku->division;
                 $data[9] = $sku->store_id;
-                $data[10] = $sku->id;
+                $data[10] = $sku->sku_code;
                 $data[11] = $sku->fso_multiplier;
                 $writer->addRow($data); 
             }
