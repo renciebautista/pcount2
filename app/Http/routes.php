@@ -19,7 +19,7 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 
-Route::group(['middleware' => 'auth'], function () {
+// Route::group(['middleware' => 'auth'], function () {
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
 	Route::get('/dashboard', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
-});
+// });
 
 
 Route::group(array('prefix' => 'api'), function()
