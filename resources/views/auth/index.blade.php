@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=1,initial-scale=1,user-scalable=1" />
-	<title>Insert title here</title>
+	<title>PCount System</title>
 	
 	{!! Html::style('bootstrap/css/bootstrap.min.css') !!}
 	{!! Html::style('css/styles.css') !!}
@@ -18,15 +18,28 @@
 </head>
 <body>
 
-	<section class="container">
+
 			<section class="login-form well">
 				{!! Form::open(array('route' => 'auth.dologin', 'method' => 'POST')) !!}
 					<section>
-						<h2>Please sign in</h2>
+						<!-- <h2>Please sign in</h2> -->
+
+						@if(Session::has('flash_message'))
+						<div class="row">
+							<div class="col-xs-12">
+							    <div class="alert  {{ Session::get('flash_class') }} alert-dismissable">
+							        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							        {{ Session::get('flash_message') }}
+							    </div>
+							</div>
+						</div>
+						@endif
+
+
 						<div class="form-group">
 		    				<div class="input-group">
 			      				<div class="input-group-addon"><span class="text-primary glyphicon glyphicon-envelope"></span></div>
-								<input type="email" name="email" placeholder="Email" required class="form-control" />
+								<input  name="access" placeholder="Username / Email" required class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">

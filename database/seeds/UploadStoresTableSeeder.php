@@ -16,6 +16,7 @@ use App\Models\Region;
 use App\Models\Customer;
 use App\Models\Store;
 use App\User;
+use App\Role;
 use App\Models\StoreUser;
 
 class UploadStoresTableSeeder extends Seeder
@@ -53,9 +54,12 @@ class UploadStoresTableSeeder extends Seeder
 		DB::table('regions')->truncate();
 		DB::table('customers')->truncate();
 		DB::table('stores')->truncate();
-		DB::table('users')->truncate();
+		// DB::table('users')->truncate();
 		DB::table('store_users')->truncate();
 
+		$role = Role::find(2)->users()->delete();
+
+		// dd($role);
 
 	   // add masterfiles
 		foreach ($reader->getSheetIterator() as $sheet) {
@@ -81,6 +85,8 @@ class UploadStoresTableSeeder extends Seeder
 								'name' => strtoupper($row[22]),
 								'email' => strtoupper($row[22]).'@pcount.com',
 								'password' => Hash::make($row[22])]);
+
+								$user->roles()->attach(2);
 							}
 
 							$store = Store::firstOrCreate([

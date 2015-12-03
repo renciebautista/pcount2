@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Ahead PCount System</title>
+		<title>PCount System</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
