@@ -20,54 +20,55 @@
 
 	<body>
 		
-	<nav id="nav" class="navbar navbar-default">
-		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="{{ route('dashboard.index') }}" id="nav_systemname_label"><img src="{{ URL::asset('img/unilever-logo.jpg') }}" style="height: 50px; width: 55px; margin-top: -15px;"></img></a>
-			</div>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- <a class="navbar-brand" href="#">Project name</a> -->
+          				<a class="navbar-brand" href="{{ route('dashboard.index') }}" id="nav_systemname_label"><img src="{{ URL::asset('img/unilever-logo.jpg') }}" style="height: 50px; width: 55px; margin-top: -15px;"></img></a>
 
-			<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	   		
-	   		<ul class="nav navbar-nav">
-            	<li class="dropdown">
-              		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="nav_label_left"><b>Utilities</b><span class="caret"></span></a>
-              		<ul class="dropdown-menu">
-                		<li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array('class' => 'submenu-font', 'id' => 'nav_sub_label')) !!}</li>
-               		</ul>
-            	</li>
-          	</ul>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li>{!! Html::linkRoute('store.index', 'Stores', array(), array()) !!}</li>
+                		<li>{!! Html::linkRoute('item.index', 'Items', array(), array()) !!}</li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                                		<li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array()) !!}</li>
 
-          	<ul class="nav navbar-nav">
-            	<li class="dropdown">
-              		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="nav_label_left"><b>Reports</b><span class="caret"></span></a>
-              		<ul class="dropdown-menu">
-                		<li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array('class' => 'submenu-font', 'id' => 'nav_sub_label')) !!}</li>
-               		</ul>
-            	</li>
-          	</ul>
-		  	
-		  	<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-			  		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="nav_label_right">Administrator <span class="caret"></span></a>
-			  		<ul class="dropdown-menu">
-			  			<li>{!! Html::linkRoute('auth.logout', 'Sign-out', array(), array('class' => 'submenu-font', 'id' => 'nav_sub_label')) !!}</li>
-			  		</ul>
-				</li>
-		  	</ul>
-		</div><!-- /.navbar-collapse -->
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+               <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          	<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              	<li>{!! Html::linkRoute('auth.logout', 'Sign-out', array(), array()) !!}</li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
-			
-		   
-		</div><!-- /.container-fluid -->
-	</nav>	
 
 	<div class="container">
 	  <div class="content_container">

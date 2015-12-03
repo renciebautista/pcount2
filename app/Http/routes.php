@@ -39,6 +39,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
+
+	Route::resource('store', 'StoreController');
+
+	Route::resource('item', 'ItemController');
+
 });
 
 

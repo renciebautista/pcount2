@@ -13,112 +13,100 @@
 </div>
 <hr/>
 
-{!! Form::open(array('route' => 'inventory.index', 'class' => 'bs-component', 'method' => 'POST', 'id' => 'form_filtered')) !!}
-<div class="row">
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('fr', 'Date From', array('class' => 'control-label')) !!}
-				{!! Form::text('fr',$frm,array('class' => 'form-control', 'id' => 'from', 'data-date-format' => 'mm-dd-yyyy', 'placeholder' => 'mm-dd-yyyy')) !!}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('to', 'Date To', array('class' => 'control-label')) !!}
-				{!! Form::text('to',$to,array('class' => 'form-control', 'id' => 'to', 'data-date-format' => 'mm-dd-yyyy', 'placeholder' => 'mm-dd-yyyy')) !!}
-				</div>
-			</div>
-		</div>
-	</div>
+{!! Form::open(array('route' => 'inventory.index', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 
-	<div class="col-lg-4">
-		
-	</div>
-</div>
 <div class="row">
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('ag', 'Agency', array('class' => 'control-label')) !!}
-				{!! Form::select('ag[]', $agencies, $sel_ag, array('class' => 'form-control select_form', 'id' => 'agencies', 'multiple' => 'multiple')) !!}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('cl', 'Client', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="clients" name="cl[]" multiple="multiple" ></select>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('fr', 'Date From', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::text('fr',$frm,array('class' => 'form-control', 'id' => 'from', 'data-date-format' => 'mm-dd-yyyy', 'placeholder' => 'mm-dd-yyyy')) !!}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('to', 'Date To', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::text('to',$to,array('class' => 'form-control', 'id' => 'to', 'data-date-format' => 'mm-dd-yyyy', 'placeholder' => 'mm-dd-yyyy')) !!}
+            </div>
+        </div>
+    </div>
 
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('ch', 'Channel', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="channels" name="ch[]" multiple="multiple" ></select>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        
+    </div>
 </div>
 
 <div class="row">
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('ds', 'Distributor', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="distributors" name="ds[]" multiple="multiple" ></select>				
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('en', 'Enrollment', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="enrollments" name="en[]" multiple="multiple" ></select>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('ag', 'Agency', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('ag[]', $agencies, $sel_ag, array('class' => 'form-control select_form', 'id' => 'agencies', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('cl', 'Client', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="clients" name="cl[]" multiple="multiple" ></select>
+            </div>
+        </div>
+    </div>
 
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('rg', 'Region', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="regions" name="rg[]" multiple="multiple" ></select>				
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('ch', 'Channel', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="channels" name="ch[]" multiple="multiple" ></select>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('st', 'Store', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="stores" name="st[]" multiple="multiple" ></select>				
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('ds', 'Distributor', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="distributors" name="ds[]" multiple="multiple" ></select>              
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('en', 'Enrollment', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="enrollments" name="en[]" multiple="multiple" ></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('rg', 'Region', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="regions" name="rg[]" multiple="multiple" ></select>               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('st', 'Store', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="stores" name="st[]" multiple="multiple" ></select>                
+            </div>
+        </div>
+    </div>
+
 	<div class="col-lg-4">
 		
 	</div>
@@ -129,49 +117,42 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('dv', 'Division', array('class' => 'control-label')) !!}
-				{!! Form::select('dv[]', $divisions, $sel_dv, array('class' => 'form-control select_form', 'id' => 'divisions', 'multiple' => 'multiple')) !!}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('ct', 'Category', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="categories" name="ct[]" multiple="multiple" ></select>				
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('dv', 'Division', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('dv[]', $divisions, $sel_dv, array('class' => 'form-control select_form', 'id' => 'divisions', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('ct', 'Category', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="categories" name="ct[]" multiple="multiple" ></select>                
+            </div>
+        </div>
+    </div>
 
-	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('sc', 'Sub Category', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="sub_categories" name="sc[]" multiple="multiple" ></select>				
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('sc', 'Sub Category', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="sub_categories" name="sc[]" multiple="multiple" ></select>                
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div class="row">
 	<div class="col-lg-4">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				{!! Form::label('br', 'Brand', array('class' => 'control-label')) !!}
-				<select class="form-control"  id="brands" name="br[]" multiple="multiple" ></select>				
-				</div>
-			</div>
-		</div>
+         <div class="form-group">
+                {!! Form::label('br', 'Brand', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                <select class="form-control"  id="brands" name="br[]" multiple="multiple" ></select>                
+            </div>
+        </div>
 	</div>
 	<div class="col-lg-4">
 		
@@ -183,20 +164,29 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-12">
-		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-				      	<button type="submit" name="submit" value="submit" class="btn btn-info" ><span class="glyphicon glyphicon-search"></span> PROCESS</button>
-       					<button type="submit" name="download" value="download" class="btn btn-success" ><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD EXCEL</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    
+    <div class="col-lg-4">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-11">
+                    <button type="submit" name="submit" value="submit" class="btn btn-info" ><span class="glyphicon glyphicon-search"></span> PROCESS</button>
+                    <button type="submit" name="download" value="download" class="btn btn-success" ><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD EXCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+    </div>
+
+    <div class="col-lg-4">
+        
+    </div>
 </div>
 {!! Form::close() !!}
 
-<hr>
+<!-- <hr> -->
 <table class="table table-striped table-hover ">
   	<thead>
 		<tr>
