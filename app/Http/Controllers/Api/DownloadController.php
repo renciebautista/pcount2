@@ -109,7 +109,6 @@ class DownloadController extends Controller
         }else{
             return \Response::download($myfile, $name);
         }
-
         
     }
 }
