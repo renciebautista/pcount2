@@ -58,7 +58,7 @@
 				<li class="dropdown">
 			  		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="nav_label_right">Administrator <span class="caret"></span></a>
 			  		<ul class="dropdown-menu">
-						<li><a href="#">Sign-out</a></li>
+			  			<li>{!! Html::linkRoute('auth.logout', 'Sign-out', array(), array('class' => 'submenu-font', 'id' => 'nav_sub_label')) !!}</li>
 			  		</ul>
 				</li>
 		  	</ul>
