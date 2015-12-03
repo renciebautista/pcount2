@@ -11,13 +11,11 @@ use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 
-use App\User;
-use App\Store;
-use App\StoreSku;
-use App\Inventory;
 
 
 use DB;
+
+use App\Models\StoreInventories;
 
 class DownloadController extends Controller
 {
@@ -99,7 +97,7 @@ class DownloadController extends Controller
 
 
     public function image($name){
-        $file = Inventory::where('signature',$name)->first();
+        $file = StoreInventories::where('signature',$name)->first();
         
         $myfile = storage_path().'/uploads/image/'.$name;
 
