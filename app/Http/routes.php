@@ -11,11 +11,18 @@
 |
 */
 
-
+Route::get('test', function(){
+	$folderpath = base_path().'/database/seeds/seed_files/'.date('mdY');
+	echo $folderpath;
+	if (!File::exists($folderpath))
+	{
+		File::makeDirectory($folderpath);
+	}
+});
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::post('auth/login', ['as' => 'auth.dologin', 'uses' =>  'Auth\AuthController@postLogin']);
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 

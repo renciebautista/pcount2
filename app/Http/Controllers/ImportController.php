@@ -20,7 +20,14 @@ class ImportController extends Controller
     public function masterfileuplaod(Request $request){
         if ($request->hasFile('file'))
 		{
-		    $file_path = $request->file('file')->move(storage_path().'/uploads/',$request->file('file')->getClientOriginalName());
+            $folderpath = base_path().'/database/seeds/seed_files/'.date('mdY');
+
+            if (!\File::exists($folderpath))
+            {
+                \File::makeDirectory($folderpath);
+            }
+
+            $file_path = $request->file('file')->move($folderpath,'Masterfile.xlsx');
 
 		    \Artisan::call('db:seed');
 

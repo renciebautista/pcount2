@@ -20,7 +20,7 @@
 
 	<section class="container">
 			<section class="login-form well">
-				<form method="post" action="" role="login">
+				{!! Form::open(array('route' => 'auth.dologin', 'method' => 'POST')) !!}
 					<section>
 						<h2>Please sign in</h2>
 						<div class="form-group">
@@ -42,11 +42,13 @@
 						
 						<button type="submit" name="go" class="btn btn-block btn-success">Sign in</button>
 					</section>
+				{!! Form::close() !!}
 					<div>
 						<a href="#">Forgot password ?</a>
 					</div>
 				</form>
 			</section>
+
 	</section>
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

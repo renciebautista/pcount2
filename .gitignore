@@ -5,3 +5,4 @@ Homestead.json
 .env
 *.txt
 /storage/uploads
+/database/seeds/seed_files
