@@ -27,9 +27,6 @@ class UploadController extends Controller
         $fileName = $request->file('data')->getClientOriginalName();
         $request->file('data')->move($destinationPath, $fileName);
 
-        // $fileName = "30-4-11-16-2015.csv";
-        // $filePath = storage_path().'/uploads/pcount/' . $fileName;
-
         $filename_data = explode("-", $fileName);
         $storeid = $filename_data[0];
         $userid = $filename_data[1];
