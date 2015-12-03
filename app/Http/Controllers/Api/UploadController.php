@@ -18,7 +18,6 @@ use App\Models\Store;
 use App\Models\StoreInventories;
 use App\Models\ItemInventories;
 use App\Models\Item;
-use App\Models\UpdateHash;
 
 class UploadController extends Controller
 {
@@ -126,13 +125,7 @@ class UploadController extends Controller
            
             $reader->close();
 
-            $hash = UpdateHash::find(1);
-            if(empty($hash)){
-                UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
-            }else{
-                $hash->hash = \Hash::make(date('Y-m-d H:i:s'));
-                $hash->update();
-            }
+            
             
 
 

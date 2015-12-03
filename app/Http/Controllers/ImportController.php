@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Session;
 
+use App\Models\UpdateHash;
+
+
 class ImportController extends Controller
 {
     public function masterfile(){
@@ -21,7 +24,15 @@ class ImportController extends Controller
 
 		    \Artisan::call('db:seed');
 
-		   Session::flash('flash_message', 'Masterfile successfully added.');
+		    $hash = UpdateHash::find(1);
+            if(empty($hash)){
+                UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+            }else{
+                $hash->hash = \Hash::make(date('Y-m-d H:i:s'));
+                $hash->update();
+            }
+
+		   	Session::flash('flash_message', 'Masterfile successfully added.');
 			Session::flash('flash_class', 'alert-success');
 		}else{
 			Session::flash('flash_message', 'Error updating masterfile.');
