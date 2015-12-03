@@ -11,20 +11,29 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
+
+	Route::get('/dashboard', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
+
+	Route::resource('agency', 'AgencyController');
+
+	Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
+	Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
+
+
+	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
+	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
 });
 
-Route::get('/dashboard', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
-
-Route::resource('agency', 'AgencyController');
-
-Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
-Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
-
-
-Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
-Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
 
 Route::group(array('prefix' => 'api'), function()
 {
