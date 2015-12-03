@@ -28,7 +28,7 @@ class ImportController extends Controller
             if(empty($hash)){
                 UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
             }else{
-                $hash->hash = \Hash::make(date('Y-m-d H:i:s'));
+                $hash->hash = md5(date('Y-m-d H:i:s'));
                 $hash->update();
             }
 
