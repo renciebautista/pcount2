@@ -23,9 +23,17 @@ class UploadController extends Controller
 {
     public function uploadpcount(Request $request)
     {
+
         $destinationPath = storage_path().'/uploads/pcount/';
         $fileName = $request->file('data')->getClientOriginalName();
         $request->file('data')->move($destinationPath, $fileName);
+
+        $filePath = storage_path().'/uploads/pcount/' . $fileName;
+        
+        // $destinationPath = storage_path().'/uploads/pcount/';
+        // $fileName = $request->file('data')->getClientOriginalName();
+        // $request->file('data')->move($destinationPath, $fileName);
+
 
         $filename_data = explode("-", $fileName);
         $storeid = $filename_data[0];
