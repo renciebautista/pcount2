@@ -83,7 +83,7 @@ class FixItemInventories extends Seeder
                 // dd($item);
 
                 if(empty($item)){
-                    $item = Item::with('division')
+                    $item2 = Item::with('division')
                         ->with('category')
                         ->with('subcategory')
                         ->with('brand')
@@ -92,16 +92,16 @@ class FixItemInventories extends Seeder
 
                     ItemInventories::insert([
                         'store_inventory_id' => $inventory->id,
-                        'division' => $item->division->division,
-                        'category' => $item->category->category,
-                        'category_long' => $item->category->category_long,
-                        'sub_category' => $item->subcategory->sub_category,
-                        'brand' => $item->brand->brand,
-                        'sku_code' => $item->sku_code,
+                        'division' => $item2->division->division,
+                        'category' => $item2->category->category,
+                        'category_long' => $item2->category->category_long,
+                        'sub_category' => $item2->subcategory->sub_category,
+                        'brand' => $item2->brand->brand,
+                        'sku_code' => $item2->sku_code,
                         'other_barcode' => $sku->other_barcode,
-                        'description' => $item->description,
-                        'description_long' => $item->description_long,
-                        'lpbt' => $item->lpbt,
+                        'description' => $item2->description,
+                        'description_long' => $item2->description_long,
+                        'lpbt' => $item2->lpbt,
                         'conversion' => $sku->conversion,
                         'ig' => $sku->ig,
                         'fso_multiplier' => $sku->fso_multiplier,
@@ -110,7 +110,7 @@ class FixItemInventories extends Seeder
                         'whcs' => 0,
                         'so' => $sku->ig,
                         'fso' => $sku->ig,
-                        'fso_val' => $item->lpbt * $sku->ig]);
+                        'fso_val' => $item2->lpbt * $sku->ig]);
                 }else{
                     ItemInventories::insert([
                         'store_inventory_id' => $item->store_inventory_id,
