@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
 
 // composer require laracasts/testdummy
 use Laracasts\TestDummy\Factory as TestDummy;
@@ -10,6 +11,9 @@ class AddAdminTableSeeder extends Seeder
 {
     public function run()
     {
+    	DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+    	DB::table('users')->truncate();
+    	DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         User::where('username','admin')->delete();
 		User::insert(array(
 			'name'     => 'admin',
