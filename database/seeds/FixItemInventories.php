@@ -18,44 +18,47 @@ class FixItemInventories extends Seeder
      */
     public function run()
     {
-        
-
-        // DB::table('item_inventories')->truncate();
-
         foreach (StoreInventories::where('fixed',0)->get() as $inventory) {
             $inventory_items = ItemInventories::where('store_inventory_id',$inventory->id)->get();
             foreach($inventory_items as $item)
             {
-                TempInventories::insert(array(
-                    'id' => $item->id,
-                    'store_inventory_id' => $item->store_inventory_id,
-                    'division' => $item->division,
-                    'category' => $item->category,
-                    'category_long' => $item->category_long,
-                    'sub_category' => $item->sub_category,
-                    'brand' => $item->brand,
-                    'sku_code' => $item->sku_code,
-                    'other_barcode' => $item->other_barcode,
-                    'description' => $item->description,
-                    'description_long' => $item->description_long,
-                    'lpbt' => $item->lpbt,
-                    'conversion' => $item->conversion,
-                    'ig' => $item->ig,
-                    'fso_multiplier' => $item->fso_multiplier,
-                    'sapc' => $item->sapc,
-                    'whpc' => $item->whpc,
-                    'whcs' => $item->whcs,
-                    'so' => $item->so,
-                    'fso' => $item->fso,
-                    'fso_val' => $item->fso_val
-                    ));
+                $t_item = TempInventories::where('store_inventory_id', $inventory->id)
+                    ->where('other_barcode', $item->other_barcode)
+                    ->first();
+                if(empty($t_item)){
+                    TempInventories::insert(array(
+                        'id' => $item->id,
+                        'store_inventory_id' => $item->store_inventory_id,
+                        'division' => $item->division,
+                        'category' => $item->category,
+                        'category_long' => $item->category_long,
+                        'sub_category' => $item->sub_category,
+                        'brand' => $item->brand,
+                        'sku_code' => $item->sku_code,
+                        'other_barcode' => $item->other_barcode,
+                        'description' => $item->description,
+                        'description_long' => $item->description_long,
+                        'lpbt' => $item->lpbt,
+                        'conversion' => $item->conversion,
+                        'ig' => $item->ig,
+                        'fso_multiplier' => $item->fso_multiplier,
+                        'sapc' => $item->sapc,
+                        'whpc' => $item->whpc,
+                        'whcs' => $item->whcs,
+                        'so' => $item->so,
+                        'fso' => $item->fso,
+                        'fso_val' => $item->fso_val
+                        ));
+                }
+                
             }
 
             $inventory->fixed = 1;
             $inventory->update();
-            ItemInventories::where('store_inventory_id',$inventory->id)->delete();
 
+            ItemInventories::where('store_inventory_id',$inventory->id)->delete();
             $store = Store::where('storeid',$inventory->store_id)->first();
+
             $skus = DB::table('store_items')
                 ->select('store_items.id', 'store_items.store_id', 'items.description', 
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
@@ -73,16 +76,12 @@ class FixItemInventories extends Seeder
                 ->orderBy('items.id', 'asc')
                 ->get();
 
-            // dd($skus);
-
             foreach ($skus as $sku) {
-                $item = TempInventories::where('store_inventory_id', $inventory->id)
+                $temp_item = TempInventories::where('store_inventory_id', $inventory->id)
                     ->where('other_barcode', $sku->other_barcode)
                     ->first();
 
-                // dd($item);
-
-                if(empty($item)){
+                if(empty($temp_item)){
                     $item2 = Item::with('division')
                         ->with('category')
                         ->with('subcategory')
@@ -113,28 +112,27 @@ class FixItemInventories extends Seeder
                         'fso_val' => $item2->lpbt * $sku->ig]);
                 }else{
                     ItemInventories::insert([
-                        'store_inventory_id' => $item->store_inventory_id,
-                        'division' => $item->division,
-                        'category' => $item->category,
-                        'category_long' => $item->category_long,
-                        'sub_category' => $item->sub_category,
-                        'brand' => $item->brand,
-                        'sku_code' => $item->sku_code,
-                        'other_barcode' => $item->other_barcode,
-                        'description' => $item->description,
-                        'description_long' => $item->description_long,
-                        'lpbt' => $item->lpbt,
-                        'conversion' => $item->conversion,
-                        'ig' => $item->ig,
-                        'fso_multiplier' => $item->fso_multiplier,
-                        'sapc' => $item->sapc,
-                        'whpc' => $item->whpc,
-                        'whcs' => $item->whcs,
-                        'so' => $item->ig,
-                        'fso' => $item->ig,
-                        'fso_val' => $item->fso_val]);
+                        'store_inventory_id' => $temp_item->store_inventory_id,
+                        'division' => $temp_item->division,
+                        'category' => $temp_item->category,
+                        'category_long' => $temp_item->category_long,
+                        'sub_category' => $temp_item->sub_category,
+                        'brand' => $temp_item->brand,
+                        'sku_code' => $temp_item->sku_code,
+                        'other_barcode' => $temp_item->other_barcode,
+                        'description' => $temp_item->description,
+                        'description_long' => $temp_item->description_long,
+                        'lpbt' => $temp_item->lpbt,
+                        'conversion' => $temp_item->conversion,
+                        'ig' => $temp_item->ig,
+                        'fso_multiplier' => $temp_item->fso_multiplier,
+                        'sapc' => $temp_item->sapc,
+                        'whpc' => $temp_item->whpc,
+                        'whcs' => $temp_item->whcs,
+                        'so' => $temp_item->so,
+                        'fso' => $temp_item->fso,
+                        'fso_val' => $temp_item->fso_val]);
                 }
-                
             }
         }
     }

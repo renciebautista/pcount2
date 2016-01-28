@@ -16,7 +16,7 @@
 
 
 <!-- <hr> -->
-<label class="pull-right">{{ $items->count() }} records found.</label>
+<label class="pull-right">{{ $skus->count() }} records found.</label>
 <table class="table table-striped table-hover ">
     <thead>
         <tr>
@@ -31,17 +31,17 @@
         </tr>
     </thead>
   <tbody>
-        @if(count($items) > 0)
-        @foreach($items as $item)
+        @if(count($skus) > 0)
+        @foreach($skus as $sku)
         <tr>
-            <td>{{ $item->sku_code }}</td>
-            <td>{{ $item->description }}</td>
-            <td>{{ $item->division->division }}</td>
-            <td>{{ $item->category->category }}</td>
-            <td>{{ $item->subcategory->sub_category }}</td>
-            <td>{{ $item->brand->brand }}</td>
-            <td>{{ $item->conversion }}</td>
-            <td>{{ $item->lpbt }}</td>
+            <td>{{ $sku->item->sku_code }}</td>
+            <td>{{ $sku->item->description }}</td>
+            <td>{{ $sku->item->division->division }}</td>
+            <td>{{ $sku->item->category->category }}</td>
+            <td>{{ $sku->item->subcategory->sub_category }}</td>
+            <td>{{ $sku->item->brand->brand }}</td>
+            <td>{{ $sku->item->conversion }}</td>
+            <td>{{ $sku->item->lpbt }}</td>
         </tr>
         @endforeach
         @else

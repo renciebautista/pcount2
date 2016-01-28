@@ -191,11 +191,12 @@
 <table class="table table-striped table-hover ">
   	<thead>
 		<tr>
-	  		<th>Store ID</th>
+	  		<th>Store Code</th>
 	  		<th>Store Name</th>
 	  		<th>Other Code</th>
 	 	 	<th>SKU Code</th>
 	  		<th>Item Description</th>
+            <th>IG</th>
 	  		<th>SAPC</th>
 	  		<th>WHPC</th>
 	  		<th>WHCS</th>
@@ -208,11 +209,12 @@
   		@if(count($items) > 0)
   		@foreach($items as $item)
 		<tr>
-	  		<td>{{ $item->store_id }}</td>
+	  		<td>{{ $item->store_code }}</td>
 	  		<td>{{ $item->store_name }}</td>
 			<td>{{ $item->other_barcode }}</td>
 			<td>{{ $item->sku_code }}</td>
 			<td>{{ $item->description }}</td>
+            <td class="right">{{ $item->ig }}</td>
 			<td class="right">{{ number_format($item->sapc) }}</td>
 			<td class="right">{{ number_format($item->whpc) }}</td>
 			<td class="right">{{ number_format($item->whcs) }}</td>
@@ -223,7 +225,7 @@
 		@endforeach
 		@else
 		<tr>
-	  		<td colspan="11">No record found.</td>
+	  		<td colspan="12">No record found.</td>
 		</tr>
 		@endif
   	</tbody>

@@ -10,14 +10,19 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+use App\Models\TempInventories;
 
 Route::get('test', function(){
-	$folderpath = base_path().'/database/seeds/seed_files/'.date('mdY');
-	echo $folderpath;
-	if (!File::exists($folderpath))
-	{
-		File::makeDirectory($folderpath);
-	}
+	// $folderpath = base_path().'/database/seeds/seed_files/'.date('mdY');
+	// echo $folderpath;
+	// if (!File::exists($folderpath))
+	// {
+	// 	File::makeDirectory($folderpath);
+	// }
+	$item = TempInventories::where('store_inventory_id', 73)
+                    ->where('other_barcode', '80200442')
+                    ->first();
+    dd($item);
 });
 
 // Authentication routes...
@@ -40,6 +45,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
 
+
+	Route::get('store/{id}/items', 'StoreController@items');
 	Route::resource('store', 'StoreController');
 
 	Route::resource('item', 'ItemController');

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Store;
+use App\Models\StoreItem;
 class StoreController extends Controller
 {
     /**
@@ -85,5 +86,10 @@ class StoreController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function items($id){
+        $skus = StoreItem::with('item')->where('store_id',$id)->get();
+        return view('store.items', compact('skus'));
     }
 }

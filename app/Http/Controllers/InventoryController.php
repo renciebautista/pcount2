@@ -169,7 +169,7 @@ class InventoryController extends Controller
         if ($request->has('download')) {
             \Excel::create('Posted Transaction', function($excel)  use ($items){
                 $excel->sheet('Sheet1', function($sheet) use ($items) {
-                    $sheet->row(1, array('STORE ID', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO CONVERSION FACTOR', 'SAPC',
+                    $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO CONVERSION FACTOR', 'SAPC',
                         'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
                     $row = 2;
                     foreach ($items as $item) {
@@ -180,7 +180,7 @@ class InventoryController extends Controller
                             $link = '';
                         }
 
-                        $sheet->setCellValueByColumnAndRow(0,$row, $item->store_id);
+                        $sheet->setCellValueByColumnAndRow(0,$row, $item->store_code);
                         $sheet->setCellValueByColumnAndRow(1,$row, $item->store_name);
                         $sheet->setCellValueByColumnAndRow(2,$row, $item->other_barcode);
                         $sheet->setCellValueByColumnAndRow(3,$row, $item->sku_code);
