@@ -7,6 +7,9 @@ body{
 table {
 	font-size: 10px;
 }
+table  .btn{
+	font-size: 10px;
+}
 .container{
 	padding: 0px;
 	width: 1300px;
@@ -19,3 +22,5 @@ table {
 .right{
 	text-align: right;
 }
+
+.btn
