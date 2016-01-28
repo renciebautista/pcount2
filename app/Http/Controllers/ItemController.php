@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Item;
+use App\Models\OtherBarcode;
 
 class ItemController extends Controller
 {
@@ -86,5 +87,10 @@ class ItemController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function othercode($id){
+        $items = OtherBarcode::where('item_id',$id)->get();
+        return view('item.othercode', compact('items'));
     }
 }

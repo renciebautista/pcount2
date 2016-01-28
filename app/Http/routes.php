@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('store/{id}/items', 'StoreController@items');
 	Route::resource('store', 'StoreController');
 
+	Route::get('item/{id}/othercode', 'ItemController@othercode');
 	Route::resource('item', 'ItemController');
 
 });

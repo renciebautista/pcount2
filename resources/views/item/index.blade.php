@@ -28,6 +28,7 @@
             <th>Brand</th>
             <th>Conversion</th>
             <th>LPBT</th>
+            <th></th>
         </tr>
     </thead>
   <tbody>
@@ -42,11 +43,14 @@
             <td>{{ $item->brand->brand }}</td>
             <td>{{ $item->conversion }}</td>
             <td>{{ $item->lpbt }}</td>
+            <td>
+                {!! link_to_action('ItemController@othercode', 'Other Barcode', $item->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
+            </td>
         </tr>
         @endforeach
         @else
         <tr>
-            <td colspan="8">No record found.</td>
+            <td colspan="9">No record found.</td>
         </tr>
         @endif
     </tbody>
