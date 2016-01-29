@@ -27,17 +27,17 @@ class FixWrongSoFso extends Seeder
         	}
         }
 
-        $items = ItemInventories::where('sapc', 0)
-            ->where('whpc', 0)
-            ->where('whcs', 0)
-            ->where('fso_multiplier', '>', 'ig')
-            ->get();
+        // $items = ItemInventories::where('sapc', 0)
+        //     ->where('whpc', 0)
+        //     ->where('whcs', 0)
+        //     ->where('fso_multiplier', '>', 'ig')
+        //     ->get();
 
-        foreach ($items as $item) {
-            $item->fso = $item->fso_multiplier;
-            $item->fso_val = $item->fso * $item->lpbt;
-            $item->update();
-        }
+        // foreach ($items as $item) {
+        //     $item->fso = $item->fso_multiplier;
+        //     $item->fso_val = $item->fso * $item->lpbt;
+        //     $item->update();
+        // }
 
 
     }

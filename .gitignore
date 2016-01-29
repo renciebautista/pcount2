@@ -6,3 +6,4 @@ Homestead.json
 *.txt
 /storage/uploads
 /database/seeds/seed_files
+*.pem
