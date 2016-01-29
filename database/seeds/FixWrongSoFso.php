@@ -20,25 +20,25 @@ class FixWrongSoFso extends Seeder
         	$item = ItemInventories::where('store_inventory_id', $temp_item->store_inventory_id)
         		->where('other_barcode', $temp_item->other_barcode)
         		->first();
-            echo $item->id . "\n";
-        	if(!empty($temp_item)){
+            // echo $item->id . "\n";
+        	if(!empty($item)){
         		$item->so = $temp_item->so;
         		$item->fso = $temp_item->fso;
         		$item->update();
         	}
         }
 
-        // $items = ItemInventories::where('sapc', 0)
-        //     ->where('whpc', 0)
-        //     ->where('whcs', 0)
-        //     ->where('fso_multiplier', '>', 'ig')
-        //     ->get();
+        $items = ItemInventories::where('sapc', 0)
+            ->where('whpc', 0)
+            ->where('whcs', 0)
+            ->where('fso_multiplier', '>', 'ig')
+            ->get();
 
-        // foreach ($items as $item) {
-        //     $item->fso = $item->fso_multiplier;
-        //     $item->fso_val = $item->fso * $item->lpbt;
-        //     $item->update();
-        // }
+        foreach ($items as $item) {
+            $item->fso = $item->fso_multiplier;
+            $item->fso_val = $item->fso * $item->lpbt;
+            $item->update();
+        }
 
 
     }
