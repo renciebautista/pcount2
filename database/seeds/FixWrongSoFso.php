@@ -20,6 +20,7 @@ class FixWrongSoFso extends Seeder
         	$item = ItemInventories::where('store_inventory_id', $temp_item->store_inventory_id)
         		->where('other_barcode', $temp_item->other_barcode)
         		->first();
+            echo $item->id . "\n";
         	if(!empty($temp_item)){
         		$item->so = $temp_item->so;
         		$item->fso = $temp_item->fso;
