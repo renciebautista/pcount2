@@ -88,6 +88,10 @@ class FixItemInventories extends Seeder
                         ->with('brand')
                         ->where('sku_code', $sku->sku_code)
                         ->first();
+                    $fso = $sku->ig;
+                    if($sku->fso_multiplier > $sku->ig){
+                        $fso = $sku->fso_multiplier;
+                    }
 
                     ItemInventories::insert([
                         'store_inventory_id' => $inventory->id,
@@ -108,7 +112,7 @@ class FixItemInventories extends Seeder
                         'whpc' => 0,
                         'whcs' => 0,
                         'so' => $sku->ig,
-                        'fso' => $sku->ig,
+                        'fso' => $fso,
                         'fso_val' => $item2->lpbt * $sku->ig]);
                 }else{
                     ItemInventories::insert([

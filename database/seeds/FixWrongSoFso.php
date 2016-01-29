@@ -27,36 +27,17 @@ class FixWrongSoFso extends Seeder
         	}
         }
 
-        // StoreInventories::where('fixed', 1)->update(['fixed' => 0]);
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        // DB::table('item_inventories')->truncate();
-        // $temp_items = TempInventories::all();
-        // foreach ($temp_items as $temp_item) {
-        // 	ItemInventories::insert([
-        //                 'store_inventory_id' => $temp_item->store_inventory_id,
-        //                 'division' => $temp_item->division,
-        //                 'category' => $temp_item->category,
-        //                 'category_long' => $temp_item->category_long,
-        //                 'sub_category' => $temp_item->sub_category,
-        //                 'brand' => $temp_item->brand,
-        //                 'sku_code' => $temp_item->sku_code,
-        //                 'other_barcode' => $temp_item->other_barcode,
-        //                 'description' => $temp_item->description,
-        //                 'description_long' => $temp_item->description_long,
-        //                 'lpbt' => $temp_item->lpbt,
-        //                 'conversion' => $temp_item->conversion,
-        //                 'ig' => $temp_item->ig,
-        //                 'fso_multiplier' => $temp_item->fso_multiplier,
-        //                 'sapc' => $temp_item->sapc,
-        //                 'whpc' => $temp_item->whpc,
-        //                 'whcs' => $temp_item->whcs,
-        //                 'so' => $temp_item->so,
-        //                 'fso' => $temp_item->fso,
-        //                 'fso_val' => $temp_item->fso_val]);
-        // }
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        $items = ItemInventories::where('sapc', 0)
+            ->where('whpc', 0)
+            ->where('whcs', 0)
+            ->where('fso_multiplier', '>', 'ig')
+            ->get();
 
-        // DB::table('temp_inventories')->truncate();
+        foreach ($items as $item) {
+            $item->fso = $item->fso_multiplier;
+            $item->fso_val = $item->fso * $item->lpbt;
+            $item->update();
+        }
 
 
     }
