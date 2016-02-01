@@ -169,12 +169,11 @@ class InventoryController extends Controller
         if ($request->has('download')) {
             \Excel::create('Posted Transaction', function($excel)  use ($items){
                 $excel->sheet('Sheet1', function($sheet) use ($items) {
-                    $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIFLIER', 'SAPC',
+                    $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
                         'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
                     $row = 2;
                     foreach ($items as $item) {
                         if(!is_null($item->signature)){
-                            // $link = '<a href=">' . base_path() . '/signature?name=' . $row->signature . '">' . $row->signature . '</a>';
                             $link = url('api/image', [$item->signature]);
                         }else{
                             $link = '';
