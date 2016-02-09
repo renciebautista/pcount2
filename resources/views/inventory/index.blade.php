@@ -238,13 +238,6 @@
 
 $(document).ready(function() {
 
-	function GetSelectValues(select) {
-      var foo = []; 
-        select.each(function(i, selected){ 
-          foo[i] = $(selected).val(); 
-        });
-        return foo;
-    }
 
 	$("#from").datepicker({
         dateFormat: "mm-dd-yy",

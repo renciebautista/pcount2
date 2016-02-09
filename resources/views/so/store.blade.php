@@ -143,6 +143,8 @@ $("#from").datepicker({
         }
     });
 
+ var st = <?php echo json_encode($sel_st); ?>;
+
 $('#ar').multiselect({
         maxHeight: 200,
         includeSelectAllOption: true,
@@ -150,6 +152,42 @@ $('#ar').multiselect({
         enableFiltering: true,
         buttonWidth: '100%',
         buttonClass: 'form-control',
+        onChange: function(option, checked, select) {
+            updatestore(); 
+        }
     });
+
+    $('#stores').multiselect({
+        maxHeight: 200,
+        includeSelectAllOption: true,
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'form-control'
+    });
+
+    function updatestore(){
+        $.ajax({
+            type: "POST",
+            data: {areas: GetSelectValues($('select#ar :selected'))},
+            url: "{{ route('areastorelist')}}",
+            success: function(data){
+                $('select#stores').empty();
+                $.each(data.selection, function(i, text) {
+                    var sel_class = '';
+                    if($.inArray( i,st ) > -1){
+                      sel_class = 'selected="selected"';
+                    }
+                    $('<option '+sel_class+' value="'+i+'">'+text+'</option>').appendTo($('select#stores')); 
+                });
+                $('select#stores').multiselect('rebuild');
+           }
+        });
+    }
+
+    var divag = $("select#ar").val();
+    if(divag !== null) {
+        updatestore();
+    }
 
 @stop

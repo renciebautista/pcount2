@@ -158,12 +158,13 @@ class SalesOrderController extends Controller
         }
 
         $inventories = ItemInventories::getSoPerStores($data);
-        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar'));
+        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
     }
 
     public function postStore(Request $request){
+        // dd($request->all());
         $sel_ar = $request->ar;
-
+        $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
 
@@ -171,6 +172,11 @@ class SalesOrderController extends Controller
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
+
+        if(!empty($sel_st)){
+            $data['stores'] = $sel_st;
+        }
+
         if(!empty($frm)){
             $data['from'] = $frm;
         }
@@ -180,7 +186,7 @@ class SalesOrderController extends Controller
         $inventories = ItemInventories::getSoPerStores($data);
 
         if ($request->has('submit')) {
-            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar'));
+            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
         }
         
         if ($request->has('download')) {

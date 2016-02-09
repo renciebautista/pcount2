@@ -148,4 +148,15 @@ class FilterController extends Controller
         }
     }
 
+    public function areastorelist(Request $request){
+        if(\Request::ajax()){
+            $areas = $request->areas;
+            $data['selection'] = StoreInventories::select('store_id', 'store_name')
+            ->whereIn('area',$areas)
+            ->orderBy('store_name')->lists('store_name', 'store_id');
+
+            return \Response::json($data,200);
+        }
+    }
+
 }

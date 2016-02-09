@@ -134,6 +134,11 @@ class ItemInventories extends Model
 				}
 			})
 			->where(function($query) use ($filters){
+			if(!empty($filters['stores'])){
+					$query->whereIn('store_id', $filters['stores']);
+				}
+			})
+			->where(function($query) use ($filters){
 			if(!empty($filters['from'])){
 					$date = explode("-", $filters['from']);
 					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);

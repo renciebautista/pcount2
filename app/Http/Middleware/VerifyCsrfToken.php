@@ -22,6 +22,7 @@ class VerifyCsrfToken extends BaseVerifier
         'api/storelist',
         'api/categorylist',
         'api/subcategorylist',
-        'api/brandlist'
+        'api/brandlist',
+        'api/areastorelist'
     ];
 }
