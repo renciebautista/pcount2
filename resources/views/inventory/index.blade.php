@@ -248,6 +248,8 @@ $(document).ready(function() {
 
 	$("#from").datepicker({
         dateFormat: "mm-dd-yy",
+        showWeek: true,
+        firstDay: 1,
         onSelect: function(selected) {
             $("#to").datepicker("option","minDate", selected)
         }
@@ -256,6 +258,8 @@ $(document).ready(function() {
 
     $("#to").datepicker({
         dateFormat: "mm-dd-yy",
+        showWeek: true,
+        firstDay: 1,
         onSelect: function(selected) {
             $("#from").datepicker("option","maxDate", selected)
         }

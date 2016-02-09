@@ -96,6 +96,60 @@ class ItemInventories extends Model
 			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->get();
+	}
+
+	public static function getSoPerArea($filters = null){
+		return self::select('area',\DB::raw('SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week, sum(fso) as fso_sum, sum(fso_val) as fso_val_sum'))
+			->where(function($query) use ($filters){
+			if(!empty($filters['areas'])){
+					$query->whereIn('area', $filters['areas']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['from'])){
+					$date = explode("-", $filters['from']);
+					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['to'])){
+					$date = explode("-", $filters['to']);
+					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+
+			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
+			->groupBy(\DB::raw('yr, yr_week, area'))
+			->orderBy(\DB::raw('yr, yr_week, area'))
+			->get();
+
+	}
+
+
+	public static function getSoPerStores($filters = null){
+		return self::select(\DB::raw('area, store_code, store_name,SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week, sum(fso) as fso_sum, sum(fso_val) as fso_val_sum'))
+			->where(function($query) use ($filters){
+			if(!empty($filters['areas'])){
+					$query->whereIn('area', $filters['areas']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['from'])){
+					$date = explode("-", $filters['from']);
+					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['to'])){
+					$date = explode("-", $filters['to']);
+					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+
+			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
+			->groupBy(\DB::raw('area, store_code, store_name, yr, yr_week'))
+			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
+			->get();
 
 	}
 }

@@ -46,8 +46,9 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                                		<li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array()) !!}</li>
-
+                <li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('so.area', 'SO Per Area', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('so.store', 'SO Per Store', array(), array()) !!}</li>
               </ul>
             </li>
             <li class="dropdown">

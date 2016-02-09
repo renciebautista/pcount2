@@ -31,6 +31,12 @@ class StoreInventories extends Model
         'transaction_date'
     	];
 
+    public static function getAreaList(){
+        return self::select('area')
+            ->groupBy('area')
+            ->lists('area', 'area');
+    }
+
     public static function getAgencyList(){
         return self::select('agency_code', 'agency')
             ->groupBy('agency_code')

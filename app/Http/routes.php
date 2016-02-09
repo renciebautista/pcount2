@@ -42,15 +42,21 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
 
 
-	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
-	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
-
-
 	Route::get('store/{id}/items', 'StoreController@items');
 	Route::resource('store', 'StoreController');
 
 	Route::get('item/{id}/othercode', 'ItemController@othercode');
 	Route::resource('item', 'ItemController');
+
+
+	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
+	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
+
+
+	Route::get('so/area', array('as' => 'so.area', 'uses' => 'SalesOrderController@area'));
+	Route::post('so/area', array('as' => 'so.postarea', 'uses' => 'SalesOrderController@postarea'));
+	Route::get('so/store', array('as' => 'so.store', 'uses' => 'SalesOrderController@store'));
+	Route::post('so/store', array('as' => 'so.poststore', 'uses' => 'SalesOrderController@poststore'));
 
 });
 
