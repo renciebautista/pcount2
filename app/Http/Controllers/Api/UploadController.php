@@ -104,6 +104,15 @@ class UploadController extends Controller
                         ->where('sku_code', trim($row[0]))
                         ->first();
 
+                    $osa = 0;
+                    $oos = 0;
+                    $total_stockcs = $row[1]+$row[2]+$row[3];
+                    if($total_stockcs > 0){
+                        $osa = 1;
+                    }else{
+                        $oos = 1;
+                    }
+
                     ItemInventories::insert([
                         'store_inventory_id' => $store_inventory->id,
                         'division' => $item->division->division,
@@ -124,7 +133,9 @@ class UploadController extends Controller
                         'whcs' => $row[3],
                         'so' => $row[4],
                         'fso' => $row[5],
-                        'fso_val' => $row[6]]);
+                        'fso_val' => $row[6],
+                        'osa' => $osa,
+                        'oos' => $oos]);
                 }
             }
            

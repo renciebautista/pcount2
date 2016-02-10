@@ -170,7 +170,7 @@ class InventoryController extends Controller
             \Excel::create('Posted Transaction', function($excel)  use ($items){
                 $excel->sheet('Sheet1', function($sheet) use ($items) {
                     $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
-                        'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
+                        'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
                     $row = 2;
                     foreach ($items as $item) {
                         if(!is_null($item->signature)){
@@ -192,15 +192,17 @@ class InventoryController extends Controller
                         $sheet->setCellValueByColumnAndRow(10,$row, $item->so);
                         $sheet->setCellValueByColumnAndRow(11,$row, $item->fso);
                         $sheet->setCellValueByColumnAndRow(12,$row, $item->fso_val);
-                        $sheet->setCellValueByColumnAndRow(13,$row, $item->transaction_date);
-                        $sheet->setCellValueByColumnAndRow(14,$row, $item->created_at);
-                        $sheet->setCellValueByColumnAndRow(15,$row, $link);
+                        $sheet->setCellValueByColumnAndRow(13,$row, $item->osa);
+                        $sheet->setCellValueByColumnAndRow(14,$row, $item->oos);
+                        $sheet->setCellValueByColumnAndRow(15,$row, $item->transaction_date);
+                        $sheet->setCellValueByColumnAndRow(16,$row, $item->created_at);
+                        $sheet->setCellValueByColumnAndRow(17,$row, $link);
                         
 
                         $sheet->setCellValue('P'.$row, $link);
                         $sheet->getCell('P'.$row)->getHyperlink()->setUrl($link);
                         $sheet->getCell('P'.$row)->getHyperlink()->setTooltip('Download Signature');
-                       $sheet->getStyle('P'.$row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                        $sheet->getStyle('P'.$row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
                         $row++;
                     }

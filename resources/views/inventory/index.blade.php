@@ -202,6 +202,8 @@
 	  		<th>WHCS</th>
 	  		<th>SO</th>
 	  		<th>FSO</th>
+            <th>OSA</th>
+            <th>OOS</th>
 	  		<th>Transanction Date</th>
 		</tr>
   	</thead>
@@ -220,6 +222,8 @@
 			<td class="right">{{ number_format($item->whcs) }}</td>
 			<td class="right">{{ number_format($item->so) }}</td>
 			<td class="right">{{ number_format($item->fso) }}</td>
+            <td class="right">{{ $item->osa }}</td>
+            <td class="right">{{ $item->oos }}</td>
 			<td class="right">{{ $item->transaction_date }}</td>
 		</tr>
 		@endforeach

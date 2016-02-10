@@ -152,7 +152,7 @@ class ItemInventories extends Model
 			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
-			->groupBy(\DB::raw('area, store_code, store_name, yr, yr_week'))
+			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
 			->get();
 
@@ -160,22 +160,22 @@ class ItemInventories extends Model
 
 	public static function getOsaPerArea($filters = null){
 		return self::select(\DB::raw('area,
-count(
-	case
-		when osa = 1
-		then 1
-		else null
-	end
-) as passed,
-count(
-	case
-		when osa = 0
-		then 0
-		else null
-	end
-) as failed,
-count(*) as total,
-SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week'))
+			count(
+				case
+					when osa = 1
+					then 1
+					else null
+				end
+			) as passed,
+			count(
+				case
+					when osa = 0
+					then 0
+					else null
+				end
+			) as failed,
+			count(*) as total,
+			SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week'))
 			->where(function($query) use ($filters){
 			if(!empty($filters['areas'])){
 					$query->whereIn('area', $filters['areas']);
@@ -197,6 +197,54 @@ SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
 			->orderBy(\DB::raw('yr, yr_week, area'))
+			->get();
+
+	}
+
+	public static function getOsaPerStore($filters = null){
+		return self::select(\DB::raw('area,
+			count(
+				case
+					when osa = 1
+					then 1
+					else null
+				end
+			) as passed,
+			count(
+				case
+					when osa = 0
+					then 0
+					else null
+				end
+			) as failed,
+			count(*) as total,
+			SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week'))
+			->where(function($query) use ($filters){
+			if(!empty($filters['areas'])){
+					$query->whereIn('area', $filters['areas']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['stores'])){
+					$query->whereIn('store_id', $filters['stores']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['from'])){
+					$date = explode("-", $filters['from']);
+					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['to'])){
+					$date = explode("-", $filters['to']);
+					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+
+			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
+			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
+			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
 			->get();
 
 	}

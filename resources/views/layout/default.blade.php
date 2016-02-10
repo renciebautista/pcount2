@@ -50,6 +50,7 @@
                 <li>{!! Html::linkRoute('so.area', 'SO Per Area', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('so.store', 'SO Per Store', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('osa.area', 'OSA Per Area', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('osa.store', 'OSA Per Store', array(), array()) !!}</li>
               </ul>
             </li>
             <li class="dropdown">
