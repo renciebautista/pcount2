@@ -7,13 +7,13 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>SO Per Area</h3>
+            <h3>OSA Per Area</h3>
         </div>
     </div>
 </div>
 <hr/>
 
-{!! Form::open(array('route' => 'so.postarea', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
+{!! Form::open(array('route' => 'osa.postarea', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 
 <div class="row">
     <div class="col-lg-4">
@@ -87,8 +87,9 @@
             <th>Area</th>
             <th class="right">Year</th>
             <th class="right">Week #</th>
-            <th class="right">Sum of FSO</th>
-            <th class="right">Sum of FSO Val</th>
+            <th class="right">Failed</th>
+            <th class="right">Passed</th>
+            <th class="right">Total</th>
             <th></th>
         </tr>
     </thead>
@@ -99,8 +100,9 @@
             <td>{{ $item->area }}</td>
             <td class="right">{{ $item->yr }}</td>
             <td class="right">{{ $item->yr_week }}</td>
-            <td class="right">{{ $item->fso_sum }}</td>
-            <td class="right">{{ $item->fso_val_sum }}</td>
+            <td class="right">{{ $item->failed }}</td>
+            <td class="right">{{ $item->passed }}</td>
+            <td class="right">{{ $item->total }}</td>
             <td></td>
         </tr>
         @endforeach

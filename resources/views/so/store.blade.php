@@ -106,8 +106,8 @@
             <td>{{ $item->store_name }}</td>
             <td class="right">{{ $item->yr }}</td>
             <td class="right">{{ $item->yr_week }}</td>
-            <td class="right">{{ number_format($item->fso_sum) }}</td>
-            <td class="right">{{ number_format($item->fso_val_sum) }}</td>
+            <td class="right">{{ $item->fso_sum }}</td>
+            <td class="right">{{ $item->fso_val_sum }}</td>
             <td></td>
         </tr>
         @endforeach

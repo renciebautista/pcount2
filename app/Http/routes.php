@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('so/area', array('as' => 'so.postarea', 'uses' => 'SalesOrderController@postarea'));
 	Route::get('so/store', array('as' => 'so.store', 'uses' => 'SalesOrderController@store'));
 	Route::post('so/store', array('as' => 'so.poststore', 'uses' => 'SalesOrderController@poststore'));
+	Route::get('osa/area', array('as' => 'osa.area', 'uses' => 'OsaController@area'));
+	Route::post('osa/area', array('as' => 'osa.postarea', 'uses' => 'OsaController@postarea'));
 
 });
 
