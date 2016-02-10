@@ -13,7 +13,7 @@
 </div>
 <hr/>
 
-{!! Form::open(array('route' => 'so.poststore', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
+{!! Form::open(array('route' => 'osa.poststore', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 
 <div class="row">
     <div class="col-lg-4">
