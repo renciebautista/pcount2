@@ -87,9 +87,8 @@
             <th>Area</th>
             <th class="right">Year</th>
             <th class="right">Week #</th>
-            <th class="right">Failed</th>
-            <th class="right">Passed</th>
-            <th class="right">Total</th>
+            <th class="right">Without Stock</th>
+            <th class="right">With Stock</th>
             <th></th>
         </tr>
     </thead>
@@ -102,7 +101,6 @@
             <td class="right">{{ $item->yr_week }}</td>
             <td class="right">{{ $item->failed }}</td>
             <td class="right">{{ $item->passed }}</td>
-            <td class="right">{{ $item->total }}</td>
             <td></td>
         </tr>
         @endforeach
