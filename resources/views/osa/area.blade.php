@@ -7,7 +7,7 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>OSA Per Area</h3>
+            <h3>OSA Per Area Report</h3>
         </div>
     </div>
 </div>

@@ -196,8 +196,8 @@ class SalesOrderController extends Controller
                 foreach ($inventories as $value) {
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week);
-                    $weeks[$week_start->getTimestamp()] = "Week ".$value->yr_week." of ".$value->yr;
-
+                    // $weeks[$week_start->getTimestamp()] = "Week ".$value->yr_week." of ".$value->yr;
+                    $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
                     $items[$value->area][$value->store_name]["Week ".$value->yr_week." of ".$value->yr] = ['fso' => $value->fso_sum, 'fso_val' => $value->fso_val_sum];
 
 

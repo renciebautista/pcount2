@@ -248,4 +248,36 @@ class ItemInventories extends Model
 			->get();
 
 	}
+
+	public static function getOosPerStore($filters = null){
+		return self::select(\DB::raw('area, store_name,sku_code, description, SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week, sum(oos) as oos'))
+			->where(function($query) use ($filters){
+			if(!empty($filters['areas'])){
+					$query->whereIn('area', $filters['areas']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['stores'])){
+					$query->whereIn('store_id', $filters['stores']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['from'])){
+					$date = explode("-", $filters['from']);
+					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['to'])){
+					$date = explode("-", $filters['to']);
+					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+
+			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
+			->groupBy(\DB::raw('area, store_name, sku_code, yr,yr_week'))
+			->orderBy(\DB::raw('area, area, store_name, description, yr, yr_week'))
+			->get();
+
+	}
 }

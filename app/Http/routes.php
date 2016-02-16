@@ -12,18 +12,6 @@
 */
 use App\Models\TempInventories;
 
-Route::get('test', function(){
-	// $folderpath = base_path().'/database/seeds/seed_files/'.date('mdY');
-	// echo $folderpath;
-	// if (!File::exists($folderpath))
-	// {
-	// 	File::makeDirectory($folderpath);
-	// }
-	$item = TempInventories::where('store_inventory_id', 73)
-                    ->where('other_barcode', '80200442')
-                    ->first();
-    dd($item);
-});
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -61,7 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('osa/area', array('as' => 'osa.postarea', 'uses' => 'OsaController@postarea'));
 	Route::get('osa/store', array('as' => 'osa.store', 'uses' => 'OsaController@store'));
 	Route::post('osa/store', array('as' => 'osa.poststore', 'uses' => 'OsaController@poststore'));
-
+	Route::get('oos/sku', array('as' => 'oos.sku', 'uses' => 'OutofstockController@sku'));
+	Route::post('oos/sku', array('as' => 'oos.postsku', 'uses' => 'OutofstockController@postsku'));
 });
 
 
