@@ -63,29 +63,27 @@ class OutofstockController extends Controller
         }
 
         if ($request->has('download')) {
-            \Excel::create('OOS SKU', function($excel)  use ($inventories){
+            \Excel::create('OOS SKU', function($excel)  use ($data,$inventories){
 
-                $weeks = [];
                 $items = [];
                 $sku = [];
                 foreach ($inventories as $value) {
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week,1);
-                    // $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
-                    $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
-                    $items[$value->area][$value->store_name][$value->sku_code]["Week ".$value->yr_week." of ".$value->yr] = $value->oos;
+                    $items[$value->area][$value->store_name][$value->sku_code][$value->transaction_date] = $value->oos;
                     $sku[$value->sku_code] = $value->description;
 
                 }
                 
-                ksort($weeks);
+                // ksort($weeks);
                 // dd($weeks);
-                $excel->sheet('Sheet1', function($sheet) use ($weeks,$items,$sku) {
+                $excel->sheet('Sheet1', function($sheet) use ($data,$items,$sku) {
                     $col = 3;
                     $row = 2;
-                    foreach ($weeks as $week) {
-                        $sheet->setCellValueByColumnAndRow($col,$row, $week);
-                        $col_array[$week] = $col;
+                    $dates = ItemInventories::getDays($data['from'],$data['to']);
+                    foreach ($dates as $date) {
+                        $sheet->setCellValueByColumnAndRow($col,$row, $date->date);
+                        $col_array[$date->date] = $col;
                         $col++;
                     }
                     $last_col = $col;
@@ -105,24 +103,24 @@ class OutofstockController extends Controller
                             foreach ($store_value as $item => $item_value) {
                                 $sheet->setCellValueByColumnAndRow(2,$row, $sku[$item] );
                                 foreach ($item_value as $k => $oos) {
-                                    $week_col = $col_array[$k];
+                                    $day_col = $col_array[$k];
                                     if($oos){
-                                        $sheet->setCellValueByColumnAndRow($week_col,$row, $oos);
+                                        $sheet->setCellValueByColumnAndRow($day_col,$row, $oos);
                                     }
                                 }
-                                $item_wk_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex(3).$row.":".\PHPExcel_Cell::stringFromColumnIndex($last_col-1).$row.")";
+                                $store_item_oos_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex(3).$row.":".\PHPExcel_Cell::stringFromColumnIndex($last_col-1).$row.")";
 
-                                $sheet->setCellValueByColumnAndRow($last_col,$row, $item_wk_total);
+                                $sheet->setCellValueByColumnAndRow($last_col,$row, $store_item_oos_total);
                                 $row++;
                             }
                         }
                         $sheet->setCellValueByColumnAndRow(0,$row, $area. " Total");
                         $last_row = $row -1;
-                        foreach ($weeks as $week) {
-                            $week_col = $col_array[$week];
-                            $area_week_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($week_col).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($week_col).$last_row.")";
-                            $sheet->setCellValueByColumnAndRow($week_col,$row, $area_week_total);
-                            $per_area_total[$week][$area] = \PHPExcel_Cell::stringFromColumnIndex($week_col).$row;
+                        foreach ($dates as $date) {
+                            $day_col = $col_array[$date->date];
+                            $area_week_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($day_col).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($day_col).$last_row.")";
+                            $sheet->setCellValueByColumnAndRow($day_col,$row, $area_week_total);
+                            $per_area_total[$date->date][$area] = \PHPExcel_Cell::stringFromColumnIndex($day_col).$row;
 
                         }
                         $area_grand_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($last_col).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($last_col).$last_row.")";
@@ -134,10 +132,10 @@ class OutofstockController extends Controller
                     $sheet->setCellValueByColumnAndRow(0,$row, 'Grand Total');
 
                     $col = 3;
-                    foreach ($weeks as $week) {
+                    foreach ($dates as $date) {
                         $area_total = [];
-                        $wek_cols = $per_area_total[$week];
-                        foreach ($wek_cols as $cell) {
+                        $day_cols = $per_area_total[$date->date];
+                        foreach ($day_cols as $cell) {
                             $area_total[] = $cell;
                         }
                         $sheet->setCellValueByColumnAndRow($col,$row, '=sum('.implode(",", $area_total).')');

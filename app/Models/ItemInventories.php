@@ -250,7 +250,7 @@ class ItemInventories extends Model
 	}
 
 	public static function getOosPerStore($filters = null){
-		return self::select(\DB::raw('area, store_name,sku_code, description, SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week, sum(oos) as oos'))
+		return self::select(\DB::raw('area, store_name,sku_code, description, transaction_date, sum(oos) as oos'))
 			->where(function($query) use ($filters){
 			if(!empty($filters['areas'])){
 					$query->whereIn('area', $filters['areas']);
@@ -275,9 +275,24 @@ class ItemInventories extends Model
 			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
-			->groupBy(\DB::raw('area, store_name, sku_code, yr,yr_week'))
-			->orderBy(\DB::raw('area, area, store_name, description, yr, yr_week'))
+			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
+			->orderBy(\DB::raw('area, area, store_name, description, transaction_date'))
 			->get();
 
+	}
+
+
+	public static function getDays($from,$to){
+		$fromdate = explode("-", $from);
+		$todate = explode("-", $to);
+		$query = sprintf("select * from 
+                (select adddate('1970-01-01',t4*10000 + t3*1000 + t2*100 + t1*10 + t0) date from
+                 (select 0 t0 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,
+                 (select 0 t1 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,
+                 (select 0 t2 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,
+                 (select 0 t3 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,
+                 (select 0 t4 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4) v
+                where date between '%s' and '%s'",$fromdate[2].'-'.$fromdate[0].'-'.$fromdate[1], $todate[2].'-'.$todate[0].'-'.$todate[1]);
+		return \DB::select(\DB::raw($query));
 	}
 }
