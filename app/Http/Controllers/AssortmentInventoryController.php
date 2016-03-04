@@ -176,14 +176,14 @@ class AssortmentInventoryController extends Controller
         }
 
         if ($request->has('download')) {
-            \Excel::create('Posted Transaction', function($excel)  use ($items){
+            \Excel::create('Assortment Posted Transaction', function($excel)  use ($items){
                 $excel->sheet('Sheet1', function($sheet) use ($items) {
                     $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
                         'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
                     $row = 2;
                     foreach ($items as $item) {
                         if(!is_null($item->signature)){
-                            $link = url('api/image', [$item->signature]);
+                            $link = url('api/assortmentimage', [$item->signature]);
                         }else{
                             $link = '';
                         }

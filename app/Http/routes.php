@@ -71,8 +71,9 @@ Route::group(array('prefix' => 'api'), function()
 	Route::post('uploadpcount', 'Api\UploadController@uploadpcount');
 	Route::post('uploadimage', 'Api\UploadController@uploadimage');  
 	Route::post('uploadassortment', 'Api\UploadAssortmentController@uploadassortment');
-	Route::post('uploadassortment', 'Api\UploadAssortmentController@uploadimage');   
-	Route::get('image/{name}', 'Api\DownloadController@image');
+	Route::post('uploadassortmentimage', 'Api\UploadAssortmentController@uploadimage');   
+	Route::get('pcountimage/{name}', 'Api\DownloadController@image');
+	Route::get('assortmentimage/{name}', 'Api\DownloadController@assortmentimage');
 
 	Route::post('clientlist', array('as' => 'clientlist', 'uses' => 'Api\FilterController@clientlist'));
 	Route::post('channellist', array('as' => 'channellist', 'uses' => 'Api\FilterController@channellist'));

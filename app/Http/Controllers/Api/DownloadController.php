@@ -16,6 +16,7 @@ use Box\Spout\Writer\WriterFactory;
 use DB;
 
 use App\Models\StoreInventories;
+use App\Models\AssortmentInventories;
 
 class DownloadController extends Controller
 {
@@ -151,7 +152,21 @@ class DownloadController extends Controller
     public function image($name){
         $file = StoreInventories::where('signature',$name)->first();
         
-        $myfile = storage_path().'/uploads/image/'.$name;
+        $myfile = storage_path().'/uploads/image/pcount/'.$name;
+
+        if (!\File::exists($myfile))
+        {
+            echo "File not exists.";
+        }else{
+            return \Response::download($myfile, $name);
+        }
+        
+    }
+
+    public function assortmentimage($name){
+        $file = AssortmentInventories::where('signature',$name)->first();
+        
+        $myfile = storage_path().'/uploads/image/assortment/'.$name;
 
         if (!\File::exists($myfile))
         {

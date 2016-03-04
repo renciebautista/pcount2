@@ -35,6 +35,8 @@ class AddAssortmentItemInventoriesTable extends Migration
             $table->integer('so');
             $table->integer('fso');
             $table->decimal('fso_val', 20,16);
+            $table->boolean('osa')->default(0);
+            $table->boolean('oos')->default(0);
         });
     }
 

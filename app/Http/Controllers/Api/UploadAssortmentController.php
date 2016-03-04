@@ -21,29 +21,16 @@ use App\Models\Item;
 
 class UploadAssortmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+
     public function uploadassortment(Request $request)
     {
 
-        $destinationPath = storage_path().'/uploads/pcount/';
+        $destinationPath = storage_path().'/uploads/assortment/';
         $fileName = $request->file('data')->getClientOriginalName();
         $request->file('data')->move($destinationPath, $fileName);
 
-        $filePath = storage_path().'/uploads/pcount/' . $fileName;
+        $filePath = storage_path().'/uploads/assortment/' . $fileName;
         
-        // $destinationPath = storage_path().'/uploads/pcount/';
-        // $fileName = $request->file('data')->getClientOriginalName();
-        // $request->file('data')->move($destinationPath, $fileName);
-
-
         $filename_data = explode("-", $fileName);
         $storeid = $filename_data[0];
         $userid = $filename_data[1];
@@ -166,7 +153,7 @@ class UploadAssortmentController extends Controller
     }
 
     public function uploadimage(Request $request){
-        $destinationPath = storage_path().'/uploads/image/';
+        $destinationPath = storage_path().'/uploads/image/assortment/';
         $fileName = $request->file('data')->getClientOriginalName();
         $request->file('data')->move($destinationPath, $fileName);
 

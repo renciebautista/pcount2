@@ -12,17 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'api/uploadpcount',
-        'api/uploadimage',
-        'api/clientlist',
-        'api/channellist',
-        'api/distributorlist',
-        'api/enrollmentlist',
-        'api/regionlist',
-        'api/storelist',
-        'api/categorylist',
-        'api/subcategorylist',
-        'api/brandlist',
-        'api/areastorelist'
+        'api/*'
     ];
 }

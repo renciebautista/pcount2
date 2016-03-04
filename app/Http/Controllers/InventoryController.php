@@ -174,7 +174,7 @@ class InventoryController extends Controller
                     $row = 2;
                     foreach ($items as $item) {
                         if(!is_null($item->signature)){
-                            $link = url('api/image', [$item->signature]);
+                            $link = url('api/pcountimage', [$item->signature]);
                         }else{
                             $link = '';
                         }
