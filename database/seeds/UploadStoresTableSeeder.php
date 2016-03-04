@@ -30,21 +30,23 @@ class UploadStoresTableSeeder extends Seeder
 		$folderpath = base_path().'/database/seeds/seed_files/';
 		$folders = File::directories($folderpath);
 		$latest = '11232015';
+
 		foreach ($folders as $value) {
-			$_dir = explode("/", $value);
+
+			$_dir = explode("/", str_replace('\\', '/', $value));
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
-			$latest_date = DateTime::createFromFormat('mdY', $latest);
-			$now = DateTime::createFromFormat('mdY', $name);
-			if($now > $latest_date){
+			$latest_date = DateTime::createFromFormat('mdY', $latest);					
+			$now = DateTime::createFromFormat('mdY', $name);	
+
+			if($now > $latest_date){				
 				$latest = $name;
-			}
+				
+			}		
 		}
 		$filePath = $folderpath.$latest.'/Masterfile.xlsx';
-
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
-
 		DB::table('areas')->truncate();
 		DB::table('enrollments')->truncate();
 		DB::table('distributors')->truncate();
@@ -56,7 +58,6 @@ class UploadStoresTableSeeder extends Seeder
 		DB::table('stores')->truncate();
 		// DB::table('users')->truncate();
 		DB::table('store_users')->truncate();
-
 		$role = Role::find(2)->users()->delete();
 
 		// dd($role);

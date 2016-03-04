@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Store;
-use App\Models\StoreItem;
-class StoreController extends Controller
+use App\Models\StoreUser;
+use App\Models\RoleUser;
+use App\User;
+class StoreUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,8 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $stores = Store::all();
-        return view('store.index', compact('stores'));
+        $users = User::all();
+        return view('store_user.index',['users'=>$users]);
     }
 
     /**
@@ -87,19 +84,8 @@ class StoreController extends Controller
     {
         //
     }
-
-    public function items($id){
-        $skus = StoreItem::with('item')->where('store_id',$id)->get();
-        return view('store.items', compact('skus'));
-    }
-    public function mkl($id){
-        $skus = StoreItem::with('item')->where('store_id',$id)->get();
-        $mkl = $skus->where('item_type_id',1);        
-        return view('store.mkl', compact('mkl'));
-    }
-    public function assortment($id){
-        $skus = StoreItem::with('item')->where('store_id',$id)->get();
-        $assortment = $skus->where('item_type_id',2);     
-        return view('store.assortment', compact('assortment'));
+    public function storelist($id){
+        $stores = StoreUser::where('user_id',$id)->get();
+        return view('store_user.store', compact('stores'));
     }
 }

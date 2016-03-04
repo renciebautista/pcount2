@@ -65,13 +65,65 @@ class DownloadController extends Controller
                 ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
                 ->join('brands', 'brands.id', '=', 'items.brand_id')
                 ->join('divisions', 'divisions.id', '=', 'items.division_id')
+                ->where('item_type_id',1)
+                ->whereRaw('other_barcodes.area_id = stores.area_id')
+                ->whereIn('store_items.store_id', $ids)
+                ->orderBy('items.id', 'asc')
+                ->get();
+                
+            $writer = WriterFactory::create(Type::CSV); 
+            $writer->openToBrowser('mkl.txt');
+            $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
+                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier'));
+            
+            foreach ($skus as $sku) {
+                $data[0] = $sku->other_barcode;
+                $data[1] = $sku->description;
+                $data[2] = $sku->ig;
+                $data[3] = $sku->conversion;
+                $data[4] = $sku->lpbt;
+                $data[5] = $sku->category_long;
+                $data[6] = $sku->sub_category;
+                $data[7] = $sku->brand;
+                $data[8] = $sku->division;
+                $data[9] = $sku->store_id;
+                $data[10] = $sku->sku_code;
+                $data[11] = $sku->fso_multiplier;
+                $writer->addRow($data); 
+            }
+
+            $writer->close();
+        }
+
+
+
+        if($type == 3){
+            $ids = array();
+            foreach ($storelist as $store) {
+                $ids[] = $store->id;
+            }
+
+
+            $skus = DB::table('store_items')
+                ->select('store_items.id', 'store_items.store_id', 'items.description', 
+                    'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
+                    'items.lpbt', 'categories.category_long','sub_categories.sub_category', 
+                    'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 'items.sku_code')
+                ->join('stores', 'stores.id', '=', 'store_items.store_id')
+                ->join('items', 'items.id', '=', 'store_items.item_id')
+                ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
+                ->join('categories', 'categories.id', '=', 'items.category_id')
+                ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
+                ->join('brands', 'brands.id', '=', 'items.brand_id')
+                ->join('divisions', 'divisions.id', '=', 'items.division_id')
+                ->where('store_items.item_type_id',2)
                 ->whereRaw('other_barcodes.area_id = stores.area_id')
                 ->whereIn('store_items.store_id', $ids)
                 ->orderBy('items.id', 'asc')
                 ->get();
             
             $writer = WriterFactory::create(Type::CSV); 
-            $writer->openToBrowser('skus.txt');
+            $writer->openToBrowser('assortment.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
                 'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier'));
             

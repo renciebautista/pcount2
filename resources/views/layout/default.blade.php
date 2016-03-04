@@ -13,7 +13,7 @@
 		{!! Html::style('css/backend-style.css') !!}
 		{!! Html::style('css/bootstrap-multiselect.css') !!}
 		{!! HTML::style('css/datepicker/datepicker.css') !!}
-
+        {!! HTML::style('dataTables/dataTables.bootstrap.css') !!}
 		{!! HTML::style('css/pcount.css') !!}
 		
 	</head>
@@ -35,18 +35,20 @@
 
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li>{!! Html::linkRoute('store.index', 'Stores', array(), array()) !!}</li>
-                		<li>{!! Html::linkRoute('item.index', 'Items', array(), array()) !!}</li>
-              </ul>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>{!! Html::linkRoute('store.index', 'Stores', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('item.index', 'Items', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('store_user.index', 'User', array(), array()) !!}</li>
+                </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('assortment_inventory.index', 'Assortment Report', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('so.area', 'SO Per Area Report', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('so.store', 'SO Per Store Report', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('osa.area', 'OSA Per Area Report', array(), array()) !!}</li>
@@ -55,18 +57,18 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-               <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
-              </ul>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
+                </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	<li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-              	<li>{!! Html::linkRoute('auth.logout', 'Sign-out', array(), array()) !!}</li>
-              </ul>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>{!! Html::linkRoute('auth.logout', 'Sign-out', array(), array()) !!}</li>
+                </ul>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -89,11 +91,13 @@
 		{!! Html::script('js/bootstrap-multiselect.js') !!}
 		{!! Html::script('js/bootstrap-multiselect-collapsible-groups.js') !!}
 		{!! HTML::script('js/datepicker/datepicker-ui.js') !!}
-
+        
+        
+    
 		<script type="text/javascript">
 		$(document).ready(function() {
-      function GetSelectValues(select) {
-      var foo = []; 
+        function GetSelectValues(select) {
+        var foo = []; 
         select.each(function(i, selected){ 
           foo[i] = $(selected).val(); 
         });

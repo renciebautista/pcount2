@@ -14,7 +14,7 @@
 <hr/>
 
 
-
+<a href="javascript:history.back()" ><button type="button" class="btn btn-default ">Back </button></a>
 <!-- <hr> -->
 <label class="pull-right">{{ $items->count() }} records found.</label>
 <table class="table table-striped table-hover ">

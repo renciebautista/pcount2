@@ -47,4 +47,5 @@ class Store extends Model
     {
         return $this->belongsTo('App\Models\Agency');
     }
+   
 }

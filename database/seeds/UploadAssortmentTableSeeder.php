@@ -14,8 +14,8 @@ use App\Models\ItemType;
 use App\Models\StoreItem;
 
 
-class UploadStoreItemsTableSeeder extends Seeder
-{
+class UploadAssortmentTableSeeder extends Seeder
+{    
     public function run()
     {
         Model::unguard();
@@ -40,10 +40,10 @@ class UploadStoreItemsTableSeeder extends Seeder
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
 
-		DB::table('store_items')->truncate();
+		DB::table('store_items');
 
 		foreach ($reader->getSheetIterator() as $sheet) {
-			if($sheet->getName() == 'MKL Mapping'){
+			if($sheet->getName() == 'Assorment Mapping'){
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
 					if(!is_null($row[0])){
@@ -79,14 +79,14 @@ class UploadStoreItemsTableSeeder extends Seeder
 								->get();
 
 							$item = Item::where('sku_code', trim($row[3]))->first();
-							$item_type = ItemType::where('type',"MKL")->first();							
+							$item_type = ItemType::where('type',"ASSORTMENT")->first();
 							foreach ($stores as $store) {
 								StoreItem::firstOrCreate([
 									'store_id' => $store->id,
 									'item_id' => $item->id,
 									'ig' => trim($row[4]),
 									'fso_multiplier' => trim($row[5]),
-									'item_type_id' => $item_type->id
+									'item_type_id' =>$item_type->id
 								]);
 							}
 							
