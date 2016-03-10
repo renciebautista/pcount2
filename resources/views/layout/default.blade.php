@@ -47,13 +47,19 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li>{!! Html::linkRoute('inventory.index', 'Posted Transaction Report', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('assortment_inventory.index', 'Assortment Report', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('so.area', 'SO Per Area Report', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('so.store', 'SO Per Store Report', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('osa.area', 'OSA Per Area Report', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('osa.store', 'OSA Per Store Report', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('oos.sku', 'OOS SKU Report', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('inventory.index', 'MKL Posted Transaction Report', array('type' => 'mkl'), array()) !!}</li>
+                <li>{!! Html::linkRoute('so.area', 'MKL SO Per Area Report', array('type' => 'mkl'), array()) !!}</li>
+                <li>{!! Html::linkRoute('so.store', 'MKL SO Per Store Report', array('type' => 'mkl'), array()) !!}</li>
+                <li>{!! Html::linkRoute('osa.area', 'MKL OSA Per Area Report', array('type' => 'mkl'), array()) !!}</li>
+                <li>{!! Html::linkRoute('osa.store', 'MKL OSA Per Store Report', array('type' => 'mkl'), array()) !!}</li>
+                <li>{!! Html::linkRoute('oos.sku', 'MKL OOS SKU Report', array('type' => 'mkl'), array()) !!}</li>
+                <li role="separator" class="divider"></li>
+                <li>{!! Html::linkRoute('inventory.index', 'Assortment Posted Transaction Report', array('type' => 'assortment'), array()) !!}</li>
+                <li>{!! Html::linkRoute('so.area', 'Assortment SO Per Area Report', array('type' => 'assortment'), array()) !!}</li>
+                <li>{!! Html::linkRoute('so.store', 'Assortment SO Per Store Report', array('type' => 'assortment'), array()) !!}</li>
+                <li>{!! Html::linkRoute('osa.area', 'Assortment OSA Per Area Report', array('type' => 'assortment'), array()) !!}</li>
+                <li>{!! Html::linkRoute('osa.store', 'Assortment OSA Per Store Report', array('type' => 'assortment'), array()) !!}</li>
+                <li>{!! Html::linkRoute('oos.sku', 'Assortment OOS SKU Report', array('type' => 'assortment'), array()) !!}</li>
               </ul>
             </li>
             <li class="dropdown">

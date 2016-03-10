@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\ItemInventories;
 use App\Models\StoreInventories;
+use App\Models\AssortmentInventories;
+use App\Models\AssortmentItemInventories;
 
 class InventoryController extends Controller
 {
@@ -17,27 +19,49 @@ class InventoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($type = null)
     {
+       
         $frm = date("m-d-Y");
         $to = date("m-d-Y");    
 
-        $agencies = StoreInventories::getAgencyList();
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
 
-        $sel_ag = StoreInventories::getStoreCodes('agency_code'); 
-        $sel_cl = StoreInventories::getStoreCodes('client_code');    
-        $sel_ch = StoreInventories::getStoreCodes('channel_code');    
-        $sel_ds = StoreInventories::getStoreCodes('distributor_code');  
-        $sel_en = StoreInventories::getStoreCodes('enrollment_type'); 
-        $sel_rg = StoreInventories::getStoreCodes('region_code'); 
-        $sel_st = StoreInventories::getStoreCodes('store_id');
+        if($report_type == 2){
+            $agencies = StoreInventories::getAgencyList();
+            $sel_ag = StoreInventories::getStoreCodes('agency_code'); 
+            $sel_cl = StoreInventories::getStoreCodes('client_code');    
+            $sel_ch = StoreInventories::getStoreCodes('channel_code');    
+            $sel_ds = StoreInventories::getStoreCodes('distributor_code');  
+            $sel_en = StoreInventories::getStoreCodes('enrollment_type'); 
+            $sel_rg = StoreInventories::getStoreCodes('region_code'); 
+            $sel_st = StoreInventories::getStoreCodes('store_id');
 
+            $divisions = ItemInventories::getDivisionList();
+            $sel_dv = ItemInventories::getItemCodes('division');
+            $sel_cat = ItemInventories::getItemCodes('category');
+            $sel_scat = ItemInventories::getItemCodes('sub_category');
+            $sel_br = ItemInventories::getItemCodes('brand');
+        }else{
+            $agencies = AssortmentInventories::getAgencyList();
+            $sel_ag = AssortmentInventories::getStoreCodes('agency_code'); 
+            $sel_cl = AssortmentInventories::getStoreCodes('client_code');    
+            $sel_ch = AssortmentInventories::getStoreCodes('channel_code');    
+            $sel_ds = AssortmentInventories::getStoreCodes('distributor_code');  
+            $sel_en = AssortmentInventories::getStoreCodes('enrollment_type'); 
+            $sel_rg = AssortmentInventories::getStoreCodes('region_code'); 
+            $sel_st = AssortmentInventories::getStoreCodes('store_id');
 
-        $divisions = ItemInventories::getDivisionList();
-        $sel_dv = ItemInventories::getItemCodes('division');
-        $sel_cat = ItemInventories::getItemCodes('category');
-        $sel_scat = ItemInventories::getItemCodes('sub_category');
-        $sel_br = ItemInventories::getItemCodes('brand');
+            $divisions = AssortmentItemInventories::getDivisionList();
+            $sel_dv = AssortmentItemInventories::getItemCodes('division');
+            $sel_cat = AssortmentItemInventories::getItemCodes('category');
+            $sel_scat = AssortmentItemInventories::getItemCodes('sub_category');
+            $sel_br = AssortmentItemInventories::getItemCodes('brand');
+        }
+        
 
         $data = array();
 
@@ -81,11 +105,18 @@ class InventoryController extends Controller
             $data['to'] = $to;
         }
 
-        $items = ItemInventories::filter($data);
+        if($report_type == 2){
+            $items = ItemInventories::filter($data);
+            $header = "MKL Posted Transaction Report";
+        }else{
+            $items = AssortmentItemInventories::filter($data);
+            $header = "Assortment Posted Transaction Report";
+        }
+        
 
         return view('inventory.index',compact('frm', 'to', 'agencies','sel_ag',
             'sel_cl', 'sel_ch', 'sel_ds', 'sel_en', 'sel_rg', 'sel_st',
-            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items'));
+            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type'));
     }
 
     /**
@@ -94,10 +125,8 @@ class InventoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $type = null)
     {
-        $agencies = StoreInventories::getAgencyList();
-
         $sel_ag = $request->ag;
         $sel_cl = $request->cl;
         $sel_ch = $request->ch;
@@ -105,8 +134,19 @@ class InventoryController extends Controller
         $sel_en = $request->en;
         $sel_rg = $request->rg;
         $sel_st = $request->st;
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
 
-        $divisions = ItemInventories::getDivisionList();
+        if($report_type == 2){
+            $agencies = StoreInventories::getAgencyList();
+            $divisions = ItemInventories::getDivisionList();
+        }else{
+            $agencies = AssortmentInventories::getAgencyList();
+            $divisions = AssortmentItemInventories::getDivisionList();
+        }
+        
         $sel_dv = $request->dv;
         $sel_cat = $request->ct;
         $sel_scat = $request->sc;
@@ -157,24 +197,34 @@ class InventoryController extends Controller
             $data['to'] = $to;
         }
 
-
-        $items = ItemInventories::filter($data);
+        if($report_type == 2){
+            $items = ItemInventories::filter($data);
+            $header = "MKL Posted Transaction Report";
+        }else{
+            $items = AssortmentItemInventories::filter($data);
+            $header = "Assortment Posted Transaction Report";
+        }
 
         if ($request->has('submit')) {
             return view('inventory.index',compact('frm', 'to', 'agencies','sel_ag',
             'sel_cl', 'sel_ch', 'sel_ds', 'sel_en', 'sel_rg', 'sel_st',
-            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items'));
+            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type'));
         }
 
         if ($request->has('download')) {
-            \Excel::create('Posted Transaction', function($excel)  use ($items){
-                $excel->sheet('Sheet1', function($sheet) use ($items) {
+            \Excel::create($header, function($excel)  use ($items,$report_type){
+                $excel->sheet('Sheet1', function($sheet) use ($items,$report_type) {
                     $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
                         'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
                     $row = 2;
                     foreach ($items as $item) {
                         if(!is_null($item->signature)){
-                            $link = url('api/pcountimage', [$item->signature]);
+                            if($report_type == 2){
+                                $link = url('api/pcountimage', [$item->signature]);
+                            }else{
+                                $link = url('api/assortmentimage', [$item->signature]);
+                            }
+                            
                         }else{
                             $link = '';
                         }

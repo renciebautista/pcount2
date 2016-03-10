@@ -7,13 +7,12 @@
 <div id="banner">
 	<div class="row">
 		<div class="col-lg-12">
-			<h3>Posted Transaction Report</h3>
+			<h3>{{ $header }}</h3>
 		</div>
 	</div>
 </div>
 <hr/>
-
-{!! Form::open(array('route' => 'inventory.index', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
+{!! Form::open(array('route' => array('inventory.index', $type), 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 
 <div class="row">
     <div class="col-lg-4">

@@ -18,7 +18,6 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' => 'auth.dologin', 'uses' =>  'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses' =>  'Auth\AuthController@getLogout']);
 
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
@@ -29,8 +28,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
 	Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
 
-
-	// Route::get('store/{id}/items', 'StoreController@items');
 	Route::get('store/{id}/mkl', 'StoreController@mkl');
 	Route::get('store/{id}/assortment', 'StoreController@assortment');
 	Route::resource('store', 'StoreController');
@@ -44,21 +41,19 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
+	Route::get('inventory/{type}', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
+	Route::post('inventory/{type}', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
 
-	Route::get('assortment_inventory', array('as' => 'assortment_inventory.index', 'uses' => 'AssortmentInventoryController@index'));
-	Route::post('assortment_inventory', array('as' => 'assortment_inventory.show', 'uses' => 'AssortmentInventoryController@store'));
-
-
-	Route::get('so/area', array('as' => 'so.area', 'uses' => 'SalesOrderController@area'));
-	Route::post('so/area', array('as' => 'so.postarea', 'uses' => 'SalesOrderController@postarea'));
-	Route::get('so/store', array('as' => 'so.store', 'uses' => 'SalesOrderController@store'));
-	Route::post('so/store', array('as' => 'so.poststore', 'uses' => 'SalesOrderController@poststore'));
-	Route::get('osa/area', array('as' => 'osa.area', 'uses' => 'OsaController@area'));
-	Route::post('osa/area', array('as' => 'osa.postarea', 'uses' => 'OsaController@postarea'));
-	Route::get('osa/store', array('as' => 'osa.store', 'uses' => 'OsaController@store'));
-	Route::post('osa/store', array('as' => 'osa.poststore', 'uses' => 'OsaController@poststore'));
-	Route::get('oos/sku', array('as' => 'oos.sku', 'uses' => 'OutofstockController@sku'));
-	Route::post('oos/sku', array('as' => 'oos.postsku', 'uses' => 'OutofstockController@postsku'));
+	Route::get('so/area/{type}', array('as' => 'so.area', 'uses' => 'SalesOrderController@area'));
+	Route::post('so/area/{type}', array('as' => 'so.postarea', 'uses' => 'SalesOrderController@postarea'));
+	Route::get('so/store/{type}', array('as' => 'so.store', 'uses' => 'SalesOrderController@store'));
+	Route::post('so/store/{type}', array('as' => 'so.poststore', 'uses' => 'SalesOrderController@poststore'));
+	Route::get('osa/area/{type}', array('as' => 'osa.area', 'uses' => 'OsaController@area'));
+	Route::post('osa/area/{type}', array('as' => 'osa.postarea', 'uses' => 'OsaController@postarea'));
+	Route::get('osa/store/{type}', array('as' => 'osa.store', 'uses' => 'OsaController@store'));
+	Route::post('osa/store/{type}', array('as' => 'osa.poststore', 'uses' => 'OsaController@poststore'));
+	Route::get('oos/sku/{type}', array('as' => 'oos.sku', 'uses' => 'OutofstockController@sku'));
+	Route::post('oos/sku/{type}', array('as' => 'oos.postsku', 'uses' => 'OutofstockController@postsku'));
 
 });
 
