@@ -46,7 +46,7 @@ class UploadStoreItemsTableSeeder extends Seeder
 			if($sheet->getName() == 'MKL Mapping'){
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
-					if(!is_null($row[0])){
+					if($row[0] != ''){
 						if($cnt > 0){
 							$channel = '';
 							$customer = '';
@@ -77,18 +77,21 @@ class UploadStoreItemsTableSeeder extends Seeder
 									}
 								})
 								->get();
-
+							// echo $row[3] .PHP_EOL;
 							$item = Item::where('sku_code', trim($row[3]))->first();
-							$item_type = ItemType::where('type',"MKL")->first();							
-							foreach ($stores as $store) {
-								StoreItem::firstOrCreate([
-									'store_id' => $store->id,
-									'item_id' => $item->id,
-									'ig' => trim($row[4]),
-									'fso_multiplier' => trim($row[5]),
-									'item_type_id' => $item_type->id
-								]);
+							if(!empty($item)){
+								$item_type = ItemType::where('type',"MKL")->first();							
+								foreach ($stores as $store) {
+									StoreItem::firstOrCreate([
+										'store_id' => $store->id,
+										'item_id' => $item->id,
+										'ig' => trim($row[4]),
+										'fso_multiplier' => trim($row[5]),
+										'item_type_id' => $item_type->id
+									]);
+								}
 							}
+							
 							
 						}
 						$cnt++;	

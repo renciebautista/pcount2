@@ -50,7 +50,7 @@ class UploadItemsTableSeeder extends Seeder
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
 
-					if(!is_null($row[0])){
+					if($row[0] != ''){
 						if($cnt > 0){
 							$division = Division::firstOrCreate(['division' => strtoupper($row[8])]);
 							$category = Category::firstOrCreate(['category' => strtoupper($row[1]), 'category_long' => strtoupper($row[0])]);

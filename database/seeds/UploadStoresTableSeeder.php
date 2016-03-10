@@ -68,7 +68,7 @@ class UploadStoresTableSeeder extends Seeder
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
 					// dd($row);
-					if(!is_null($row[0])){
+					if($row[0] != ''){
 						if($cnt > 0){
 							$area = Area::firstOrCreate(['area' => strtoupper($row[0])]);
 							$enrollment = Enrollment::firstOrCreate(['enrollment' => strtoupper($row[1])]);

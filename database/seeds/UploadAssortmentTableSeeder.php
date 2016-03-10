@@ -43,10 +43,10 @@ class UploadAssortmentTableSeeder extends Seeder
 		DB::table('store_items');
 
 		foreach ($reader->getSheetIterator() as $sheet) {
-			if($sheet->getName() == 'Assorment Mapping'){
+			if($sheet->getName() == 'Assortment Mapping'){
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
-					if((!is_null($row[0])) && ($row[0] != '')){
+					if($row[0] != ''){
 						if($cnt > 0){
 							$channel = '';
 							$customer = '';
@@ -79,20 +79,23 @@ class UploadAssortmentTableSeeder extends Seeder
 								->get();
 							// echo $row[3] .PHP_EOL;
 							$item = Item::where('sku_code', trim($row[3]))->first();
-							$item_type = ItemType::where('type',"ASSORTMENT")->first();
-							foreach ($stores as $store) {
-								$w_mkl = StoreItem::where('store_id',$store->id)->where('item_id',$item->id)->get();
-								if(count($w_mkl) == 0){
-									StoreItem::firstOrCreate([
-										'store_id' => $store->id,
-										'item_id' => $item->id,
-										'ig' => trim($row[4]),
-										'fso_multiplier' => trim($row[5]),
-										'item_type_id' =>$item_type->id
-									]);
+							if(!empty($item)){
+								$item_type = ItemType::where('type',"ASSORTMENT")->first();
+								foreach ($stores as $store) {
+									$w_mkl = StoreItem::where('store_id',$store->id)->where('item_id',$item->id)->get();
+									if(count($w_mkl) == 0){
+										StoreItem::firstOrCreate([
+											'store_id' => $store->id,
+											'item_id' => $item->id,
+											'ig' => trim($row[4]),
+											'fso_multiplier' => trim($row[5]),
+											'item_type_id' =>$item_type->id
+										]);
+									}
+									
 								}
-								
 							}
+							
 							
 						}
 						$cnt++;	
