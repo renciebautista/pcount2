@@ -93,13 +93,17 @@ class StoreController extends Controller
         return view('store.items', compact('skus'));
     }
     public function mkl($id){
-        $skus = StoreItem::with('item')->where('store_id',$id)->get();
-        $mkl = $skus->where('item_type_id',1);        
+        $mkl = StoreItem::with('item')
+            ->where('store_id',$id)
+            ->where('item_type_id',1)
+            ->get();
         return view('store.mkl', compact('mkl'));
     }
     public function assortment($id){
-        $skus = StoreItem::with('item')->where('store_id',$id)->get();
-        $assortment = $skus->where('item_type_id',2);     
+        $assortment = StoreItem::with('item')
+            ->where('store_id',$id)
+            ->where('item_type_id',2)
+            ->get();
         return view('store.assortment', compact('assortment'));
     }
 }
