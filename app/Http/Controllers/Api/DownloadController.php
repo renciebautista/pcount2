@@ -104,8 +104,6 @@ class DownloadController extends Controller
                 $ids[] = $store->id;
             }
 
-
-
             $skus = DB::table('store_items')
                 ->select('store_items.id', 'store_items.store_id', 'items.description', 
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
@@ -124,7 +122,6 @@ class DownloadController extends Controller
                 ->orderBy('items.id', 'asc')
                 ->get();
             
-            dd($skus);
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('assortment.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
