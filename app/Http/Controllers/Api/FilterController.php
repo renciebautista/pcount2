@@ -287,6 +287,8 @@ class FilterController extends Controller
         }
     }
 
+    
+
     public function areastorelist(Request $request){
         if(\Request::ajax()){
             $areas = $request->areas;
