@@ -9,15 +9,28 @@ use App\Http\Controllers\Controller;
 
 use App\Models\StoreInventories;
 use App\Models\ItemInventories;
+use App\Models\AssortmentInventories;
+use App\Models\AssortmentItemInventories;
 
 class OutofstockController extends Controller
 {
-    public function sku(){
+    public function sku($type = null){
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
-        $areas = StoreInventories::getAreaList();
-        $sel_ar = StoreInventories::getStoreCodes('area');
-        $sel_st = StoreInventories::getStoreCodes('store_id');
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+            $sel_ar = StoreInventories::getStoreCodes('area');
+            $sel_st = StoreInventories::getStoreCodes('store_id');
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+            $sel_ar = AssortmentInventories::getStoreCodes('area');
+            $sel_st = AssortmentInventories::getStoreCodes('store_id');
+        }
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -31,17 +44,34 @@ class OutofstockController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = ItemInventories::getOosPerStore($data);
-        return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+        if($report_type == 2){
+            $header = 'MKL OOS SKU Report';
+            $inventories = ItemInventories::getOosPerStore($data);
+        }else{
+            $header = 'Assortment OOS SKU Report';
+            $inventories = AssortmentItemInventories::getOosPerStore($data);
+        }
+
+        return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type'));
     }
 
-    public function postsku(Request $request){
+    public function postsku(Request $request,$type = null){
         $sel_ar = $request->ar;
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
 
-        $areas = StoreInventories::getAreaList();
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+        }
+
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -56,14 +86,22 @@ class OutofstockController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-        $inventories = ItemInventories::getOosPerStore($data);
+        
+        if($report_type == 2){
+            $header = 'MKL OOS SKU Report';
+            $inventories = ItemInventories::getOosPerStore($data);
+        }else{
+            $header = 'Assortment OOS SKU Report';
+            $inventories = AssortmentItemInventories::getOosPerStore($data);
+        }
+
 
         if ($request->has('submit')) {
-            return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+            return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type'));
         }
 
         if ($request->has('download')) {
-            \Excel::create('OOS SKU', function($excel)  use ($data,$inventories){
+            \Excel::create($header, function($excel)  use ($data,$inventories){
 
                 $items = [];
                 $sku = [];

@@ -289,7 +289,7 @@ $(document).ready(function() {
     function updateclient(){
         $.ajax({
             type: "POST",
-            data: {agencies: GetSelectValues($('select#agencies :selected'))},
+            data: {type: '{{ $type }}', agencies: GetSelectValues($('select#agencies :selected'))},
             url: "{{ route('clientlist')}}",
             success: function(data){
                 $('select#clients').empty();
@@ -321,7 +321,7 @@ $(document).ready(function() {
     function updatechannel(){
         $.ajax({
             type: "POST",
-            data: {agencies: GetSelectValues($('select#agencies :selected')), clients: GetSelectValues($('select#clients :selected'))},
+            data: {type: '{{ $type }}', agencies: GetSelectValues($('select#agencies :selected')), clients: GetSelectValues($('select#clients :selected'))},
             url: "{{ route('channellist')}}",
             success: function(data){
                 $('select#channels').empty();
@@ -353,7 +353,7 @@ $(document).ready(function() {
     function updatedistributor(){
         $.ajax({
             type: "POST",
-            data: {agencies: GetSelectValues($('select#agencies :selected')), clients: GetSelectValues($('select#clients :selected')),channels: GetSelectValues($('select#channels :selected'))},
+            data: {type: '{{ $type }}', agencies: GetSelectValues($('select#agencies :selected')), clients: GetSelectValues($('select#clients :selected')),channels: GetSelectValues($('select#channels :selected'))},
             url: "{{ route('distributorlist')}}",
             success: function(data){
                 $('select#distributors').empty();
@@ -385,7 +385,7 @@ $(document).ready(function() {
     function updateenrollment(){
         $.ajax({
             type: "POST",
-            data: {agencies: GetSelectValues($('select#agencies :selected')),
+            data: {type: '{{ $type }}', agencies: GetSelectValues($('select#agencies :selected')),
                 clients: GetSelectValues($('select#clients :selected')),
                 channels: GetSelectValues($('select#channels :selected')),
                 distributors: GetSelectValues($('select#distributors :selected'))},
@@ -420,7 +420,7 @@ $(document).ready(function() {
     function updateregion(){
         $.ajax({
             type: "POST",
-            data: {agencies: GetSelectValues($('select#agencies :selected')),
+            data: {type: '{{ $type }}', agencies: GetSelectValues($('select#agencies :selected')),
                 clients: GetSelectValues($('select#clients :selected')),
                 channels: GetSelectValues($('select#channels :selected')),
                 distributors: GetSelectValues($('select#distributors :selected')),
@@ -456,7 +456,7 @@ $(document).ready(function() {
     function updatestores(){
         $.ajax({
             type: "POST",
-            data: {agencies: GetSelectValues($('select#agencies :selected')),
+            data: {type: '{{ $type }}', agencies: GetSelectValues($('select#agencies :selected')),
                 clients: GetSelectValues($('select#clients :selected')),
                 channels: GetSelectValues($('select#channels :selected')),
                 distributors: GetSelectValues($('select#distributors :selected')),
@@ -502,7 +502,7 @@ $(document).ready(function() {
     function updatecategories(){
         $.ajax({
             type: "POST",
-            data: {divisions: GetSelectValues($('select#divisions :selected'))
+            data: {type: '{{ $type }}', divisions: GetSelectValues($('select#divisions :selected'))
             },
             url: "{{ route('categorylist')}}",
             success: function(data){
@@ -536,7 +536,7 @@ $(document).ready(function() {
     function updatesubcategories(){
         $.ajax({
             type: "POST",
-            data: {divisions: GetSelectValues($('select#divisions :selected')),
+            data: {type: '{{ $type }}', divisions: GetSelectValues($('select#divisions :selected')),
               categories: GetSelectValues($('select#categories :selected'))
             },
             url: "{{ route('subcategorylist')}}",
@@ -571,7 +571,7 @@ $(document).ready(function() {
     function updatebrands(){
         $.ajax({
             type: "POST",
-            data: {divisions: GetSelectValues($('select#divisions :selected')),
+            data: {type: '{{ $type }}', divisions: GetSelectValues($('select#divisions :selected')),
               categories: GetSelectValues($('select#categories :selected')),
               sub_categories: GetSelectValues($('select#sub_categories :selected'))
             },
@@ -604,7 +604,7 @@ $(document).ready(function() {
     function updatebrands(){
         $.ajax({
             type: "POST",
-            data: {divisions: GetSelectValues($('select#divisions :selected')),
+            data: {type: '{{ $type }}', divisions: GetSelectValues($('select#divisions :selected')),
               categories: GetSelectValues($('select#categories :selected')),
               sub_categories: GetSelectValues($('select#sub_categories :selected'))
             },

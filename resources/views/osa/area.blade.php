@@ -7,13 +7,13 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>OSA Per Area Report</h3>
+            <h3>{{ $header }}</h3>
         </div>
     </div>
 </div>
 <hr/>
 
-{!! Form::open(array('route' => 'osa.postarea', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
+{!! Form::open(array('route' => array('osa.postarea', $type), 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 
 <div class="row">
     <div class="col-lg-4">

@@ -169,7 +169,7 @@ $('#ar').multiselect({
     function updatestore(){
         $.ajax({
             type: "POST",
-            data: {areas: GetSelectValues($('select#ar :selected'))},
+            data: {type: '{{ $type }}', areas: GetSelectValues($('select#ar :selected'))},
             url: "{{ route('areastorelist')}}",
             success: function(data){
                 $('select#stores').empty();

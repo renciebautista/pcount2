@@ -9,16 +9,29 @@ use App\Http\Controllers\Controller;
 
 use App\Models\StoreInventories;
 use App\Models\ItemInventories;
+use App\Models\AssortmentInventories;
+use App\Models\AssortmentItemInventories;
 
 class OsaController extends Controller
 {
 
-    public function area()
+    public function area($type = null)
     {
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
-        $areas = StoreInventories::getAreaList();
-        $sel_ar = StoreInventories::getStoreCodes('area');
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+            $sel_ar = StoreInventories::getStoreCodes('area');
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+            $sel_ar = AssortmentInventories::getStoreCodes('area');
+        }
+
+        
         if(!empty($sel_br)){
             $data['areas'] = $sel_ar;
         }
@@ -29,17 +42,34 @@ class OsaController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = ItemInventories::getOsaPerArea($data);
-        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar'));
+        if($report_type == 2){
+            $header = 'MKL OSA Per Area Report';
+            $inventories = ItemInventories::getOsaPerArea($data);
+        }else{
+            $header = 'Assortment OSA Per Area Report';
+            $inventories = AssortmentItemInventories::getOsaPerArea($data);
+        }
+
+        
+        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type'));
     }
 
-    public function postArea(Request $request){
+    public function postArea(Request $request, $type = null){
         $sel_ar = $request->ar;
 
         $frm = $request->fr;
         $to = $request->to;
 
-        $areas = StoreInventories::getAreaList();
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+        }
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -49,14 +79,20 @@ class OsaController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-        $inventories = ItemInventories::getOsaPerArea($data);
+        if($report_type == 2){
+            $header = 'MKL OSA Per Area Report';
+            $inventories = ItemInventories::getOsaPerArea($data);
+        }else{
+            $header = 'Assortment OSA Per Area Report';
+            $inventories = AssortmentItemInventories::getOsaPerArea($data);
+        }
 
         if ($request->has('submit')) {
-            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar'));
+            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type'));
         }
         
         if ($request->has('download')) {
-            \Excel::create('OSA Per Area', function($excel)  use ($inventories){
+            \Excel::create($header, function($excel)  use ($inventories){
                 $weeks = [];
                 $items = [];
                 foreach ($inventories as $value) {
@@ -123,13 +159,24 @@ class OsaController extends Controller
     }
 
 
-    public function store()
+    public function store($type = null)
     {
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
-        $areas = StoreInventories::getAreaList();
-        $sel_ar = StoreInventories::getStoreCodes('area');
-        $sel_st = StoreInventories::getStoreCodes('store_id');
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+            $sel_ar = StoreInventories::getStoreCodes('area');
+            $sel_st = StoreInventories::getStoreCodes('store_id');
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+            $sel_ar = AssortmentInventories::getStoreCodes('area');
+            $sel_st = AssortmentInventories::getStoreCodes('store_id');
+        }
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -143,17 +190,34 @@ class OsaController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = ItemInventories::getOsaPerStore($data);
-        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+        if($report_type == 2){
+            $header = 'MKL OSA Per Store Report';
+            $inventories = ItemInventories::getOsaPerStore($data);
+        }else{
+            $header = 'Assortment OSA Per Store Report';
+            $inventories = AssortmentItemInventories::getOsaPerStore($data);
+        }
+
+        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type'));
     }
 
-    public function postStore(Request $request){
+    public function postStore(Request $request,$type = null){
         $sel_ar = $request->ar;
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
 
-        $areas = StoreInventories::getAreaList();
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+        }
+
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -168,14 +232,21 @@ class OsaController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-        $inventories = ItemInventories::getOsaPerStore($data);
+
+        if($report_type == 2){
+            $header = 'MKL OSA Per Store Report';
+            $inventories = ItemInventories::getOsaPerStore($data);
+        }else{
+            $header = 'Assortment OSA Per Store Report';
+            $inventories = AssortmentItemInventories::getOsaPerStore($data);
+        }
 
         if ($request->has('submit')) {
-            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type'));
         }
-        
+
         if ($request->has('download')) {
-            \Excel::create('OSA Per Store', function($excel)  use ($inventories){
+            \Excel::create($header, function($excel)  use ($inventories){
                 $weeks = [];
                 $items = [];
                 foreach ($inventories as $value) {
