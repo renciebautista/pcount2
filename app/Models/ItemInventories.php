@@ -250,7 +250,8 @@ class ItemInventories extends Model
 	}
 
 	public static function getOosPerStore($filters = null){
-		return self::select(\DB::raw('area, store_name,sku_code, description, transaction_date, sum(oos) as oos'))
+		return self::select(\DB::raw('area, store_id, store_name, store_code,channel_name,other_barcode,
+				sku_code, description, SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week,transaction_date, sum(oos) as oos'))
 			->where(function($query) use ($filters){
 			if(!empty($filters['areas'])){
 					$query->whereIn('area', $filters['areas']);
