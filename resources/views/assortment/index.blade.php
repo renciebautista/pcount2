@@ -111,9 +111,9 @@
             <td class="right">{{ $item->passed }}</td>
             <td class="right">{{ $item->failed }}</td>
             @if(strtoupper($item->client_name) == 'MT MDC')
-            <td class="right">{{ number_format(($item->passed/$item->total),2) * 100 }}%</td>
+            <td class="right">{{ number_format(($item->passed/$item->total) * 100),2 )}}%</td>
             @else
-            <td class="right">{{ number_format(($item->failed/$item->total),2) * 100 }}%</td>
+            <td class="right">{{ number_format(($item->failed/$item->total)* 100),2 )}}%</td>
             @endif
            
         </tr>
