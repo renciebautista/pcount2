@@ -175,4 +175,34 @@ class DownloadController extends Controller
         }
         
     }
+
+    public function prnlist(){
+        $prns = [];
+        $filesInFolder = \File::files(base_path().'/storage/prn');
+
+        foreach($filesInFolder as $path)
+        {
+            $prns[] = pathinfo($path)['basename'];
+        }
+
+        if(count($prns)>0){
+            return response()->json(array('msg' => 'PRN files lists.', 'files' => $prns));
+        }
+        
+        return response()->json(array('msg' => 'No files found'));
+
+    }
+
+    public function downloadprn($filename){
+        
+        $myfile = storage_path().'/prn/'.$filename;
+
+        if (!\File::exists($myfile))
+        {
+            echo "File not exists.";
+        }else{
+            return \Response::download($myfile, $filename);
+        }
+
+    }
 }

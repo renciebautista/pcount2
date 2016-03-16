@@ -85,4 +85,7 @@ Route::group(array('prefix' => 'api'), function()
 	Route::post('categorylist', array('as' => 'categorylist', 'uses' => 'Api\FilterController@categorylist'));
 	Route::post('subcategorylist', array('as' => 'subcategorylist', 'uses' => 'Api\FilterController@subcategorylist'));
 	Route::post('brandlist', array('as' => 'brandlist', 'uses' => 'Api\FilterController@brandlist'));
+
+	Route::get('prnlist', 'Api\DownloadController@prnlist');
+	Route::get('downloadprn/{filename}', 'Api\DownloadController@downloadprn');
 });
