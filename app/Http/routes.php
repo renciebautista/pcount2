@@ -55,6 +55,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('oos/sku/{type}', array('as' => 'oos.sku', 'uses' => 'OutofstockController@sku'));
 	Route::post('oos/sku/{type}', array('as' => 'oos.postsku', 'uses' => 'OutofstockController@postsku'));
 
+	Route::resource('assortment', 'AssortmentController', [
+	    'only' => ['index', 'store']
+	]);
+
 });
 
 

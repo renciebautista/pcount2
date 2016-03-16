@@ -296,4 +296,46 @@ class AssortmentItemInventories extends Model
                 where date between '%s' and '%s'",$fromdate[2].'-'.$fromdate[0].'-'.$fromdate[1], $todate[2].'-'.$todate[0].'-'.$todate[1]);
 		return \DB::select(\DB::raw($query));
 	}
+
+	public static function getAssortmentCompliance($filters){
+		return self::select(\DB::raw('area,store_name,
+			count(
+				case
+					when oos = 1
+					then 1
+					else null
+				end
+			) as out_of_stock,
+			count(
+				case
+					when oos = 0
+					then 0
+					else null
+				end
+			) as with_stock,
+			count(*) as total,
+			SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week'))
+			->where(function($query) use ($filters){
+			if(!empty($filters['areas'])){
+					$query->whereIn('area', $filters['areas']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['from'])){
+					$date = explode("-", $filters['from']);
+					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['to'])){
+					$date = explode("-", $filters['to']);
+					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+
+			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
+			->groupBy(\DB::raw('yr, store_name,yr_week, area'))
+			->orderBy(\DB::raw('yr, store_name,yr_week, area'))
+			->get();
+	}
 }

@@ -60,6 +60,7 @@
                 <li>{!! Html::linkRoute('osa.area', 'Assortment OSA Per Area Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('osa.store', 'Assortment OSA Per Store Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('oos.sku', 'Assortment OOS SKU Report', array('type' => 'assortment'), array()) !!}</li>
+                <li>{!! Html::linkRoute('assortment.index', 'Assortment Compliance Report', array(), array()) !!}</li>
               </ul>
             </li>
             <li class="dropdown">
