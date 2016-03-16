@@ -106,8 +106,8 @@
             <td>{{ $item->store_name }}</td>
             <td class="right">{{ $item->yr }}</td>
             <td class="right">{{ $item->yr_week }}</td>
-            <td class="right">{{ $item->with_stock }}</td>
-            <td class="right">{{ $item->out_of_stock }}</td>
+            <td class="right">{{ $item->passed }}</td>
+            <td class="right">{{ $item->failed }}</td>
             <td class="right">{{ number_format(($item->with_stock/$item->total),2) * 100 }}%</td>
         </tr>
         @endforeach
