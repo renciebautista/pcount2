@@ -298,21 +298,21 @@ class AssortmentItemInventories extends Model
 	}
 
 	public static function getAssortmentCompliance($filters){
-		return self::select(\DB::raw('area,store_name,
+		return self::select(\DB::raw('area, store_name, client_name,
 			count(
 				case
-					when oos = 1
+					when osa = 1
 					then 1
 					else null
 				end
-			) as out_of_stock,
+			) as passed,
 			count(
 				case
-					when oos = 0
+					when osa = 0
 					then 0
 					else null
 				end
-			) as with_stock,
+			) as failed,
 			count(*) as total,
 			SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week'))
 			->where(function($query) use ($filters){
