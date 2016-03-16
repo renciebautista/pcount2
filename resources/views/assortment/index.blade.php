@@ -89,6 +89,7 @@
 <table class="table table-striped table-hover ">
     <thead>
         <tr>
+            <th>Client Name</th>
             <th>Area</th>
             <th>Store Name</th>
             <th class="right">Year</th>
@@ -102,13 +103,19 @@
         @if(count($inventories) > 0)
         @foreach($inventories as $item)
         <tr>
+            <td>{{ $item->client_name }}</td>
             <td>{{ $item->area }}</td>
             <td>{{ $item->store_name }}</td>
             <td class="right">{{ $item->yr }}</td>
             <td class="right">{{ $item->yr_week }}</td>
             <td class="right">{{ $item->passed }}</td>
             <td class="right">{{ $item->failed }}</td>
-            <td class="right">{{ number_format(($item->with_stock/$item->total),2) * 100 }}%</td>
+            @if(strtoupper($item->client_name) == 'MT MDC')
+            <td class="right">{{ number_format(($item->passed/$item->total),2) * 100 }}%</td>
+            @else
+            <td class="right">{{ number_format(($item->failed/$item->total),2) * 100 }}%</td>
+            @endif
+           
         </tr>
         @endforeach
         @else
