@@ -57,21 +57,12 @@ class AuthUserController extends Controller
     public function logout(Request $request){
         $device_id = $request->device_id;
         $usernameinput =  $request->email;
-        $password = $request->pwd;
-        $field = $usernameinput ? 'email' : 'username';
-         if(\Auth::attempt(array('username' => $usernameinput, 'password' => $password), false)){
-            $user = \Auth::user();
-            $user->log_status = 0;
-            $user->update();
 
-            $hash = UpdateHash::find(1);
-        
-            $user->hash =  $hash->hash;
-            return response()->json($user);
-            
-        }else{
-            return response()->json(array('msg' => 'user not found', 'status' => 0));
-        }
+        User::where('username',$usernameinput)  
+            ->where('device_id',$device_id)
+            ->update(['log_status' => 0]);
+
+        return response()->json(array('msg' => 'Device successfuly logout', 'status' => 0));
     }
 }
 

@@ -77,12 +77,6 @@ class AuthController extends Controller
     }
 
     public function postLogin(Request $request){
-        // dd($request->all());
-        // if (Auth::attempt(['email' => $email, 'password' => $password])) {
-        //     // Authentication passed...
-        //     return redirect()->intended('dashboard');
-        // }
-
         $usernameinput =  $request->access;
         $password = $request->password;
         $device_id = $request->device_id;
@@ -111,9 +105,6 @@ class AuthController extends Controller
 
     public function getLogout(){
         $user = Auth::user();
-        $user->log_status = 0;
-        $user->device_id ="";
-        $user->update();
         $this->auth->logout();
         return redirect('/auth/login');
 
