@@ -58,10 +58,11 @@ class UploadItemsTableSeeder extends Seeder
 							$brand = Brand::firstOrCreate(['brand' => strtoupper($row[7])]);
 							$item = Item::firstOrCreate([
 								'sku_code' => trim($row[2]),
-								'description' => strtoupper($row[3]),
-								'description_long' => strtoupper($row[4]),
-								'conversion' => trim($row[5]),
-								'lpbt' => trim($row[9]),
+								'barcode' =>$row[3],
+								'description' => strtoupper($row[4]),
+								'description_long' => strtoupper($row[5]),
+								'conversion' => trim($row[6]),
+								'lpbt' => trim($row[10]),
 								'division_id' => $division->id,
 								'category_id' => $category->id,
 								'sub_category_id' => $sub_category->id,

@@ -8,12 +8,13 @@ use App\Http\Requests;
 
 use Auth;
 use Session;
-
+use Carbon\Carbon;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Auth\AuthManager;
 
 class AuthController extends Controller
 {
@@ -35,9 +36,10 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AuthManager $auth)
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+         $this->auth = $auth;
+        // $this->middleware('guest', ['except' => 'getLogout']);
     }
 
     /**
@@ -83,6 +85,7 @@ class AuthController extends Controller
 
         $usernameinput =  $request->access;
         $password = $request->password;
+        $device_id = $request->device_id;
         $field = filter_var($usernameinput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (Auth::attempt(array($field => $usernameinput, 'password' => $password), false)) {
@@ -90,7 +93,43 @@ class AuthController extends Controller
             // if(Auth::user()->isActive()){
                 // Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
                 // Session::flash('class', 'alert alert-success');
+
+            $user = Auth::user();
+            if($user->log_status == 0)
+            {
+                $user->log_status = 1;
+                $user->device_id = $device_id;
+                $user->update();
                 return \Redirect::intended('/dashboard');
+            }
+
+            if($user->log_status==1)
+            {
+               $updated_at = Carbon::parse(date_format(date_create($user->updated_at),'Y-m-d H:i:s'));
+               $date_now = Carbon::now();
+               $duration = $date_now->diffInMinutes($updated_at); 
+               $day = floor ($duration / 1440);    
+
+               if($day >=1)
+               {
+                    // $user->log_status = 0;                    
+                    // $user->update();
+                    // echo "old user has been log out";
+                    $user->device_id = $device_id;
+                    $user->log_status = 1;
+                    $user->update();    
+                    return \Redirect::intended('/dashboard');                
+               }
+               if($day < 1)
+               {
+                    if($user->device_id == $request->device_id)
+                    {
+                        return \Redirect::intended('/dashboard');        
+                    }
+               }
+
+            }
+           
             // }else{
             //     Auth::logout();
             //     Session::flash('message', 'User account is inactive, please contact the administrator');
@@ -105,5 +144,16 @@ class AuthController extends Controller
         Session::flash('flash_message', 'Invalid credentials, please try again.');
         Session::flash('flash_class', 'alert alert-danger');
         return \Redirect::back();
+    }
+
+
+    public function getLogout(){
+        $user = Auth::user();
+        $user->log_status = 0;
+        $user->device_id ="";
+        $user->update();
+        $this->auth->logout();
+        return redirect('/auth/login');
+
     }
 }

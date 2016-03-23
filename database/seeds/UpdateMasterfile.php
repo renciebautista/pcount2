@@ -11,6 +11,7 @@ class UpdateMasterfile extends Seeder
      */
     public function run()
     {
+
     	set_time_limit(0);
         $this->call(UploadStoresTableSeeder::class);
         $this->call(UploadItemsTableSeeder::class);
