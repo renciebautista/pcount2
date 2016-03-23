@@ -89,55 +89,17 @@ class AuthController extends Controller
         $field = filter_var($usernameinput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (Auth::attempt(array($field => $usernameinput, 'password' => $password), false)) {
-            // 
-            // if(Auth::user()->isActive()){
-                // Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
-                // Session::flash('class', 'alert alert-success');
-
-            $user = Auth::user();
-            if($user->log_status == 0)
-            {
-                $user->log_status = 1;
-                $user->device_id = $device_id;
-                $user->update();
-                return \Redirect::intended('/dashboard');
+            if(Auth::user()->isActive()){
+                Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
+                Session::flash('class', 'alert alert-success');
+            }else{
+                Auth::logout();
+                Session::flash('message', 'User account is inactive, please contact the administrator');
+                Session::flash('class', 'alert alert-danger');
+                return Redirect::back();
             }
-
-            if($user->log_status==1)
-            {
-               $updated_at = Carbon::parse(date_format(date_create($user->updated_at),'Y-m-d H:i:s'));
-               $date_now = Carbon::now();
-               $duration = $date_now->diffInMinutes($updated_at); 
-               $day = floor ($duration / 1440);    
-
-               if($day >=1)
-               {
-                    // $user->log_status = 0;                    
-                    // $user->update();
-                    // echo "old user has been log out";
-                    $user->device_id = $device_id;
-                    $user->log_status = 1;
-                    $user->update();    
-                    return \Redirect::intended('/dashboard');                
-               }
-               if($day < 1)
-               {
-                    if($user->device_id == $request->device_id)
-                    {
-                        return \Redirect::intended('/dashboard');        
-                    }
-               }
-
-            }
-           
-            // }else{
-            //     Auth::logout();
-            //     Session::flash('message', 'User account is inactive, please contact the administrator');
-            //     Session::flash('class', 'alert alert-danger');
-            //     return Redirect::back();
-            // }
             
-            // return Redirect::action('DashboardController@index');
+            return Redirect::action('DashboardController@index');
         }
 
         Auth::logout();
