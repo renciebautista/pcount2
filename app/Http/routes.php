@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(array('prefix' => 'api'), function()
 {
 	Route::get('auth', 'Api\AuthUserController@auth');
+	Route::get('logout', 'Api\AuthUserController@logout');
 	Route::get('download', 'Api\DownloadController@index');
 
 	Route::post('uploadpcount', 'Api\UploadController@uploadpcount');

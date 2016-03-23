@@ -76,7 +76,7 @@ class DownloadController extends Controller
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('mkl.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier'));
+                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode'));
             
             foreach ($skus as $sku) {
                 $data[0] = $sku->other_barcode;
@@ -128,7 +128,7 @@ class DownloadController extends Controller
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('assortment.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier'));
+                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode'));
             
             foreach ($skus as $sku) {
                 $data[0] = $sku->other_barcode;
