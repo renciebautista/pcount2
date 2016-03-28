@@ -79,21 +79,21 @@ class AuthController extends Controller
     public function postLogin(Request $request){
         $usernameinput =  $request->access;
         $password = $request->password;
-        $device_id = $request->device_id;
         $field = filter_var($usernameinput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (Auth::attempt(array($field => $usernameinput, 'password' => $password), false)) {
-            if(Auth::user()->isActive()){
-                Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
-                Session::flash('class', 'alert alert-success');
-            }else{
-                Auth::logout();
-                Session::flash('message', 'User account is inactive, please contact the administrator');
-                Session::flash('class', 'alert alert-danger');
-                return Redirect::back();
-            }
+            // if(Auth::user()->isActive()){
+            //     Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
+            //     Session::flash('class', 'alert alert-success');
+            // }else{
+            //     Auth::logout();
+            //     Session::flash('message', 'User account is inactive, please contact the administrator');
+            //     Session::flash('class', 'alert alert-danger');
+            //     return Redirect::back();
+            // }
             
-            return Redirect::action('DashboardController@index');
+            // return Redirect::action('DashboardController@index');
+            return \Redirect::intended('/dashboard');
         }
 
         Auth::logout();
