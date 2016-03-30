@@ -52,10 +52,10 @@ class UploadItemsTableSeeder extends Seeder
 
 					if($row[0] != ''){
 						if($cnt > 0){
-							$division = Division::firstOrCreate(['division' => strtoupper($row[8])]);
+							$division = Division::firstOrCreate(['division' => strtoupper($row[9])]);
 							$category = Category::firstOrCreate(['category' => strtoupper($row[1]), 'category_long' => strtoupper($row[0])]);
-							$sub_category = SubCategory::firstOrCreate(['category_id' => $category->id, 'sub_category' => strtoupper($row[6])]);
-							$brand = Brand::firstOrCreate(['brand' => strtoupper($row[7])]);
+							$sub_category = SubCategory::firstOrCreate(['category_id' => $category->id, 'sub_category' => strtoupper($row[7])]);
+							$brand = Brand::firstOrCreate(['brand' => strtoupper($row[8])]);
 							$item = Item::firstOrCreate([
 								'sku_code' => trim($row[2]),
 								'barcode' =>$row[3],
