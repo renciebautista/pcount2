@@ -22,13 +22,13 @@ class UploadItemsTableSeeder extends Seeder
 
 		$folderpath = base_path().'/database/seeds/seed_files/';
 		$folders = File::directories($folderpath);
-		$latest = '11232015';
+		$latest = '11232015';		
 		foreach ($folders as $value) {
 			$_dir = explode("/", $value);
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
 			$latest_date = DateTime::createFromFormat('mdY', $latest);
-			$now = DateTime::createFromFormat('mdY', $name);
+			$now = date('mdY', $name);	
 			if($now > $latest_date){
 				$latest = $name;
 			}
