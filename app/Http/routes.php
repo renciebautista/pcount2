@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('store_user/{id}/store', 'StoreUserController@storelist');
 	Route::resource('store_user', 'StoreUserController');
+	Route::get('device_user/{id}', 'DeviceUserController@logOut');
+	Route::resource('device_users', 'DeviceUserController');
 
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
