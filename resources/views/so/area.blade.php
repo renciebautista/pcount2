@@ -7,14 +7,13 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>SO Per Area Report</h3>
+            <h3>{{ $header }}</h3>
         </div>
     </div>
 </div>
 <hr/>
 
-{!! Form::open(array('route' => 'so.postarea', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
-
+{!! Form::open(array('route' => array('so.postarea', $type), 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 <div class="row">
     <div class="col-lg-4">
         <div class="form-group">

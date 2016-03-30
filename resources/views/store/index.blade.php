@@ -16,6 +16,7 @@
 
 
 <!-- <hr> -->
+
 <label class="pull-right">{{ $stores->count() }} records found.</label>
 <table class="table table-striped table-hover ">
 	<thead>
@@ -48,10 +49,11 @@
 			<td>{{ $store->region->region_short }}</td>
 			<td>{{ $store->agency->agency_name }}</td>
 			<td>
-				{!! link_to_action('StoreController@items', 'SKUS', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
+				
+				{!! link_to_action('StoreController@mkl', 'MKL', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
 			</td>
 			<td>
-				{!! link_to_action('StoreController@items', 'Users', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
+				{!! link_to_action('StoreController@assortment', 'ASSORTMENT', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
 			</td>
 		</tr>
 		@endforeach

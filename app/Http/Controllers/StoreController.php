@@ -92,4 +92,41 @@ class StoreController extends Controller
         $skus = StoreItem::with('item')->where('store_id',$id)->get();
         return view('store.items', compact('skus'));
     }
+
+    public function mkl($id){
+        $mkl = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
+            ->join('items', 'items.id', '=', 'store_items.item_id')
+            ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
+            ->join('categories', 'categories.id', '=', 'items.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
+            ->join('brands', 'brands.id', '=', 'items.brand_id')
+            ->join('divisions', 'divisions.id', '=', 'items.division_id')
+            ->where('item_type_id',1)
+            ->whereRaw('other_barcodes.area_id = stores.area_id')
+            ->where('store_items.store_id', $id)
+            ->orderBy('items.id', 'asc')
+            ->get();
+        return view('store.mkl', compact('mkl'));
+    }
+
+    public function assortment($id){
+        // $assortment = StoreItem::with('item')
+        //     ->where('store_id',$id)
+        //     ->where('item_type_id',2)
+        //     ->get();
+
+        $assortment = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
+            ->join('items', 'items.id', '=', 'store_items.item_id')
+            ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
+            ->join('categories', 'categories.id', '=', 'items.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
+            ->join('brands', 'brands.id', '=', 'items.brand_id')
+            ->join('divisions', 'divisions.id', '=', 'items.division_id')
+            ->where('item_type_id',2)
+            ->whereRaw('other_barcodes.area_id = stores.area_id')
+            ->where('store_items.store_id', $id)
+            ->orderBy('items.id', 'asc')
+            ->get();
+        return view('store.assortment', compact('assortment'));
+    }
 }

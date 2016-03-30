@@ -31,6 +31,7 @@ class UploadStoresTableSeeder extends Seeder
 		$folders = File::directories($folderpath);
 		$latest = '11232015';
 
+<<<<<<< HEAD
 
 		foreach ($folders as $value) {
 
@@ -41,6 +42,19 @@ class UploadStoresTableSeeder extends Seeder
 			$name = date('mdY');			
 			if($name > $latest_date){				
 				$latest = $name;
+=======
+		foreach ($folders as $value) {
+
+			$_dir = explode("/", str_replace('\\', '/', $value));
+			$cnt = count($_dir);
+			$name = $_dir[$cnt - 1];
+			$latest_date = DateTime::createFromFormat('mdY', $latest);					
+			$now = DateTime::createFromFormat('mdY', $name);	
+
+			if($now > $latest_date){				
+				$latest = $name;
+				
+>>>>>>> a2c2216911b6c5995bbe626a671a8f704db29668
 			}		
 		}
 		
@@ -68,7 +82,7 @@ class UploadStoresTableSeeder extends Seeder
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
 					// dd($row);
-					if(!is_null($row[0])){
+					if($row[0] != ''){
 						if($cnt > 0){
 							$area = Area::firstOrCreate(['area' => strtoupper($row[0])]);
 							$enrollment = Enrollment::firstOrCreate(['enrollment' => strtoupper($row[1])]);

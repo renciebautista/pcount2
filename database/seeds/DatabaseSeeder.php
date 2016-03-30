@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+
          // $this->call(RolesTableSeeder::class);
          // $this->call(AddAdminTableSeeder::class);
 
@@ -23,6 +24,11 @@ class DatabaseSeeder extends Seeder
         $this->call(UploadOtherBarcodesTableSeeder::class);
         $this->call(UploadStoreItemsTableSeeder::class);
         
+
+        $this->call(RolesTableSeeder::class);
+        $this->call(AddAdminTableSeeder::class);
+        $this->call(ItemTypeTableSeeder::class);
+
         Model::reguard();
     }
 }

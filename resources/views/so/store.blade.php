@@ -7,13 +7,13 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>SO Per Store Report</h3>
+            <h3>{{ $header }}</h3>
         </div>
     </div>
 </div>
 <hr/>
 
-{!! Form::open(array('route' => 'so.poststore', 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
+{!! Form::open(array('route' => array('so.poststore', $type), 'class' => 'form-horizontal', 'method' => 'POST', 'id' => 'form_filtered')) !!}
 
 <div class="row">
     <div class="col-lg-4">
@@ -169,7 +169,7 @@ $('#ar').multiselect({
     function updatestore(){
         $.ajax({
             type: "POST",
-            data: {areas: GetSelectValues($('select#ar :selected'))},
+            data: {type: '{{ $type }}', areas: GetSelectValues($('select#ar :selected'))},
             url: "{{ route('areastorelist')}}",
             success: function(data){
                 $('select#stores').empty();

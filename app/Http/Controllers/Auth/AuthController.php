@@ -8,12 +8,13 @@ use App\Http\Requests;
 
 use Auth;
 use Session;
-
+use Carbon\Carbon;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Auth\AuthManager;
 
 class AuthController extends Controller
 {
@@ -35,9 +36,10 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AuthManager $auth)
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+         $this->auth = $auth;
+        // $this->middleware('guest', ['except' => 'getLogout']);
     }
 
     /**
@@ -75,22 +77,14 @@ class AuthController extends Controller
     }
 
     public function postLogin(Request $request){
-        // dd($request->all());
-        // if (Auth::attempt(['email' => $email, 'password' => $password])) {
-        //     // Authentication passed...
-        //     return redirect()->intended('dashboard');
-        // }
-
         $usernameinput =  $request->access;
         $password = $request->password;
         $field = filter_var($usernameinput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (Auth::attempt(array($field => $usernameinput, 'password' => $password), false)) {
-            // 
             // if(Auth::user()->isActive()){
-                // Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
-                // Session::flash('class', 'alert alert-success');
-                return \Redirect::intended('/dashboard');
+            //     Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
+            //     Session::flash('class', 'alert alert-success');
             // }else{
             //     Auth::logout();
             //     Session::flash('message', 'User account is inactive, please contact the administrator');
@@ -99,11 +93,20 @@ class AuthController extends Controller
             // }
             
             // return Redirect::action('DashboardController@index');
+            return \Redirect::intended('/dashboard');
         }
 
         Auth::logout();
         Session::flash('flash_message', 'Invalid credentials, please try again.');
         Session::flash('flash_class', 'alert alert-danger');
         return \Redirect::back();
+    }
+
+
+    public function getLogout(){
+        $user = Auth::user();
+        $this->auth->logout();
+        return redirect('/auth/login');
+
     }
 }

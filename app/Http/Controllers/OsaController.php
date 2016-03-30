@@ -9,16 +9,29 @@ use App\Http\Controllers\Controller;
 
 use App\Models\StoreInventories;
 use App\Models\ItemInventories;
+use App\Models\AssortmentInventories;
+use App\Models\AssortmentItemInventories;
 
 class OsaController extends Controller
 {
 
-    public function area()
+    public function area($type = null)
     {
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
-        $areas = StoreInventories::getAreaList();
-        $sel_ar = StoreInventories::getStoreCodes('area');
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+            $sel_ar = StoreInventories::getStoreCodes('area');
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+            $sel_ar = AssortmentInventories::getStoreCodes('area');
+        }
+
+        
         if(!empty($sel_br)){
             $data['areas'] = $sel_ar;
         }
@@ -29,17 +42,34 @@ class OsaController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = ItemInventories::getOsaPerArea($data);
-        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar'));
+        if($report_type == 2){
+            $header = 'MKL OSA Per Area Report';
+            $inventories = ItemInventories::getOsaPerArea($data);
+        }else{
+            $header = 'Assortment OSA Per Area Report';
+            $inventories = AssortmentItemInventories::getOsaPerArea($data);
+        }
+
+        
+        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type'));
     }
 
-    public function postArea(Request $request){
+    public function postArea(Request $request, $type = null){
         $sel_ar = $request->ar;
 
         $frm = $request->fr;
         $to = $request->to;
 
-        $areas = StoreInventories::getAreaList();
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+        }
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -49,14 +79,20 @@ class OsaController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-        $inventories = ItemInventories::getOsaPerArea($data);
+        if($report_type == 2){
+            $header = 'MKL OSA Per Area Report';
+            $inventories = ItemInventories::getOsaPerArea($data);
+        }else{
+            $header = 'Assortment OSA Per Area Report';
+            $inventories = AssortmentItemInventories::getOsaPerArea($data);
+        }
 
         if ($request->has('submit')) {
-            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar'));
+            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type'));
         }
         
         if ($request->has('download')) {
-            \Excel::create('OSA Per Area', function($excel)  use ($inventories){
+            \Excel::create($header, function($excel)  use ($inventories){
                 $weeks = [];
                 $items = [];
                 foreach ($inventories as $value) {
@@ -123,13 +159,24 @@ class OsaController extends Controller
     }
 
 
-    public function store()
+    public function store($type = null)
     {
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
-        $areas = StoreInventories::getAreaList();
-        $sel_ar = StoreInventories::getStoreCodes('area');
-        $sel_st = StoreInventories::getStoreCodes('store_id');
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+            $sel_ar = StoreInventories::getStoreCodes('area');
+            $sel_st = StoreInventories::getStoreCodes('store_id');
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+            $sel_ar = AssortmentInventories::getStoreCodes('area');
+            $sel_st = AssortmentInventories::getStoreCodes('store_id');
+        }
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -143,17 +190,34 @@ class OsaController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = ItemInventories::getOsaPerStore($data);
-        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+        if($report_type == 2){
+            $header = 'MKL OSA Per Store Report';
+            $inventories = ItemInventories::getOsaPerStore($data);
+        }else{
+            $header = 'Assortment OSA Per Store Report';
+            $inventories = AssortmentItemInventories::getOsaPerStore($data);
+        }
+
+        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type'));
     }
 
-    public function postStore(Request $request){
+    public function postStore(Request $request,$type = null){
         $sel_ar = $request->ar;
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
 
-        $areas = StoreInventories::getAreaList();
+        $report_type = 1;
+        if((is_null($type)) || ($type != 'assortment')){
+            $report_type = 2;
+        }
+        if($report_type == 2){
+            $areas = StoreInventories::getAreaList();
+        }else{
+            $areas = AssortmentInventories::getAreaList();
+        }
+
+        
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -168,20 +232,28 @@ class OsaController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-        $inventories = ItemInventories::getOsaPerStore($data);
+
+        if($report_type == 2){
+            $header = 'MKL OSA Per Store Report';
+            $inventories = ItemInventories::getOsaPerStore($data);
+        }else{
+            $header = 'Assortment OSA Per Store Report';
+            $inventories = AssortmentItemInventories::getOsaPerStore($data);
+        }
 
         if ($request->has('submit')) {
-            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type'));
         }
-        
+
+        // dd($inventories);
+
         if ($request->has('download')) {
-            \Excel::create('OSA Per Store', function($excel)  use ($inventories){
+            \Excel::create($header, function($excel)  use ($inventories){
                 $weeks = [];
                 $items = [];
                 foreach ($inventories as $value) {
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week);
-                    // $weeks[$week_start->getTimestamp()] = "Week ".$value->yr_week." of ".$value->yr;
                     $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
                     $items[$value->area][$value->store_name]["Week ".$value->yr_week." of ".$value->yr] = ['passed' => $value->passed, 'failed' => $value->failed];
 
@@ -194,110 +266,146 @@ class OsaController extends Controller
                     $col = 2;
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($col,2, $week);
-                        $sheet->setCellValueByColumnAndRow($col+2,2, $week." Total");
-                        $n_col = $col+1;
+                        $n_col = $col+3;
                         $col_array[$week] = $col;
                         $sheet->mergeCells(\PHPExcel_Cell::stringFromColumnIndex($col)."2:".\PHPExcel_Cell::stringFromColumnIndex($n_col)."2");
-                        
-                        $col = $col +3;
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($col).'2')->getAlignment()->applyFromArray(
+                            array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,)
+                        );
+                        $col = $col +4;
 
                     }
                     $sheet->setCellValueByColumnAndRow($col,2, 'Grand Total');
+                    $sheet->mergeCells(\PHPExcel_Cell::stringFromColumnIndex($col)."2:".\PHPExcel_Cell::stringFromColumnIndex($col+3)."2");
+                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($col).'2')->getAlignment()->applyFromArray(
+                        array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,)
+                    );
                     
                     $area_col = 0;
                     $store_col = 1;
                     $sheet->setCellValueByColumnAndRow($area_col,3, 'AREA');
                     $sheet->setCellValueByColumnAndRow($store_col,3, 'STORE NAME');
                     foreach ($weeks as $week) {
-                        $sheet->setCellValueByColumnAndRow($store_col+1,3, '0');
-                        $sheet->setCellValueByColumnAndRow($store_col+2,3, '1');
-                        $store_col = $store_col +3;
+                        $sheet->setCellValueByColumnAndRow($store_col+1,3, 'OOS');
+                        $sheet->setCellValueByColumnAndRow($store_col+2,3, 'With Stocks');
+                        $sheet->setCellValueByColumnAndRow($store_col+3,3, 'Total');
+                        $sheet->setCellValueByColumnAndRow($store_col+4,3, 'OSA Score');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($store_col+4))
+                            ->getNumberFormat()->applyFromArray(
+                                array( 
+                                'code' => \PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00
+                            )
+                        );
+                        $store_col = $store_col +4;
                     }
 
-                    $row = 4;
-                    $grand_total_col = (count($col_array) * 3)+2;
+                    $sheet->setCellValueByColumnAndRow($store_col+1,3, 'Total OOS');
+                    $sheet->setCellValueByColumnAndRow($store_col+2,3, 'Total With Stocks');
+                    $sheet->setCellValueByColumnAndRow($store_col+3,3, 'Grand Total');
+                    $sheet->setCellValueByColumnAndRow($store_col+4,3, 'Total OSA Score');
+                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($store_col+4))
+                        ->getNumberFormat()->applyFromArray(
+                            array( 
+                            'code' => \PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00
+                        )
+                    );
 
+                    $row = 4;
+                    // dd($items);
+                    $per_area_total_rows = [];
                     foreach ($items as $key => $value) {
                         $first = true;
                         $total_row = count($value)+$row;
                         $last_row = $total_row - 1;
                         $start_row = $row;
                         foreach ($value as $skey => $record) {
-                            if($first){
-                                $sheet->setCellValueByColumnAndRow(0,$row, $key );
-                                $first = false;
-                            }
+                            $oos_row_total = 0;
+                            $withstock_row_total = 0;
+                            $sheet->setCellValueByColumnAndRow(0,$row, $key );
                             $sheet->setCellValueByColumnAndRow(1,$row, $skey);
                             $grand_total = 0;
                             foreach ($record as $k => $rowValue) {
-                                $fso_col = $col_array[$k];
-                                $fso_val_col = $col_array[$k]+1;
-                                $week_total = $rowValue['failed'] + $rowValue['passed'];
-                                $week_failed_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($fso_col).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($fso_col).$last_row.")";
-                                $week_passed_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($fso_col+1).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($fso_col+1).$last_row.")";                            
-                                $week_store_item_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($fso_col+2).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($fso_col+2).$last_row.")";
+                                $oos_col = $col_array[$k];
+                                $with_stock_col = $col_array[$k]+1;
+                                $store_total = $rowValue['failed'] + $rowValue['passed'];
+                                $osa_score = '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($with_stock_col).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($oos_col).$row.','.\PHPExcel_Cell::stringFromColumnIndex($with_stock_col).$row.'),"")';
 
-                                $grand_total += $week_total;
+                                //oos
+                                $sheet->setCellValueByColumnAndRow($oos_col,$row, $rowValue['failed']);
+                                $oos_row_total += $rowValue['failed'];
+                                // //with stocks
+                                $sheet->setCellValueByColumnAndRow($with_stock_col,$row, $rowValue['passed']);
+                                $withstock_row_total += $rowValue['passed'];
+                                // //total
+                                $sheet->setCellValueByColumnAndRow($oos_col+2,$row, $store_total);
+                                $sheet->setCellValueByColumnAndRow($oos_col+3,$row, $osa_score);
 
-                                $sheet->setCellValueByColumnAndRow($fso_col,$row, $rowValue['failed']);
-                                $sheet->setCellValueByColumnAndRow($fso_col,$total_row, $week_failed_total);
-                                $per_area_failed_total[$k][$key] = \PHPExcel_Cell::stringFromColumnIndex($fso_col).$total_row;
-
-                                $sheet->setCellValueByColumnAndRow($fso_val_col,$row, $rowValue['passed']);
-                                $sheet->setCellValueByColumnAndRow($fso_col+1,$total_row, $week_passed_total);
-                                $per_area_passed_total[$k][$key] = \PHPExcel_Cell::stringFromColumnIndex($fso_col+1).$total_row;
-
-                                $sheet->setCellValueByColumnAndRow($fso_val_col+1,$row, $week_total);
-                                $sheet->setCellValueByColumnAndRow($fso_col+2,$total_row, $week_store_item_total);
-                                $per_area_items_total[$k][$key] = \PHPExcel_Cell::stringFromColumnIndex($fso_col+2).$total_row;
                             }
-                            $sheet->setCellValueByColumnAndRow($grand_total_col,$row, $grand_total);
-                            $store_grand_total = "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($grand_total_col).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($grand_total_col).$last_row.")";
-                            $sheet->setCellValueByColumnAndRow($grand_total_col,$total_row, $store_grand_total);
+
+                            $sheet->setCellValueByColumnAndRow($store_col+1,$row, $oos_row_total);
+                            $sheet->setCellValueByColumnAndRow($store_col+2,$row, $withstock_row_total);
+                            $sheet->setCellValueByColumnAndRow($store_col+3,$row, $oos_row_total+$withstock_row_total);
+                            $osa_score_total = '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$row.','.\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$row.'),"")';
+                            $sheet->setCellValueByColumnAndRow($store_col+4,$row, $osa_score_total);
 
                             
 
                             $row++;
                         }
-            
+                        $per_area_total_rows[] = $row;
                         $sheet->setCellValueByColumnAndRow(0,$row, $key.' Total');
-                        $g_total[] = \PHPExcel_Cell::stringFromColumnIndex($grand_total_col).$row;
+                        $store_col = 1;
+                        foreach ($weeks as $week) {
+                            $sheet->setCellValueByColumnAndRow($store_col+1,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$last_row.")");
+                            $sheet->setCellValueByColumnAndRow($store_col+2,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$last_row.")");
+                            $sheet->setCellValueByColumnAndRow($store_col+3,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+3).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+3).$last_row.")");
+                            $sheet->setCellValueByColumnAndRow($store_col+4,$row, '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$row.','.\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$row.'),"")');
+                            $store_col = $store_col +4;
+                        }
+
+                        $sheet->setCellValueByColumnAndRow($store_col+1,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$last_row.")");
+                        $sheet->setCellValueByColumnAndRow($store_col+2,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$last_row.")");
+                        $sheet->setCellValueByColumnAndRow($store_col+3,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+3).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+3).$last_row.")");
+                        $sheet->setCellValueByColumnAndRow($store_col+4,$row, '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$row.','.\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$row.'),"")');
                         $row++;
                     }
-                    
                     $sheet->setCellValueByColumnAndRow(0,$row, 'Grand Total');
 
-                    $col = 2;
+                    $store_col = 1;
                     foreach ($weeks as $week) {
-                        $failed_total = [];
-                        $passed_total = [];
-                        $item_total = [];
-
-                        $failed_cols = $per_area_failed_total[$week];
-                        foreach ($failed_cols as $cell) {
-                            $failed_total[] = $cell;
+                        $oos_row_cells = [];
+                        $withstock_row_cells = [];
+                        $total_row_cells =[];
+                        $oos_col = $col_array[$week];
+                        foreach ($per_area_total_rows as $cell) {
+                            $oos_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col).$cell;
+                            $withstock_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$cell;
+                            $total_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$cell;
                         }
 
-                        $passed_cols = $per_area_passed_total[$week];
-                        foreach ($passed_cols as $cell) {
-                            $passed_total[] = $cell;
-                        }
-
-                        $items_cols = $per_area_items_total[$week];
-                        foreach ($items_cols as $cell) {
-                            $item_total[] = $cell;
-                        }
-
-
-                        $sheet->setCellValueByColumnAndRow($col,$row, '=sum('.implode(",", $failed_total).')');
-                        $sheet->setCellValueByColumnAndRow($col+1,$row, '=sum('.implode(",", $passed_total).')');
-                        $sheet->setCellValueByColumnAndRow($col+2,$row, '=sum('.implode(",", $item_total).')');
-
-
-                        $col = $col + 3;
+                        $sheet->setCellValueByColumnAndRow($oos_col,$row, '=sum('.implode(",", $oos_row_cells).')');
+                        $sheet->setCellValueByColumnAndRow($oos_col+1,$row, '=sum('.implode(",", $withstock_row_cells).')');
+                        $sheet->setCellValueByColumnAndRow($oos_col+2,$row, '=sum('.implode(",", $total_row_cells).')');
+                        $sheet->setCellValueByColumnAndRow($oos_col+3,$row, '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($oos_col).$row.','.\PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$row.'),"")');
                     }
 
-                    $sheet->setCellValueByColumnAndRow($grand_total_col,$row, '=sum('.implode(",", $g_total).')');
+                    $oos_row_cells = [];
+                    $withstock_row_cells = [];
+                    $total_row_cells =[];
+                    $oos_col = (count($col_array) * 4)+1;
+                    // dd($oos_col);
+                    foreach ($per_area_total_rows as $cell) {
+                        $oos_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$cell;
+                        $withstock_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$cell;
+                        $total_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+3).$cell;
+                    }
+
+                    $sheet->setCellValueByColumnAndRow($oos_col+1,$row, '=sum('.implode(",", $oos_row_cells).')');
+                    $sheet->setCellValueByColumnAndRow($oos_col+2,$row, '=sum('.implode(",", $withstock_row_cells).')');
+                    $sheet->setCellValueByColumnAndRow($oos_col+3,$row, '=sum('.implode(",", $total_row_cells).')');
+                    $sheet->setCellValueByColumnAndRow($oos_col+4,$row, '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$row.','.\PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$row.'),"")');
+
+                    
                 });
             })->download('xlsx');
         }

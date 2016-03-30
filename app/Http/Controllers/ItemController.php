@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Item;
+use App\Models\ItemType;
+use App\Models\StoreItem;
 use App\Models\OtherBarcode;
 
 class ItemController extends Controller
@@ -20,9 +22,10 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::all();
-        return view('item.index', compact('items'));
+        $item_type = ItemType::all()->lists('type', 'id');;        
+        return view('item.index', compact('items','item_type'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *

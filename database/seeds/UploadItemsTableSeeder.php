@@ -24,11 +24,16 @@ class UploadItemsTableSeeder extends Seeder
 		$folders = File::directories($folderpath);
 		$latest = '11232015';		
 		foreach ($folders as $value) {
-			$_dir = explode("/", $value);
+			$_dir = explode("/", str_replace('\\', '/', $value));
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
+<<<<<<< HEAD
 			$latest_date = DateTime::createFromFormat('mdY', $latest);
 			$now = date('mdY', $name);	
+=======
+			$latest_date = DateTime::createFromFormat('mdY', $latest);					
+			$now = DateTime::createFromFormat('mdY', $name);		
+>>>>>>> a2c2216911b6c5995bbe626a671a8f704db29668
 			if($now > $latest_date){
 				$latest = $name;
 			}
@@ -50,18 +55,19 @@ class UploadItemsTableSeeder extends Seeder
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
 
-					if(!is_null($row[0])){
+					if($row[0] != ''){
 						if($cnt > 0){
-							$division = Division::firstOrCreate(['division' => strtoupper($row[8])]);
+							$division = Division::firstOrCreate(['division' => strtoupper($row[9])]);
 							$category = Category::firstOrCreate(['category' => strtoupper($row[1]), 'category_long' => strtoupper($row[0])]);
-							$sub_category = SubCategory::firstOrCreate(['category_id' => $category->id, 'sub_category' => strtoupper($row[6])]);
-							$brand = Brand::firstOrCreate(['brand' => strtoupper($row[7])]);
+							$sub_category = SubCategory::firstOrCreate(['category_id' => $category->id, 'sub_category' => strtoupper($row[7])]);
+							$brand = Brand::firstOrCreate(['brand' => strtoupper($row[8])]);
 							$item = Item::firstOrCreate([
 								'sku_code' => trim($row[2]),
-								'description' => strtoupper($row[3]),
-								'description_long' => strtoupper($row[4]),
-								'conversion' => trim($row[5]),
-								'lpbt' => trim($row[9]),
+								'barcode' =>$row[3],
+								'description' => strtoupper($row[4]),
+								'description_long' => strtoupper($row[5]),
+								'conversion' => trim($row[6]),
+								'lpbt' => trim($row[10]),
 								'division_id' => $division->id,
 								'category_id' => $category->id,
 								'sub_category_id' => $sub_category->id,

@@ -67,18 +67,21 @@
                             </div>
                         </div>
                         @endif
-                                                {!! Form::open(array('route' => 'auth.dologin', 'method' => 'POST', 'class' => 'login-form')) !!}
-
+                            {!! Form::open(array('route' => 'auth.dologin', 'method' => 'POST', 'class' => 'login-form')) !!}
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="access">Username</label>
 			                        	<input type="text" name="access" placeholder="Username..." class="form-username form-control" id="form-username">
 			                        </div>
+                                   <!--  <div class="form-group">
+                                        <label class="sr-only" for="access">Device ID</label>
+                                        <input type="text" name="device_id" placeholder="Id.." class="form-username form-control" id="form-username">
+                                    </div> -->
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="password">Password</label>
 			                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
 			                        </div>
 			                        <button type="submit" class="btn">Sign in!</button>
-                {!! Form::close() !!}
+                             {!! Form::close() !!}
 		                    </div>
                         </div>
                     </div>

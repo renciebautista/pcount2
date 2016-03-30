@@ -10,6 +10,7 @@ use App\Models\Channel;
 use App\Models\Customer;
 use App\Models\Store;
 use App\Models\Item;
+use App\Models\ItemType;
 use App\Models\StoreItem;
 
 
@@ -25,11 +26,16 @@ class UploadStoreItemsTableSeeder extends Seeder
 		$folders = File::directories($folderpath);
 		$latest = '11232015';
 		foreach ($folders as $value) {
-			$_dir = explode("/", $value);
+			$_dir = explode("/", str_replace('\\', '/', $value));
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
+<<<<<<< HEAD
 			$latest_date = DateTime::createFromFormat('mdY', $latest);
 			$now = date('mdY', $name);	
+=======
+			$latest_date = DateTime::createFromFormat('mdY', $latest);					
+			$now = DateTime::createFromFormat('mdY', $name);	
+>>>>>>> a2c2216911b6c5995bbe626a671a8f704db29668
 			if($now > $latest_date){
 				$latest = $name;
 			}
@@ -42,10 +48,10 @@ class UploadStoreItemsTableSeeder extends Seeder
 		DB::table('store_items')->truncate();
 
 		foreach ($reader->getSheetIterator() as $sheet) {
-			if($sheet->getName() == 'SKU Mapping'){
+			if($sheet->getName() == 'MKL Mapping'){
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
-					if(!is_null($row[0])){
+					if($row[0] != ''){
 						if($cnt > 0){
 							$channel = '';
 							$customer = '';
@@ -76,17 +82,21 @@ class UploadStoreItemsTableSeeder extends Seeder
 									}
 								})
 								->get();
-
+							// echo $row[3] .PHP_EOL;
 							$item = Item::where('sku_code', trim($row[3]))->first();
-
-							foreach ($stores as $store) {
-								StoreItem::firstOrCreate([
-									'store_id' => $store->id,
-									'item_id' => $item->id,
-									'ig' => trim($row[4]),
-									'fso_multiplier' => trim($row[5])
-								]);
+							if(!empty($item)){
+								$item_type = ItemType::where('type',"MKL")->first();							
+								foreach ($stores as $store) {
+									StoreItem::firstOrCreate([
+										'store_id' => $store->id,
+										'item_id' => $item->id,
+										'ig' => trim($row[4]),
+										'fso_multiplier' => trim($row[5]),
+										'item_type_id' => $item_type->id
+									]);
+								}
 							}
+							
 							
 						}
 						$cnt++;	
