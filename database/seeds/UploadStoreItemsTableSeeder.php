@@ -29,13 +29,8 @@ class UploadStoreItemsTableSeeder extends Seeder
 			$_dir = explode("/", str_replace('\\', '/', $value));
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
-<<<<<<< HEAD
-			$latest_date = DateTime::createFromFormat('mdY', $latest);
-			$now = date('mdY', $name);	
-=======
 			$latest_date = DateTime::createFromFormat('mdY', $latest);					
 			$now = DateTime::createFromFormat('mdY', $name);	
->>>>>>> a2c2216911b6c5995bbe626a671a8f704db29668
 			if($now > $latest_date){
 				$latest = $name;
 			}
