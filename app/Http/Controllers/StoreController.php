@@ -110,10 +110,6 @@ class StoreController extends Controller
     }
 
     public function assortment($id){
-        // $assortment = StoreItem::with('item')
-        //     ->where('store_id',$id)
-        //     ->where('item_type_id',2)
-        //     ->get();
 
         $assortment = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
             ->join('items', 'items.id', '=', 'store_items.item_id')
