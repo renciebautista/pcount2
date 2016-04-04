@@ -44,7 +44,7 @@ class DownloadController extends Controller
                 $data[2] = $store->store_name;
                 $data[3] = $store->channel_id;
                 $data[4] = $store->channel_desc;
-                $data[5] = $store->channel_desc;
+                $data[5] = $store->area;
                 $writer->addRow($data); 
             }
 
