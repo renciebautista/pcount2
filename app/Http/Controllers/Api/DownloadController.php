@@ -25,8 +25,10 @@ class DownloadController extends Controller
         $type = $request->type;
 
         $storelist = DB::table('store_users')
-                    ->select('stores.id', 'stores.store_code', 'stores.store_name', 'stores.channel_id')
+                    ->select('stores.id', 'stores.store_code', 'stores.store_name', 'stores.channel_id', 'channels.channel_desc', 'areas.area')
                     ->join('stores', 'stores.id', '=', 'store_users.store_id')
+                    ->join('channels', 'channels.id', '=', 'stores.channel_id')
+                    ->join('areas', 'areas.id', '=', 'stores.area_id')
                     ->where('store_users.user_id', $user)
                     ->get();
 
@@ -34,12 +36,15 @@ class DownloadController extends Controller
         if($type == 1){
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('stores.txt');
-            $writer->addRow(array('ID', 'Store Code', 'Store Name'));  
+            $writer->addRow(array('ID', 'Store Code', 'Store Name' , 'Channel Id', 'Channel', 'Area'));  
 
             foreach ($storelist as $store) {
                 $data[0] = $store->id;
                 $data[1] = $store->store_code;
                 $data[2] = $store->store_name;
+                $data[3] = $store->channel_id;
+                $data[4] = $store->channel_desc;
+                $data[5] = $store->channel_desc;
                 $writer->addRow($data); 
             }
 
