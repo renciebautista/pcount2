@@ -211,6 +211,7 @@ class InventoryController extends Controller
             'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type'));
         }
 
+        set_time_limit(0);
         if ($request->has('download')) {
             \Excel::create($header, function($excel)  use ($items,$report_type){
                 $excel->sheet('Sheet1', function($sheet) use ($items,$report_type) {
