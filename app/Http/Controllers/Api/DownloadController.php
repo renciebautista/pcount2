@@ -75,7 +75,7 @@ class DownloadController extends Controller
                 ->where('item_type_id',1)
                 ->whereRaw('other_barcodes.area_id = stores.area_id')
                 ->whereIn('store_items.store_id', $ids)
-                ->orderBy('items.id', 'asc')
+                ->orderBy('store_items.id', 'asc')
                 ->get();
                 
             $writer = WriterFactory::create(Type::CSV); 
@@ -127,7 +127,7 @@ class DownloadController extends Controller
                 ->where('store_items.item_type_id',2)
                 ->whereRaw('other_barcodes.area_id = stores.area_id')
                 ->whereIn('store_items.store_id', $ids)
-                ->orderBy('items.id', 'asc')
+                ->orderBy('store_items.id', 'asc')
                 ->get();
             
             $writer = WriterFactory::create(Type::CSV); 

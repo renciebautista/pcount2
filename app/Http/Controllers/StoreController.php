@@ -104,7 +104,7 @@ class StoreController extends Controller
             ->where('item_type_id',1)
             ->whereRaw('other_barcodes.area_id = stores.area_id')
             ->where('store_items.store_id', $id)
-            ->orderBy('items.id', 'asc')
+            ->orderBy('store_items.id', 'asc')
             ->get();
         return view('store.mkl', compact('mkl'));
     }
@@ -121,7 +121,7 @@ class StoreController extends Controller
             ->where('item_type_id',2)
             ->whereRaw('other_barcodes.area_id = stores.area_id')
             ->where('store_items.store_id', $id)
-            ->orderBy('items.id', 'asc')
+            ->orderBy('store_items.id', 'asc')
             ->get();
         return view('store.assortment', compact('assortment'));
     }

@@ -229,6 +229,7 @@ class InventoryController extends Controller
                         }else{
                             $link = '';
                         }
+                        // dd($item);
 
                         $sheet->setCellValueByColumnAndRow(0,$row, $item->store_code);
                         $sheet->setCellValueByColumnAndRow(1,$row, $item->store_name);
@@ -250,10 +251,10 @@ class InventoryController extends Controller
                         $sheet->setCellValueByColumnAndRow(17,$row, $link);
                         
 
-                        $sheet->setCellValue('P'.$row, $link);
-                        $sheet->getCell('P'.$row)->getHyperlink()->setUrl($link);
-                        $sheet->getCell('P'.$row)->getHyperlink()->setTooltip('Download Signature');
-                        $sheet->getStyle('P'.$row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                        $sheet->setCellValue('R'.$row, $link);
+                        $sheet->getCell('R'.$row)->getHyperlink()->setUrl($link);
+                        $sheet->getCell('R'.$row)->getHyperlink()->setTooltip('Download Signature');
+                        $sheet->getStyle('R'.$row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
                         $row++;
                     }

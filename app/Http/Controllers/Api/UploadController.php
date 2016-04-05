@@ -102,11 +102,32 @@ class UploadController extends Controller
                     $osa = 0;
                     $oos = 0;
                     $total_stockcs = $row[1]+$row[2]+$row[3];
-                    if($total_stockcs > 0){
-                        $osa = 1;
+
+                    $client_name = $store->client->client_name;
+
+                    if((strtoupper($client_name) == 'MT CONVI') || (strtoupper($client_name) == 'MT MINIMART') || (strtoupper($client_name) == 'MT MDC')){
+                        if(strtoupper($client_name) == 'MT MDC'){
+                            if($total_stockcs < 4){
+                                $oos = 1;
+                            }else{
+                                $osa = 1;
+                            }
+                        }else{
+                            if($total_stockcs < 3){
+                                $oos = 1;
+                            }else{
+                                $osa = 1;
+                            }
+                        }
                     }else{
-                        $oos = 1;
+                        if($total_stockcs > 0){
+                            $osa = 1;
+                        }else{
+                            $oos = 1;
+                        }
                     }
+
+                    
 
                     ItemInventories::insert([
                         'store_inventory_id' => $store_inventory->id,
