@@ -83,10 +83,14 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
-
+    @if (App::environment('test')) 
+      <h2 style="color:#F00; text-align:center">Testing Enviroment</h2>
+    @endif
+     
 	<div class="container">
+
 	  <div class="content_container">
+
 		@yield('content') 
 	  </div>
 	</div>
