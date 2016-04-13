@@ -64,7 +64,7 @@ class DownloadController extends Controller
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
                     'items.lpbt', 'categories.category_long','sub_categories.sub_category', 
                     'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 
-                    'items.sku_code', 'items.barcode')
+                    'items.sku_code', 'items.barcode', 'store_items.min_stock')
                 ->join('stores', 'stores.id', '=', 'store_items.store_id')
                 ->join('items', 'items.id', '=', 'store_items.item_id')
                 ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
@@ -97,6 +97,7 @@ class DownloadController extends Controller
                 $data[10] = $sku->sku_code;
                 $data[11] = $sku->fso_multiplier;
                 $data[12] = $sku->barcode;
+                $data[13] = $sku->min_stock;
                 $writer->addRow($data); 
             }
 
@@ -116,7 +117,7 @@ class DownloadController extends Controller
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
                     'items.lpbt', 'categories.category_long','sub_categories.sub_category', 
                     'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 
-                    'items.sku_code', 'items.barcode')
+                    'items.sku_code', 'items.barcode','store_items.min_stock')
                 ->join('stores', 'stores.id', '=', 'store_items.store_id')
                 ->join('items', 'items.id', '=', 'store_items.item_id')
                 ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
@@ -133,7 +134,7 @@ class DownloadController extends Controller
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('assortment.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode'));
+                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'));
             
             foreach ($skus as $sku) {
                 $data[0] = $sku->other_barcode;
@@ -149,6 +150,7 @@ class DownloadController extends Controller
                 $data[10] = $sku->sku_code;
                 $data[11] = $sku->fso_multiplier;
                 $data[12] = $sku->barcode;
+                $data[13] = $sku->min_stock;
                 $writer->addRow($data); 
             }
 

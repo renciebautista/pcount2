@@ -18,6 +18,7 @@ use App\Models\Store;
 use App\Models\AssortmentInventories;
 use App\Models\AssortmentItemInventories;
 use App\Models\Item;
+use App\Models\StoreItem;
 
 class UploadAssortmentController extends Controller
 {
@@ -100,10 +101,25 @@ class UploadAssortmentController extends Controller
                         ->where('sku_code', trim($row[0]))
                         ->first();
 
+                    $store_item = StoreItem::where('store_id',$store->id)
+                        ->where('item_id',$item->id)
+                        ->first();
+
                     $osa = 0;
                     $oos = 0;
                     $total_stockcs = $row[1]+$row[2]+$row[3];
-                    if($total_stockcs > 0){
+
+                    $min_stock = 0;
+                    if(!empty($store_item)){
+                        $min_stock = $store_item->min_stock;
+                    }
+                    // if($total_stockcs > 0){
+                    //     $osa = 1;
+                    // }else{
+                    //     $oos = 1;
+                    // }
+
+                    if($total_stockcs > $min_stock){
                         $osa = 1;
                     }else{
                         $oos = 1;
@@ -132,6 +148,15 @@ class UploadAssortmentController extends Controller
                         'fso_val' => $row[6],
                         'osa' => $osa,
                         'oos' => $oos]);
+
+
+                    if(!empty($store_item)){
+                        if($store_item->ig != $row[9]){
+                            $store_item->ig = $row[9];
+                            $store_item->ig_updated = 1;
+                            $store_item->update();
+                        }
+                    }
                 }
             }
            

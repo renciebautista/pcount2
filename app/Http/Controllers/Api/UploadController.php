@@ -18,6 +18,7 @@ use App\Models\Store;
 use App\Models\StoreInventories;
 use App\Models\ItemInventories;
 use App\Models\Item;
+use App\Models\StoreItem;
 
 class UploadController extends Controller
 {
@@ -99,36 +100,53 @@ class UploadController extends Controller
                         ->where('sku_code', trim($row[0]))
                         ->first();
 
+                    $store_item = StoreItem::where('store_id',$store->id)
+                        ->where('item_id',$item->id)
+                        ->first();
+
                     $osa = 0;
                     $oos = 0;
                     $total_stockcs = $row[1]+$row[2]+ ($row[3] * $row[10]);
-
-                    $client_name = $store->client->client_name;
-
-                    if((strtoupper($client_name) == 'MT CONVI') || 
-                        (strtoupper($client_name) == 'MT MINIMART') || 
-                        (strtoupper($client_name) == 'MT MDC')
-                        ){
-                        if(strtoupper($client_name) == 'MT MDC'){
-                            if($total_stockcs < 4){
-                                $oos = 1;
-                            }else{
-                                $osa = 1;
-                            }
-                        }else{
-                            if($total_stockcs < 3){
-                                $oos = 1;
-                            }else{
-                                $osa = 1;
-                            }
-                        }
-                    }else{
-                        if($total_stockcs > 0){
-                            $osa = 1;
-                        }else{
-                            $oos = 1;
-                        }
+                    $min_stock = 0;
+                    if(!empty($store_item)){
+                        $min_stock = $store_item->min_stock;
                     }
+                    
+
+                    // stocks > min_stock = osa
+
+                    if($total_stockcs > $min_stock){
+                        $osa = 1;
+                    }else{
+                        $oos = 1;
+                    }
+
+                    // $client_name = $store->client->client_name;
+
+                    // if((strtoupper($client_name) == 'MT CONVI') || 
+                    //     (strtoupper($client_name) == 'MT MINIMART') || 
+                    //     (strtoupper($client_name) == 'MT MDC')
+                    //     ){
+                    //     if(strtoupper($client_name) == 'MT MDC'){
+                    //         if($total_stockcs < 4){
+                    //             $oos = 1;
+                    //         }else{
+                    //             $osa = 1;
+                    //         }
+                    //     }else{
+                    //         if($total_stockcs < 3){
+                    //             $oos = 1;
+                    //         }else{
+                    //             $osa = 1;
+                    //         }
+                    //     }
+                    // }else{
+                    //     if($total_stockcs > 0){
+                    //         $osa = 1;
+                    //     }else{
+                    //         $oos = 1;
+                    //     }
+                    // }
 
                     
 
@@ -155,6 +173,17 @@ class UploadController extends Controller
                         'fso_val' => $row[6],
                         'osa' => $osa,
                         'oos' => $oos]);
+
+                    
+
+                    if(!empty($store_item)){
+                        if($store_item->ig != $row[9]){
+                            $store_item->ig = $row[9];
+                            $store_item->ig_updated = 1;
+                            $store_item->update();
+                        }
+                    }
+                    
                 }
             }
            

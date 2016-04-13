@@ -77,7 +77,7 @@ class UploadStoreItemsTableSeeder extends Seeder
 									}
 								})
 								->get();
-							// echo $row[3] .PHP_EOL;
+
 							$item = Item::where('sku_code', trim($row[3]))->first();
 							if(!empty($item)){
 								$item_type = ItemType::where('type',"MKL")->first();							
@@ -85,9 +85,10 @@ class UploadStoreItemsTableSeeder extends Seeder
 									StoreItem::firstOrCreate([
 										'store_id' => $store->id,
 										'item_id' => $item->id,
+										'item_type_id' => $item_type->id,
 										'ig' => trim($row[4]),
 										'fso_multiplier' => trim($row[5]),
-										'item_type_id' => $item_type->id
+										'min_stock' => trim($row[6])
 									]);
 								}
 							}
