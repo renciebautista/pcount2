@@ -14,17 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-
-         // $this->call(RolesTableSeeder::class);
-         // $this->call(AddAdminTableSeeder::class);
-
-        
-        $this->call(UploadStoresTableSeeder::class);
-        $this->call(UploadItemsTableSeeder::class);
-        $this->call(UploadOtherBarcodesTableSeeder::class);
-        $this->call(UploadStoreItemsTableSeeder::class);
-        
-
         $this->call(RolesTableSeeder::class);
         $this->call(AddAdminTableSeeder::class);
         $this->call(ItemTypeTableSeeder::class);
