@@ -98,6 +98,83 @@ class AssortmentItemInventories extends Model
 			->get();
 	}
 
+	
+	public static function getPartial($filters,$take,$skip){
+
+		return self::where(function($query) use ($filters){
+			if(!empty($filters['from'])){
+					$date = explode("-", $filters['from']);
+					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['to'])){
+					$date = explode("-", $filters['to']);
+					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['agencies'])){
+					$query->whereIn('agency_code', $filters['agencies']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['clients'])){
+					$query->whereIn('client_code', $filters['clients']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['channels'])){
+					$query->whereIn('channel_code', $filters['channels']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['distributors'])){
+					$query->whereIn('distributor_code', $filters['distributors']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['enrollments'])){
+					$query->whereIn('enrollment_type', $filters['enrollments']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['stores'])){
+					$query->whereIn('store_id', $filters['stores']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['divisions'])){
+					$query->whereIn('division', $filters['divisions']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['categories'])){
+					$query->whereIn('category', $filters['categories']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['subcategories'])){
+					$query->whereIn('sub_category', $filters['subcategories']);
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['brands'])){
+					$query->whereIn('brand', $filters['brands']);
+				}
+			})
+			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
+			->skip($skip*$take)
+			->take($take)
+			->get();
+	}
+
+
 	public static function getSoPerArea($filters = null){
 		return self::select('area',\DB::raw('SUBSTRING(yearweek(transaction_date,3),1,4) as yr,week(transaction_date,3) as yr_week, sum(fso) as fso_sum, sum(fso_val) as fso_val_sum'))
 			->where(function($query) use ($filters){
