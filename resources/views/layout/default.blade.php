@@ -63,6 +63,8 @@
                 <li>{!! Html::linkRoute('assortment.index', 'Assortment Compliance Report', array(), array()) !!}</li>
                 <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('device_users.index', 'Currently Logged in Device', array(), array()) !!}</li>
+                <li role="separator" class="divider"></li>
+                <li>{!! Html::linkRoute('item.updatedig', 'Updated Inventory Goal', array(), array()) !!}</li>
               </ul>
             </li>
             <li class="dropdown">
@@ -71,6 +73,7 @@
                     <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
                 </ul>
             </li>
+
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	<li class="dropdown">

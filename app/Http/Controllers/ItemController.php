@@ -96,4 +96,10 @@ class ItemController extends Controller
         $items = OtherBarcode::where('item_id',$id)->get();
         return view('item.othercode', compact('items'));
     }
+
+
+    public function updatedig(){
+        $items = StoreItem::where('ig_updated',1)->get();
+        return view('item.updatedig',compact('items'));
+    }
 }
