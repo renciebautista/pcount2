@@ -15,6 +15,7 @@
 
 
 <!-- <hr> -->
+<a href="{{ route('item.downloadupdatedig') }}" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span> Export to Excel</a>
 
 <label class="pull-right">{{ $items->count() }} records found.</label>
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->

@@ -12,6 +12,11 @@ use App\Models\ItemType;
 use App\Models\StoreItem;
 use App\Models\OtherBarcode;
 
+use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\WriterFactory;
+
+
 class ItemController extends Controller
 {
     /**
@@ -101,5 +106,30 @@ class ItemController extends Controller
     public function updatedig(){
         $items = StoreItem::where('ig_updated',1)->get();
         return view('item.updatedig',compact('items'));
+    }
+
+    public function downloadupdatedig(){
+        $items = StoreItem::where('ig_updated',1)->get();
+
+        $writer = WriterFactory::create(Type::XLSX); 
+        $writer->openToBrowser('Store Item Updated IG.xlsx');
+        $writer->addRow(array('Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG'));  
+
+        foreach ($items as $row) {
+            $data[0] = $row->store->store_name;
+            $data[1] = $row->item->sku_code;
+            $data[2] = $row->item->description;
+            $data[3] = $row->item->division->division;
+            $data[4] = $row->item->category->category;
+            $data[5] = $row->item->subcategory->sub_category;
+            $data[6] = $row->item->brand->brand;
+            $data[7] = $row->item->conversion;
+            $data[8] = $row->min_stock;
+            $data[9] = $row->item->lpbt;
+            $data[10] = $row->ig;
+            $writer->addRow($data); 
+        }
+
+        $writer->close();
     }
 }

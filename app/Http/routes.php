@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('store', 'StoreController');
 
 	Route::get('item/updatedig', array('as' => 'item.updatedig', 'uses' => 'ItemController@updatedig'));
+	Route::get('item/downloadupdatedig', array('as' => 'item.downloadupdatedig', 'uses' => 'ItemController@downloadupdatedig'));
 	Route::get('item/{id}/othercode', 'ItemController@othercode');
 	Route::resource('item', 'ItemController');
 	Route::post('item', array('as' => 'item.postItemType', 'uses' => 'ItemController@postItemType'));
