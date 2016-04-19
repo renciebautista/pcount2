@@ -113,7 +113,7 @@ class ItemController extends Controller
         // dd($items);
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');
-        $writer->addRow(array('Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Date Updated'));  
+        $writer->addRow(array('Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Item Type', 'Date Updated'));  
 
         foreach ($items as $row) {
             $data[0] = $row->store->store_name;
@@ -127,7 +127,8 @@ class ItemController extends Controller
             $data[8] = $row->min_stock;
             $data[9] = $row->item->lpbt;
             $data[10] = $row->ig;
-            $data[11] = (string)$row->updated_at;
+            $data[11] = $row->itemtype->type
+            $data[12] = (string)$row->updated_at;
             $writer->addRow($data); 
         }
 

@@ -33,6 +33,7 @@
             <th>Min Stock</th>
             <th>LPBT</th>
             <th>IG</th>    
+            <th>Item Type</th>
             <th>Date Updated</th>               
             <th></th>
         </tr>
@@ -52,7 +53,8 @@
                     <td>{{ $item->min_stock }}</td>   
                     <td>{{ $item->item->lpbt }}</td>  
                     <td>{{ $item->ig }}</td> 
-                    <td>{{ $item->updated_at }}</td>                  
+                    <td>{{ $item->itemtype->type }}</td>  
+                    <td>{{ $item->updated_at }}</td>   
                     <td>
                     </td>
                 </tr>                

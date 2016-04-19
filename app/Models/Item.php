@@ -27,11 +27,14 @@ class Item extends Model
     {
         return $this->belongsTo('App\Models\Brand');
     }
+
     public function storeitem()
     {
         return $this->belongsTo('App\Models\StoreItem','id', 'item_id');
     }
     
+    
+
 
 
 }
