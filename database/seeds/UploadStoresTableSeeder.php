@@ -57,7 +57,7 @@ class UploadStoresTableSeeder extends Seeder
 		DB::table('stores')->truncate();
 		// DB::table('users')->truncate();
 		DB::table('store_users')->truncate();
-		$role = Role::find(2)->users()->delete();
+		// $role = Role::find(2)->users()->delete();
 
 		// dd($role);
 

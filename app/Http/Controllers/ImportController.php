@@ -29,7 +29,9 @@ class ImportController extends Controller
 
             $file_path = $request->file('file')->move($folderpath,'Masterfile.xlsx');
 
-		    \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
+            $this->dispatch(new UpdateMasterfile());
+
+		    // \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
 
 		    $hash = UpdateHash::find(1);
             if(empty($hash)){

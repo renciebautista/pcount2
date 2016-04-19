@@ -53,7 +53,6 @@
                     <td>{{ $item->min_stock }}</td>   
                     <td>{{ $item->item->lpbt }}</td>  
                     <td>{{ $item->ig }}</td> 
-                    <td>{{ $item->itemtype->type }}</td>  
                     <td>{{ $item->updated_at }}</td>   
                     <td>
                     </td>
@@ -61,7 +60,7 @@
             @endforeach
         @else
         <tr>
-            <td colspan="12">No record found.</td>
+            <td colspan="13">No record found.</td>
         </tr>
         @endif    
     </tbody>
