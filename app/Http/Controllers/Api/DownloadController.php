@@ -17,6 +17,7 @@ use DB;
 
 use App\Models\StoreInventories;
 use App\Models\AssortmentInventories;
+use App\Setting;
 
 class DownloadController extends Controller
 {
@@ -32,8 +33,20 @@ class DownloadController extends Controller
                     ->where('store_users.user_id', $user)
                     ->get();
 
+         if($type == 1){
+            $writer = WriterFactory::create(Type::CSV); 
+            $writer->openToBrowser('settings.txt');
+            $writer->addRow(array('Enable IG Edit', 'Item Validation'));  
+
+            $settings = Setting::find(1);
+            $data[0] = $settings->enable_ig_edit;
+            $data[1] = $settings->enable_item_validation;
+            $writer->addRow($data); 
+            $writer->close();
+        }
+
         // get store list          
-        if($type == 1){
+        if($type == 2){
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('stores.txt');
             $writer->addRow(array('ID', 'Store Code', 'Store Name' , 'Channel Id', 'Channel', 'Area'));  
@@ -52,7 +65,7 @@ class DownloadController extends Controller
         }
 
         //get store sku list
-        if($type == 2){
+        if($type == 3){
             $ids = array();
             foreach ($storelist as $store) {
                 $ids[] = $store->id;
@@ -106,7 +119,7 @@ class DownloadController extends Controller
 
 
 
-        if($type == 3){
+        if($type == 4){
             $ids = array();
             foreach ($storelist as $store) {
                 $ids[] = $store->id;
@@ -156,6 +169,8 @@ class DownloadController extends Controller
 
             $writer->close();
         }
+
+
     }
 
 

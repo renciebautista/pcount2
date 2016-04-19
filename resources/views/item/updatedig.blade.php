@@ -32,7 +32,8 @@
             <th>Conversion</th>
             <th>Min Stock</th>
             <th>LPBT</th>
-            <th>IG</th>                   
+            <th>IG</th>    
+            <th>Date Updated</th>               
             <th></th>
         </tr>
     </thead>
@@ -50,7 +51,8 @@
                     <td>{{ $item->item->conversion }}</td>
                     <td>{{ $item->min_stock }}</td>   
                     <td>{{ $item->item->lpbt }}</td>  
-                    <td>{{ $item->ig }}</td>                   
+                    <td>{{ $item->ig }}</td> 
+                    <td>{{ $item->updated_at }}</td>                  
                     <td>
                     </td>
                 </tr>                

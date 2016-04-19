@@ -120,34 +120,6 @@ class UploadController extends Controller
                     }else{
                         $oos = 1;
                     }
-
-                    // $client_name = $store->client->client_name;
-
-                    // if((strtoupper($client_name) == 'MT CONVI') || 
-                    //     (strtoupper($client_name) == 'MT MINIMART') || 
-                    //     (strtoupper($client_name) == 'MT MDC')
-                    //     ){
-                    //     if(strtoupper($client_name) == 'MT MDC'){
-                    //         if($total_stockcs < 4){
-                    //             $oos = 1;
-                    //         }else{
-                    //             $osa = 1;
-                    //         }
-                    //     }else{
-                    //         if($total_stockcs < 3){
-                    //             $oos = 1;
-                    //         }else{
-                    //             $osa = 1;
-                    //         }
-                    //     }
-                    // }else{
-                    //     if($total_stockcs > 0){
-                    //         $osa = 1;
-                    //     }else{
-                    //         $oos = 1;
-                    //     }
-                    // }
-
                     
 
                     ItemInventories::insert([

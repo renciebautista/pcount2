@@ -63,6 +63,10 @@ Route::group(['middleware' => 'auth'], function () {
 	    'only' => ['index', 'store']
 	]);
 
+	Route::resource('settings', 'SettingsController', [
+	    'only' => ['index', 'store']
+	]);
+
 });
 
 

@@ -73,6 +73,12 @@
                     <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
                 </ul>
             </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>{!! Html::linkRoute('settings.index', 'Settings', array(), array()) !!}</li>
+                </ul>
+            </li>
 
           </ul>
           <ul class="nav navbar-nav navbar-right">

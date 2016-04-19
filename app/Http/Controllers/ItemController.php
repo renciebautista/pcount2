@@ -104,16 +104,16 @@ class ItemController extends Controller
 
 
     public function updatedig(){
-        $items = StoreItem::where('ig_updated',1)->get();
+        $items = StoreItem::where('ig_updated',1)->orderBy('updated_at', 'desc')->get();
         return view('item.updatedig',compact('items'));
     }
 
     public function downloadupdatedig(){
-        $items = StoreItem::where('ig_updated',1)->get();
-
+        $items = StoreItem::where('ig_updated',1)->orderBy('updated_at', 'desc')->get();
+        // dd($items);
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');
-        $writer->addRow(array('Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG'));  
+        $writer->addRow(array('Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Date Updated'));  
 
         foreach ($items as $row) {
             $data[0] = $row->store->store_name;
@@ -127,6 +127,7 @@ class ItemController extends Controller
             $data[8] = $row->min_stock;
             $data[9] = $row->item->lpbt;
             $data[10] = $row->ig;
+            $data[11] = (string)$row->updated_at;
             $writer->addRow($data); 
         }
 
