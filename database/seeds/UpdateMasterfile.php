@@ -13,11 +13,9 @@ class UpdateMasterfile extends Seeder
     {
     	set_time_limit(0);
         $this->call(UploadStoresTableSeeder::class);
-        // $this->call(UploadItemsTableSeeder::class);
-        // $this->call(UploadOtherBarcodesTableSeeder::class);
-        // $this->call(UploadStoreItemsTableSeeder::class);
-        // $this->call(UploadAssortmentTableSeeder::class);
-
-        
+        $this->call(UploadItemsTableSeeder::class);
+        $this->call(UploadOtherBarcodesTableSeeder::class);
+        $this->call(UploadStoreItemsTableSeeder::class);
+        $this->call(UploadAssortmentTableSeeder::class);
     }
 }
