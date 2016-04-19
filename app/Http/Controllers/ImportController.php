@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Session;
 
 use App\Models\UpdateHash;
+use App\Jobs\UpdateMasterfile;
 
 
 class ImportController extends Controller
