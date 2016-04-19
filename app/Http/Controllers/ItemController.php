@@ -127,7 +127,7 @@ class ItemController extends Controller
             $data[8] = $row->min_stock;
             $data[9] = $row->item->lpbt;
             $data[10] = $row->ig;
-            $data[11] = $row->itemtype->type
+            $data[11] = $row->itemtype->type;
             $data[12] = (string)$row->updated_at;
             $writer->addRow($data); 
         }
