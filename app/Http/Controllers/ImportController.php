@@ -30,7 +30,7 @@ class ImportController extends Controller
 
             $file_path = $request->file('file')->move($folderpath,'Masterfile.xlsx');
 
-            $this->dispatch(new UpdateMasterfile());
+            // $this->dispatch(new UpdateMasterfile());
 
 		    // \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
 
