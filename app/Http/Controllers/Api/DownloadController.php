@@ -36,12 +36,13 @@ class DownloadController extends Controller
          if($type == 1){
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('settings.txt');
-            $writer->addRow(array('Enable IG Edit', 'Item Validation'));  
 
             $settings = Setting::find(1);
+
             $data[0] = $settings->enable_ig_edit;
             $data[1] = $settings->enable_item_validation;
             $writer->addRow($data); 
+            
             $writer->close();
         }
 
