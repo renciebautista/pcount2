@@ -33,7 +33,7 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
         $data = [];
         $message = [];
 
-        $mailer::send('emails.welcome', $data, function($message)
+        $mailer->send('emails.welcome', $data, function($message)
         {
           $message->to('rbautista@chasetech.com', 'Philip Brown')
                   ->subject('Welcome to Cribbb!')
