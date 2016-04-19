@@ -19,7 +19,8 @@ Route::get('sendmail', function(){
 		Mail::send('emails.welcome', $data, function($message)
 		{
 		  $message->to('rbautista@chasetech.com', 'Philip Brown')
-		          ->subject('Welcome to Cribbb!');
+		          ->subject('Welcome to Cribbb!')
+		          ->from('rbautista@chasetech.com', 'Philip Brown');
 		});
 	});
 
