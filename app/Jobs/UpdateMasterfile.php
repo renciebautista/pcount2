@@ -28,10 +28,15 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
      * @return void
      */
     public function handle(Mailer $mailer)
-    {
-        $mailer->send('emails.reminder', ['user' => $user], function ($m) use ($user) {
-            $m->from('hello@app.com', 'Your Application');
-            $m->to($user->email, $user->name)->subject('Your Reminder!');
+    {   
+        $data = [];
+        $message = [];
+
+        $mailer::send('emails.welcome', $data, function($message)
+        {
+          $message->to('rbautista@chasetech.com', 'Philip Brown')
+                  ->subject('Welcome to Cribbb!')
+                  ->from('rbautista@chasetech.com', 'Philip Brown');
         });
     }
 }
