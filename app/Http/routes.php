@@ -13,6 +13,9 @@
 use App\Models\TempInventories;
 
 Route::get('sendmail', function(){
+		$data = [];
+		$message = [];
+
 		Mail::send('emails.welcome', $data, function($message)
 		{
 		  $message->to('rbautista@chasetech.com', 'Philip Brown')
