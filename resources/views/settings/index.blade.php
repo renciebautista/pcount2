@@ -18,6 +18,12 @@
 {!! Form::open(array('action' => array('SettingsController@store'),  'class' => 'bs-component', 'role' => 'role')) !!}
 	<div class="row">
 		<div class="col-lg-6">
+
+        <div class="form-group">
+                  <label>Uploader Email</label>
+                  {!! Form::text('uploader_email',$settings->uploader_email,['class' => 'form-control']) !!}
+                </div>
+
 		  	<div class="form-group">
 		    	<div class="checkbox">
                   <label>

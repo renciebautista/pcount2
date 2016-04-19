@@ -33,6 +33,7 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $settings = Setting::find(1);
+        $settings->uploader_email = $request->uploader_email;
         $settings->enable_ig_edit = ($request->has('enable_ig_edit')) ? 1 : 0;
         $settings->enable_item_validation = ($request->has('enable_item_validation')) ? 1 : 0;
         $settings->update();

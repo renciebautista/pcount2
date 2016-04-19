@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Setting;
 use App\Jobs\Job;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Queue\SerializesModels;
@@ -13,14 +14,16 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
+    protected $setting;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Setting $setting)
     {
-        
+        $this->setting = $setting;
     }
 
     /**
@@ -31,15 +34,15 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
     public function handle(Mailer $mailer)
     {   
         \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
-        
+
         $data = [];
         $message = [];
 
-        $mailer->send('emails.welcome', $data, function($message)
+        $mailer->send('emails.masterfile', $this->setting, function($message)
         {
-          $message->to('rbautista@chasetech.com', 'Philip Brown')
-                  ->subject('Welcome to Cribbb!')
-                  ->from('rbautista@chasetech.com', 'Philip Brown');
+          $message->to($this->setting->uploader_email)
+                  ->subject('Masterfile Updating!')
+                  ->from('admin@ulp-projectsos.com', 'Project SOS');
         });
     }
 }
