@@ -12,6 +12,13 @@
 */
 use App\Models\TempInventories;
 
+Route::get('sendmail', function(){
+		Mail::send('emails.welcome', $data, function($message)
+		{
+		  $message->to('rbautista@chasetech.com', 'Philip Brown')
+		          ->subject('Welcome to Cribbb!');
+		});
+	});
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -67,13 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
 	    'only' => ['index', 'store']
 	]);
 
-	Route::get('sendmail', function(){
-		Mail::send('emails.welcome', $data, function($message)
-		{
-		  $message->to('rbautista@chasetech.com', 'Philip Brown')
-		          ->subject('Welcome to Cribbb!');
-		});
-	});
+	
 
 });
 
