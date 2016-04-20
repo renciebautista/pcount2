@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Session;
-
+use App\Setting;
 use App\Models\UpdateHash;
 use App\Jobs\UpdateMasterfile;
 
