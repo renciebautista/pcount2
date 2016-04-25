@@ -40,7 +40,10 @@ class DownloadController extends Controller
             $settings = Setting::find(1);
 
             $data[0] = $settings->enable_ig_edit;
-            $data[1] = $settings->enable_item_validation;
+            $data[1] = $settings->validate_posting_mkl;
+            $data[1] = $settings->validate_printing_mkl;
+            $data[1] = $settings->validate_posting_ass;
+            $data[1] = $settings->validate_printing_ass;
             $writer->addRow($data); 
             
             $writer->close();

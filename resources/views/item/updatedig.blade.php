@@ -22,6 +22,7 @@
 <table class="table table-striped table-hover">
     <thead>
         <tr>
+            <th>Store Code</th>
             <th>Store</th>
             <th>SKU Code</th>
             <th>Description</th>
@@ -33,7 +34,6 @@
             <th>Min Stock</th>
             <th>LPBT</th>
             <th>IG</th>    
-            <th>Item Type</th>
             <th>Date Updated</th>               
             <th></th>
         </tr>
@@ -42,16 +42,17 @@
         @if(count($items) > 0)
             @foreach($items as $item)                   
                 <tr>
-                    <td>{{ $item->store->store_name }}</td>
-                    <td>{{ $item->item->sku_code }}</td>
-                    <td>{{ $item->item->description }}</td>
-                    <td>{{ $item->item->division->division }}</td>
-                    <td>{{ $item->item->category->category }}</td>
-                    <td>{{ $item->item->subcategory->sub_category }}</td>
-                    <td>{{ $item->item->brand->brand }}</td>
-                    <td>{{ $item->item->conversion }}</td>
+                    <td>{{ $item->store_code }}</td>
+                    <td>{{ $item->store_name }}</td>
+                    <td>{{ $item->sku_code }}</td>
+                    <td>{{ $item->description }}</td>
+                    <td>{{ $item->division }}</td>
+                    <td>{{ $item->category }}</td>
+                    <td>{{ $item->sub_category }}</td>
+                    <td>{{ $item->brand }}</td>
+                    <td>{{ $item->conversion }}</td>
                     <td>{{ $item->min_stock }}</td>   
-                    <td>{{ $item->item->lpbt }}</td>  
+                    <td>{{ $item->lpbt }}</td>  
                     <td>{{ $item->ig }}</td> 
                     <td>{{ $item->updated_at }}</td>   
                     <td>

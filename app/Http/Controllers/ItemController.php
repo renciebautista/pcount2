@@ -11,6 +11,7 @@ use App\Models\Item;
 use App\Models\ItemType;
 use App\Models\StoreItem;
 use App\Models\OtherBarcode;
+use App\Models\UpdatedIg;
 
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
@@ -104,30 +105,44 @@ class ItemController extends Controller
 
 
     public function updatedig(){
-        $items = StoreItem::where('ig_updated',1)->orderBy('updated_at', 'desc')->get();
+        $items = UpdatedIg::join('stores', 'stores.store_code', '=', 'updated_igs.store_code')
+            ->join('items', 'items.sku_code', '=', 'updated_igs.sku_code')
+            ->join('divisions', 'divisions.id', '=', 'items.division_id')
+            ->join('categories', 'categories.id', '=', 'items.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
+            ->join('brands', 'brands.id', '=', 'items.brand_id')
+            ->get();
         return view('item.updatedig',compact('items'));
     }
 
     public function downloadupdatedig(){
-        $items = StoreItem::where('ig_updated',1)->orderBy('updated_at', 'desc')->get();
+        $items =  UpdatedIg::join('stores', 'stores.store_code', '=', 'updated_igs.store_code')
+            ->join('items', 'items.sku_code', '=', 'updated_igs.sku_code')
+            ->join('divisions', 'divisions.id', '=', 'items.division_id')
+            ->join('categories', 'categories.id', '=', 'items.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
+            ->join('brands', 'brands.id', '=', 'items.brand_id')
+            ->orderBy('updated_igs.updated_at', 'desc')
+            ->get();
+        // $items = StoreItem::where('ig_updated',1)->orderBy('updated_at', 'desc')->get();
         // dd($items);
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');
-        $writer->addRow(array('Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Item Type', 'Date Updated'));  
+        $writer->addRow(array('Store Code', 'Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Item Type', 'Date Updated'));  
 
         foreach ($items as $row) {
-            $data[0] = $row->store->store_name;
-            $data[1] = $row->item->sku_code;
-            $data[2] = $row->item->description;
-            $data[3] = $row->item->division->division;
-            $data[4] = $row->item->category->category;
-            $data[5] = $row->item->subcategory->sub_category;
-            $data[6] = $row->item->brand->brand;
-            $data[7] = $row->item->conversion;
-            $data[8] = $row->min_stock;
-            $data[9] = $row->item->lpbt;
-            $data[10] = $row->ig;
-            $data[11] = $row->itemtype->type;
+            $data[0] = $row->store_code;
+            $data[1] = $row->store_name;
+            $data[2] = $row->sku_code;
+            $data[3] = $row->description;
+            $data[4] = $row->division;
+            $data[5] = $row->category;
+            $data[6] = $row->sub_category;
+            $data[7] = $row->brand;
+            $data[8] = $row->conversion;
+            $data[9] = $row->min_stock;
+            $data[10] = $row->lpbt;
+            $data[11] = $row->ig;
             $data[12] = (string)$row->updated_at;
             $writer->addRow($data); 
         }

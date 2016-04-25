@@ -35,7 +35,10 @@ class SettingsController extends Controller
         $settings = Setting::find(1);
         $settings->uploader_email = $request->uploader_email;
         $settings->enable_ig_edit = ($request->has('enable_ig_edit')) ? 1 : 0;
-        $settings->enable_item_validation = ($request->has('enable_item_validation')) ? 1 : 0;
+        $settings->validate_posting_mkl = ($request->has('validate_posting_mkl')) ? 1 : 0;
+        $settings->validate_printing_mkl = ($request->has('validate_printing_mkl')) ? 1 : 0;
+        $settings->validate_posting_ass = ($request->has('validate_posting_ass')) ? 1 : 0;
+        $settings->validate_printing_ass = ($request->has('validate_printing_ass')) ? 1 : 0;
         $settings->update();
 
         Session::flash('flash_message', 'Settings successfully updated.');

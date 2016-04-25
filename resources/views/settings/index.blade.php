@@ -35,10 +35,34 @@
 		  	<div class="form-group">
 		    	<div class="checkbox">
                   <label>
-                  	{!! Form::checkbox('enable_item_validation', '1', $settings->enable_item_validation) !!} Validate all item before posting
+                  	{!! Form::checkbox('validate_posting_mkl', '1', $settings->validate_posting_mkl) !!} Validate SO / OSA item before posting.
                   </label>
                 </div>
 		  	</div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('validate_printing_mkl', '1', $settings->validate_printing_mkl) !!} Validate SO / OSA item before printing.
+                  </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('validate_posting_ass', '1', $settings->validate_posting_ass) !!} Validate Assortment item before posting.
+                  </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('validate_printing_ass', '1', $settings->validate_printing_ass) !!} Validate Assortment item before printing.
+                  </label>
+                </div>
+            </div>
 		  	{!! Form::submit('Update', array('class' => 'btn btn-primary')) !!}
 	  	</div>
   	</div>
