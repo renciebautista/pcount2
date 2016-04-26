@@ -19,6 +19,7 @@ use App\Models\AssortmentInventories;
 use App\Models\AssortmentItemInventories;
 use App\Models\Item;
 use App\Models\StoreItem;
+use App\Models\UpdatedIg;
 
 class UploadAssortmentController extends Controller
 {
@@ -152,9 +153,19 @@ class UploadAssortmentController extends Controller
 
                     if(!empty($store_item)){
                         if($store_item->ig != $row[9]){
-                            $store_item->ig = $row[9];
-                            $store_item->ig_updated = 1;
-                            $store_item->update();
+                            $updated_ig = UpdatedIg::where('store_code',$store->store_code)
+                                ->where('sku_code',$item->sku_code)
+                                ->first();
+                            if(!empty($updated_ig)){
+                                $updated_ig->min_stock = $store_item->min_stock;
+                                $updated_ig->ig = $row[9];
+                                $updated_ig->save();
+                            }else{
+                                UpdatedIg::create(['store_code' => $store->store_code,
+                                    'sku_code' => $item->sku_code,
+                                    'min_stock' => $store_item->min_stock,
+                                    'ig' => $row[9]]);
+                            }
                         }
                     }
                 }

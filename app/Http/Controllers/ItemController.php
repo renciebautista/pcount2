@@ -111,6 +111,7 @@ class ItemController extends Controller
             ->join('categories', 'categories.id', '=', 'items.category_id')
             ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
             ->join('brands', 'brands.id', '=', 'items.brand_id')
+            ->orderBy('updated_igs.updated_at', 'desc')
             ->get();
         return view('item.updatedig',compact('items'));
     }
