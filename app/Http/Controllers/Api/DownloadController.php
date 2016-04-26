@@ -41,9 +41,9 @@ class DownloadController extends Controller
 
             $data[0] = $settings->enable_ig_edit;
             $data[1] = $settings->validate_posting_mkl;
-            $data[1] = $settings->validate_printing_mkl;
-            $data[1] = $settings->validate_posting_ass;
-            $data[1] = $settings->validate_printing_ass;
+            $data[2] = $settings->validate_printing_mkl;
+            $data[3] = $settings->validate_posting_ass;
+            $data[4] = $settings->validate_printing_ass;
             $writer->addRow($data); 
             
             $writer->close();
