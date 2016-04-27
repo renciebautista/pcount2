@@ -17,7 +17,8 @@
 
 <!-- <hr> -->
 
-<label class="pull-right">{{ $stores->count() }} records found.</label>
+{!! Paginate::show($stores) !!}
+{!! $stores->render() !!}
 <table class="table table-striped table-hover ">
 	<thead>
 		<tr>

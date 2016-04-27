@@ -155,13 +155,33 @@ class UploadController extends Controller
                                 ->where('sku_code',$item->sku_code)
                                 ->first();
                             if(!empty($updated_ig)){
+                                $updated_ig->division = $item->division->division;
+                                $updated_ig->category = $item->category->category; 
+                                $updated_ig->sub_category = $item->subcategory->sub_category; 
+                                $updated_ig->brand = $item->brand->brand; 
+                                $updated_ig->conversion = $item->conversion;
+                                $updated_ig->fso_multiplier = $row[8]; 
                                 $updated_ig->min_stock = $store_item->min_stock;
+                                $updated_ig->lpbt = $row->item->lpbt;
                                 $updated_ig->ig = $row[9];
                                 $updated_ig->save();
                             }else{
-                                UpdatedIg::create(['store_code' => $store->store_code,
-                                    'sku_code' => $item->sku_code,
+                                // UpdatedIg::create(['store_code' => $store->store_code,
+                                //     'sku_code' => $item->sku_code,
+                                //     'min_stock' => $store_item->min_stock,
+                                //     'ig' => $row[9]]);
+                                UpdatedIg::create(['store_code' => $store->store_code, 
+                                    'store_name' => $store->store_name, 
+                                    'sku_code' => $item->sku_code, 
+                                    'description' => $item->description, 
+                                    'division' => $item->division->division, 
+                                    'category' => $item->category->category, 
+                                    'sub_category' => $item->subcategory->sub_category, 
+                                    'brand' => $item->brand->brand, 
+                                    'conversion' => $item->conversion,
+                                    'fso_multiplier' => $row[8], 
                                     'min_stock' => $store_item->min_stock,
+                                    'lpbt' => $row->item->lpbt, 
                                     'ig' => $row[9]]);
                             }
                         }

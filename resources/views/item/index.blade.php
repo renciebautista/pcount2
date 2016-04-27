@@ -16,7 +16,8 @@
 
 <!-- <hr> -->
 
-<label class="pull-right">{{ $items->count() }} records found.</label>
+{!! Paginate::show($items) !!}
+{!! $items->render() !!}
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
 <table class="table table-striped table-hover">
     <thead>

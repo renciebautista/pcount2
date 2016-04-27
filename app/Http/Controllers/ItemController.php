@@ -27,7 +27,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        $items = Item::paginate(100);
         $item_type = ItemType::all()->lists('type', 'id');;        
         return view('item.index', compact('items','item_type'));
     }
@@ -105,31 +105,16 @@ class ItemController extends Controller
 
 
     public function updatedig(){
-        $items = UpdatedIg::join('stores', 'stores.store_code', '=', 'updated_igs.store_code')
-            ->join('items', 'items.sku_code', '=', 'updated_igs.sku_code')
-            ->join('divisions', 'divisions.id', '=', 'items.division_id')
-            ->join('categories', 'categories.id', '=', 'items.category_id')
-            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
-            ->join('brands', 'brands.id', '=', 'items.brand_id')
-            ->orderBy('updated_igs.updated_at', 'desc')
-            ->get();
+        $items = UpdatedIg::paginate(100);
+            
         return view('item.updatedig',compact('items'));
     }
 
     public function downloadupdatedig(){
-        $items =  UpdatedIg::join('stores', 'stores.store_code', '=', 'updated_igs.store_code')
-            ->join('items', 'items.sku_code', '=', 'updated_igs.sku_code')
-            ->join('divisions', 'divisions.id', '=', 'items.division_id')
-            ->join('categories', 'categories.id', '=', 'items.category_id')
-            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
-            ->join('brands', 'brands.id', '=', 'items.brand_id')
-            ->orderBy('updated_igs.updated_at', 'desc')
-            ->get();
-        // $items = StoreItem::where('ig_updated',1)->orderBy('updated_at', 'desc')->get();
-        // dd($items);
+        $items = UpdatedIg::orderBy('updated_at', 'desc')->get();
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');
-        $writer->addRow(array('Store Code', 'Store', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Item Type', 'Date Updated'));  
+        $writer->addRow(array('Store Code', 'Store Name', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Date Updated'));  
 
         foreach ($items as $row) {
             $data[0] = $row->store_code;

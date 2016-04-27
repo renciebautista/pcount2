@@ -15,9 +15,10 @@
 
 
 <!-- <hr> -->
-<a href="{{ route('item.downloadupdatedig') }}" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span> Export to Excel</a>
+{!! $items->render() !!}
+{!! Paginate::show($items) !!}
+<!-- <a href="{{ route('item.downloadupdatedig') }}" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span> Export to Excel</a> -->
 
-<label class="pull-right">{{ $items->count() }} records found.</label>
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
 <table class="table table-striped table-hover">
     <thead>
@@ -52,7 +53,7 @@
                     <td>{{ $item->brand }}</td>
                     <td>{{ $item->conversion }}</td>
                     <td>{{ $item->min_stock }}</td>   
-                    <td>{{ $item->lpbt }}</td>  
+                    <td>{{ number_format($item->lpbt,2) }}</td>  
                     <td>{{ $item->ig }}</td> 
                     <td>{{ $item->updated_at }}</td>   
                     <td>
