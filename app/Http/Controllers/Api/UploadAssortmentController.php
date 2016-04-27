@@ -153,6 +153,10 @@ class UploadAssortmentController extends Controller
 
                     if(!empty($store_item)){
                         if($store_item->ig != $row[9]){
+                            $store_item->ig = $row[9];
+                            $store_item->ig_updated = 1;
+                            $store_item->update();
+                            
                             $updated_ig = UpdatedIg::where('store_code',$store->store_code)
                                 ->where('sku_code',$item->sku_code)
                                 ->first();

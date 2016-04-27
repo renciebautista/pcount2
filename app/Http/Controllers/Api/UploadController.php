@@ -151,10 +151,13 @@ class UploadController extends Controller
                     // dd($store_item);
                     if(!empty($store_item)){
                         if($store_item->ig != $row[9]){
+                            $store_item->ig = $row[9];
+                            $store_item->ig_updated = 1;
+                            $store_item->update();
+
                             $updated_ig = UpdatedIg::where('store_code',$store->store_code)
                                 ->where('sku_code',$item->sku_code)
                                 ->first();
-                            // dd($updated_ig);
                             if(!empty($updated_ig)){
                                 $updated_ig->division = $item->division->division;
                                 $updated_ig->category = $item->category->category; 
