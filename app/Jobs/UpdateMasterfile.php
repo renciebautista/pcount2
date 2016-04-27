@@ -40,7 +40,7 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
 
         $mailer->send('emails.masterfile', $data , function($message)
         {
-          $message->to($data->sender)
+          $message->to($data['sender'])
                   ->subject('Masterfile Updating!')
                   ->from('admin@ulp-projectsos.com', 'Project SOS');
         });
