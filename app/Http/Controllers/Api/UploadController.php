@@ -148,12 +148,13 @@ class UploadController extends Controller
                         'oos' => $oos]);
 
                     
-
+                    // dd($store_item);
                     if(!empty($store_item)){
                         if($store_item->ig != $row[9]){
                             $updated_ig = UpdatedIg::where('store_code',$store->store_code)
                                 ->where('sku_code',$item->sku_code)
                                 ->first();
+                            // dd($updated_ig);
                             if(!empty($updated_ig)){
                                 $updated_ig->division = $item->division->division;
                                 $updated_ig->category = $item->category->category; 
@@ -162,14 +163,11 @@ class UploadController extends Controller
                                 $updated_ig->conversion = $item->conversion;
                                 $updated_ig->fso_multiplier = $row[8]; 
                                 $updated_ig->min_stock = $store_item->min_stock;
-                                $updated_ig->lpbt = $row->item->lpbt;
+                                $updated_ig->lpbt = $item->lpbt;
                                 $updated_ig->ig = $row[9];
-                                $updated_ig->save();
+                                $updated_ig->updated_at = date('Y-m-d H:i:s');
+                                $updated_ig->update();
                             }else{
-                                // UpdatedIg::create(['store_code' => $store->store_code,
-                                //     'sku_code' => $item->sku_code,
-                                //     'min_stock' => $store_item->min_stock,
-                                //     'ig' => $row[9]]);
                                 UpdatedIg::create(['store_code' => $store->store_code, 
                                     'store_name' => $store->store_name, 
                                     'sku_code' => $item->sku_code, 
@@ -181,7 +179,7 @@ class UploadController extends Controller
                                     'conversion' => $item->conversion,
                                     'fso_multiplier' => $row[8], 
                                     'min_stock' => $store_item->min_stock,
-                                    'lpbt' => $row->item->lpbt, 
+                                    'lpbt' => $item->lpbt, 
                                     'ig' => $row[9]]);
                             }
                         }

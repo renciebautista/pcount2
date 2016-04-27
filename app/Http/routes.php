@@ -84,10 +84,11 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('download', 'Api\DownloadController@index');
 
 	Route::post('uploadpcount', 'Api\UploadController@uploadpcount');
-	Route::post('uploadimage', 'Api\UploadController@uploadimage');  
+	Route::post('uploadimage', 'Api\UploadController@uploadimage'); 
+	Route::get('pcountimage/{name}', 'Api\DownloadController@image'); 
+
 	Route::post('uploadassortment', 'Api\UploadAssortmentController@uploadassortment');
 	Route::post('uploadassortmentimage', 'Api\UploadAssortmentController@uploadimage');   
-	Route::get('pcountimage/{name}', 'Api\DownloadController@image');
 	Route::get('assortmentimage/{name}', 'Api\DownloadController@assortmentimage');
 
 	Route::post('clientlist', array('as' => 'clientlist', 'uses' => 'Api\FilterController@clientlist'));
