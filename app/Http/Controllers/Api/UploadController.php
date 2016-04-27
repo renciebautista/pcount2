@@ -166,7 +166,7 @@ class UploadController extends Controller
                                 $updated_ig->lpbt = $item->lpbt;
                                 $updated_ig->ig = $row[9];
                                 $updated_ig->updated_at = date('Y-m-d H:i:s');
-                                $updated_ig->update();
+                                $updated_ig->save();
                             }else{
                                 UpdatedIg::create(['store_code' => $store->store_code, 
                                     'store_name' => $store->store_name, 
