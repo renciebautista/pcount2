@@ -95,7 +95,7 @@ class AssortmentItemInventories extends Model
 				}
 			})
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
-			->orderBy('created_at')
+			->orderBy('created_at', 'desc')
 			->get();
 	}
 

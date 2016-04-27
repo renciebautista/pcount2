@@ -94,7 +94,7 @@ class ItemInventories extends Model
 				}
 			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
-			->orderBy('created_at')
+			->orderBy('created_at','desc')
 			// ->paginate(100);
 			->get();
 	}
