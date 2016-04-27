@@ -35,12 +35,12 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
     {   
         \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
 
-        $data = ['sender' => $this->setting->uploader_email];
+        $data = [];
         $message = [];
-
-        $mailer->send('emails.masterfile', $data , function($message)
+        $sender = $this->setting->uploader_email;
+        $mailer->send('emails.masterfile', $data , function($message, $sender)
         {
-          $message->to($data['sender'])
+          $message->to($sender)
                   ->subject('Masterfile Updating!')
                   ->from('admin@ulp-projectsos.com', 'Project SOS');
         });
