@@ -12,11 +12,16 @@
 */
 use App\Models\TempInventories;
 
+Route::get('time', function(){
+	echo date('H:i:s');
+});
+
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' => 'auth.dologin', 'uses' =>  'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses' =>  'Auth\AuthController@getLogout']);
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
