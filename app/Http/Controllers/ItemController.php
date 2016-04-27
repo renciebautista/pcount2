@@ -105,7 +105,7 @@ class ItemController extends Controller
 
 
     public function updatedig(){
-        $items = UpdatedIg::paginate(100);
+        $items = UpdatedIg::orderBy('updated_at', 'desc')->paginate(100);
             
         return view('item.updatedig',compact('items'));
     }
