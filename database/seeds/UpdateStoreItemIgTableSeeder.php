@@ -23,7 +23,7 @@ class UpdateStoreItemIgTableSeeder extends Seeder
         		if(!empty($item)){
         			StoreItem::where('store_id', $store->id)
         				->where('item_id', $item->id)
-        				->update(['ig' => $row->ig]);
+        				->update(['ig' => $row->ig, 'ig_updated' => 1]);
         		}
         	}
         }

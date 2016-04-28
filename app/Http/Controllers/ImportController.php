@@ -32,7 +32,6 @@ class ImportController extends Controller
 
             $setting = Setting::find(1);
             $this->dispatch(new UpdateMasterfile($setting));
-		    // \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
 
 		    $hash = UpdateHash::find(1);
             if(empty($hash)){
