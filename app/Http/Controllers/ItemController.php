@@ -16,6 +16,7 @@ use App\Models\UpdatedIg;
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
+use Session;
 
 
 class ItemController extends Controller
@@ -134,5 +135,57 @@ class ItemController extends Controller
         }
 
         $writer->close();
+    }
+
+    public function removeig(){
+        return view('item.removeig');
+    }
+
+    public function postremoveig(Request $request){
+        if ($request->hasFile('file'))
+        {
+            $file_path = $request->file('file')->move(storage_path().'/uploads/temp/',$request->file('file')->getClientOriginalName());
+            
+            \DB::beginTransaction();
+            try {
+                $reader = ReaderFactory::create(Type::XLSX); // for XLSX files
+                $reader->open($file_path);
+
+                
+
+                foreach ($reader->getSheetIterator() as $sheet) {
+                    if($sheet->getName() == 'Sheet1'){
+                        $cnt = 0;
+                        foreach ($sheet->getRowIterator() as $row) {
+                            if(!empty($row[0])){
+                                UpdatedIg::where('store_code',$row[0])
+                                    ->where('sku_code',$row[2])
+                                    ->delete();
+                            }
+                            
+                        }
+                    }
+                    
+                }
+                 \DB::commit();
+                $reader->close();
+            } catch (\Exception $e) {
+                dd($e);
+                \DB::rollback();
+            }
+
+            if (\File::exists($file_path))
+            {
+                \File::delete($file_path);
+            }
+
+            Session::flash('flash_message', 'Updated IG successfully updated.');
+            Session::flash('flash_class', 'alert-success');
+        }else{
+            Session::flash('flash_message', 'Error updating item IG.');
+            Session::flash('flash_class', 'alert-danger');
+            
+        }
+        return redirect()->route("item.updatedig");
     }
 }

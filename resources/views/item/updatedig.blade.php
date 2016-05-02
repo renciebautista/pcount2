@@ -19,6 +19,7 @@
 {!! Paginate::show($items) !!}
 <br>
 <a href="{{ route('item.downloadupdatedig') }}" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span> Export to Excel</a>
+<a href="{{ route('item.removeig') }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Remove Items</a>
 
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
 <table class="table table-striped table-hover">

@@ -37,6 +37,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('store/{id}/assortment', 'StoreController@assortment');
 	Route::resource('store', 'StoreController');
 
+	Route::get('item/removeig', array('as' => 'item.removeig', 'uses' => 'ItemController@removeig'));
+	Route::post('item/removeig', array('as' => 'item.postremoveig', 'uses' => 'ItemController@postremoveig'));
 	Route::get('item/updatedig', array('as' => 'item.updatedig', 'uses' => 'ItemController@updatedig'));
 	Route::get('item/downloadupdatedig', array('as' => 'item.downloadupdatedig', 'uses' => 'ItemController@downloadupdatedig'));
 	Route::get('item/{id}/othercode', 'ItemController@othercode');
