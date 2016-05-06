@@ -74,7 +74,9 @@ Route::group(['middleware' => 'auth'], function () {
 	    'only' => ['index', 'store']
 	]);
 
-	
+	Route::resource('apk', 'ApkController');
+    Route::resource('testapk', 'TestApkController');
+
 
 });
 
@@ -107,4 +109,12 @@ Route::group(array('prefix' => 'api'), function()
 
 	Route::get('prnlist', 'Api\DownloadController@prnlist');
 	Route::get('downloadprn/{filename}', 'Api\DownloadController@downloadprn');
+
+	Route::get('protected/{token}/{file_name}', 'Api\UpdateapkController@download');
+	Route::post('check', 'Api\CheckupdateController@check');
+	Route::post('verify', 'Api\CheckupdateController@verify');
+
+	Route::get('betaprotected/{token}/{file_name}', 'Api\UpdateapkController@betadownload');
+	Route::post('betacheck', 'Api\CheckupdateController@betacheck');
+	Route::post('betaverify', 'Api\CheckupdateController@betaverify');
 });

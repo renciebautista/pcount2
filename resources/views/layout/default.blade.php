@@ -42,6 +42,8 @@
                     <li>{!! Html::linkRoute('store.index', 'Stores', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('item.index', 'Items', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('store_user.index', 'User', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('apk.index', 'Apk', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('testapk.index', 'Test Apk', array(), array()) !!}</li>
                 </ul>
             </li>
             <li class="dropdown">
