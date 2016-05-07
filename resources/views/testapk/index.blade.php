@@ -15,7 +15,7 @@
 <div class="row">
 
 	<div class="col-md-12">
-		{!! Html::linkRoute('testapk.create', 'Add Beta Apk', array(), ['class' => 'btn btn-primary btn-sm']) !!}
+		{!! Html::linkRoute('testapk.create', 'Add Test Apk', array(), ['class' => 'btn btn-primary btn-sm']) !!}
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
