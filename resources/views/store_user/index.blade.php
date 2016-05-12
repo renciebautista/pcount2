@@ -20,7 +20,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>User</th>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
                         <th>Role</th>
                         <th></th>            
                     </tr>
@@ -30,8 +32,14 @@
                         @foreach($users as $user)                
                             <tr>
                                 <td>{{ $user->name }}</td>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->email }}</td>
                                 <td>{{ $user->roles[0]->name }}</td>
+                                @if($user->roles[0]->name == 'field')
                                 <td>{!! link_to_action('StoreUserController@storelist', 'Stores', $user->id, ['class' => 'btn btn-xs btn btn-primary']) !!}</td>                    
+                                @else
+                                <td></td>
+                                @endif
                             </tr>                
                         @endforeach
                     @else

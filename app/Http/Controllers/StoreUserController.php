@@ -19,7 +19,13 @@ class StoreUserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('store_user.index',['users'=>$users]);
+        // $roles = Role::where('id', '>', 2)->first();
+
+        // if(!empty($roles)){
+        //     $users = $roles->users()->get();
+        // }
+
+        return view('store_user.index',compact('users'));
     }
 
     /**
