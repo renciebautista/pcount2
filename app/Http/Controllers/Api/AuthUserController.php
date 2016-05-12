@@ -17,12 +17,16 @@ class AuthUserController extends Controller
         $usernameinput =  $request->email;
         $password = $request->pwd;
         $version = $request->version;
+
+        // dd($request);
+
         $field = $usernameinput ? 'email' : 'username';
          if(\Auth::attempt(array('username' => $usernameinput, 'password' => $password), false)){
             $user = \Auth::user();
 
             $device = Device::where('device_id',$device_id)->first();
-            if(empty($device)){
+            // dd($device);
+            if(!empty($device)){
                 $device->version = $version;
                 $device->update();
             }else{
