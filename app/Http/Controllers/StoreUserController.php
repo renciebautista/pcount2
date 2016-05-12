@@ -63,7 +63,7 @@ class StoreUserController extends Controller
         $user->name = strtoupper($request->name);
         $user->username = $request->username;
         $user->email = $request->email;
-        $user->password = \Hash::make('password');
+        $user->password = \Hash::make($request->password);
         $user->save();
 
 

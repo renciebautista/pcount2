@@ -77,6 +77,7 @@ class AuthController extends Controller
     }
 
     public function postLogin(Request $request){
+        
         $usernameinput =  $request->access;
         $password = $request->password;
         $field = filter_var($usernameinput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
