@@ -7,7 +7,7 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>Store MKL List</h3>
+            <h3>{!! $store->store_name !!} MKL List</h3>
         </div>
     </div>
 </div>

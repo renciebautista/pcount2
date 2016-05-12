@@ -8,6 +8,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h3>Store SKU List</h3>
+            <h4>{!! $store->store_nam !!}</h4>
         </div>
     </div>
 </div>

@@ -82,6 +82,14 @@ class AuthController extends Controller
         $field = filter_var($usernameinput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (Auth::attempt(array($field => $usernameinput, 'password' => $password), false)) {
+
+            if(Auth::user()->hasRole('FIELD')){
+                Auth::logout();
+                Session::flash('flash_message', 'Account not allowed to access the site.');
+                Session::flash('flash_class', 'alert alert-danger');
+                return \Redirect::back();
+            }
+            
             // if(Auth::user()->isActive()){
             //     Session::flash('message', '<h4>Welcome to E-TOP,</h4><p> '.ucwords(strtolower(Auth::user()->getFullname())).'</p>');
             //     Session::flash('class', 'alert alert-success');
@@ -106,7 +114,7 @@ class AuthController extends Controller
     public function getLogout(){
         $user = Auth::user();
         $this->auth->logout();
-        return redirect('/auth/login');
+        return redirect('/');
 
     }
 }

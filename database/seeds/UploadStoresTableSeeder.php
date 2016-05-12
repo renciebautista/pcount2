@@ -89,23 +89,30 @@ class UploadStoresTableSeeder extends Seeder
 								$user->roles()->attach(2);
 							}
 
-							$store = Store::firstOrCreate([
-								'storeid' => strtoupper($row[4]),
-								'store_code' => strtoupper($row[5]),
-								'store_code_psup' => strtoupper($row[6	]),
-								'store_name' => strtoupper($row[7]),
-								'area_id' => $area->id,
-								'enrollment_id' => $enrollment->id,
-								'distributor_id' => $distributor->id,
-								'client_id' => $client->id,
-								'channel_id' => $channel->id,
-								'customer_id' => $customer->id,
-								'region_id' => $region->id,
-								'agency_id' => $agency->id
-								]);
-							if(!empty($row[22])){
-								StoreUser::insert(['store_id' => $store->id, 'user_id' => $user->id]);
+							$storeExist = Store::where('store_code',strtoupper($row[5])->first();
+							if(empty($storeExist)){
+								$store = Store::create([
+									'storeid' => strtoupper($row[4]),
+									'store_code' => strtoupper($row[5]),
+									'store_code_psup' => strtoupper($row[6	]),
+									'store_name' => strtoupper($row[7]),
+									'area_id' => $area->id,
+									'enrollment_id' => $enrollment->id,
+									'distributor_id' => $distributor->id,
+									'client_id' => $client->id,
+									'channel_id' => $channel->id,
+									'customer_id' => $customer->id,
+									'region_id' => $region->id,
+									'agency_id' => $agency->id
+									]);
+								if(!empty($row[22])){
+									StoreUser::insert(['store_id' => $store->id, 'user_id' => $user->id]);
+								}
+							}else{
+								
 							}
+
+							
 							
 						}
 						$cnt++;	

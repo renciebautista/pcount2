@@ -16,9 +16,10 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::paginate(100);
+        $request->flash();
+        $stores = Store::search($request);
         return view('store.index', compact('stores'));
     }
 
@@ -94,6 +95,7 @@ class StoreController extends Controller
     }
 
     public function mkl($id){
+        $store = Store::findOrFail($id);
         $mkl = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
             ->join('items', 'items.id', '=', 'store_items.item_id')
             ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
@@ -106,11 +108,11 @@ class StoreController extends Controller
             ->where('store_items.store_id', $id)
             ->orderBy('store_items.id', 'asc')
             ->get();
-        return view('store.mkl', compact('mkl'));
+        return view('store.mkl', compact('mkl','store'));
     }
 
     public function assortment($id){
-
+        $store = Store::findOrFail($id);
         $assortment = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
             ->join('items', 'items.id', '=', 'store_items.item_id')
             ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
@@ -123,6 +125,6 @@ class StoreController extends Controller
             ->where('store_items.store_id', $id)
             ->orderBy('store_items.id', 'asc')
             ->get();
-        return view('store.assortment', compact('assortment'));
+        return view('store.assortment', compact('assortment','store'));
     }
 }

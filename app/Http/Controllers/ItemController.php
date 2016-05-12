@@ -26,9 +26,10 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::paginate(100);
+        $request->flash();
+        $items = Item::search($request);
         $item_type = ItemType::all()->lists('type', 'id');;        
         return view('item.index', compact('items','item_type'));
     }

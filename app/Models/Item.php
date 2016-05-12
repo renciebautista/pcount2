@@ -33,7 +33,15 @@ class Item extends Model
         return $this->belongsTo('App\Models\StoreItem','id', 'item_id');
     }
     
-    
+    public static function search($request){
+        // return self::with(['area' => function ($query) {
+        //         $query->orderBy('area', 'desc');
+        //     }])
+            return self::where('description', 'LIKE', "%$request->search%")
+            ->orWhere('sku_code', 'LIKE', "%$request->search%")
+            ->paginate(100)
+            ->appends(['search' => $request->search]);
+    }
 
 
 

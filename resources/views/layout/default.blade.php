@@ -36,16 +36,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+            @if(Entrust::hasRole('admin'))
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('store.index', 'Stores', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('item.index', 'Items', array(), array()) !!}</li>
-                    <li>{!! Html::linkRoute('store_user.index', 'User', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('store_user.index', 'Users', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('roles.index', 'Roles', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('apk.index', 'Apk', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('testapk.index', 'Test Apk', array(), array()) !!}</li>
                 </ul>
             </li>
+            @endif
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -63,29 +66,36 @@
                 <li>{!! Html::linkRoute('osa.store', 'Assortment OSA Per Store Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('oos.sku', 'Assortment OOS SKU Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('assortment.index', 'Assortment Compliance Report', array(), array()) !!}</li>
+                @if(Entrust::hasRole('admin'))
                 <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('device_users.index', 'Currently Logged in Device', array(), array()) !!}</li>
                 <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('item.updatedig', 'Updated Inventory Goal', array(), array()) !!}</li>
+                <li role="separator" class="divider"></li>
+                <li>{!! Html::linkRoute('devices.index', 'Device Lists', array(), array()) !!}</li>
+                @endif
               </ul>
             </li>
+            @if(Entrust::hasRole('admin'))
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
                 </ul>
             </li>
+            @endif
+            @if(Entrust::hasRole('admin'))
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('settings.index', 'Settings', array(), array()) !!}</li>
                 </ul>
             </li>
-
+            @endif
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	<li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ ucwords(strtolower(Auth::user()->name)) }} <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('auth.logout', 'Sign-out', array(), array()) !!}</li>
                 </ul>

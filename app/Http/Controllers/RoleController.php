@@ -1,15 +1,15 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\StoreUser;
-use App\Models\RoleUser;
-use App\User;
 use App\Role;
 use Session;
 
-class StoreUserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +18,8 @@ class StoreUserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('store_user.index',['users'=>$users]);
+        $roles = Role::all();
+        return view('roles.index',compact('roles'));
     }
 
     /**
@@ -29,9 +29,7 @@ class StoreUserController extends Controller
      */
     public function create()
     {
-        $roles = Role::orderBy('name')->lists('name', 'id');
-        // dd($roles);
-        return view('store_user.create',compact('roles'));
+        return view('roles.create');
     }
 
     /**
@@ -43,32 +41,19 @@ class StoreUserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'username' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'same:password',
-            'role' => 'required|integer|min:1'
+            'name' => 'required|unique:roles'
         ]);
 
-        $role = Role::findOrFail($request->role);
+        $role = new Role();
+        $role->name = $request->name;
+        $role->display_name = $request->display_name;
+        $role->description = $request->description;
+        $role->save();
 
-        $user = new User();
-        $user->name = strtoupper($request->name);
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = \Hash::make('password');
-        $user->save();
-
-
-
-        $user->roles()->attach($role);
-
-        Session::flash('flash_message', 'User successfully added.');
+        Session::flash('flash_message', 'Role successfully added.');
         Session::flash('flash_class', 'alert-success');
 
-        return redirect()->route("store_user.index");
-
+        return redirect()->route("roles.index");
     }
 
     /**
@@ -114,9 +99,5 @@ class StoreUserController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function storelist($id){
-        $stores = StoreUser::where('user_id',$id)->get();
-        return view('store_user.store', compact('stores'));
     }
 }

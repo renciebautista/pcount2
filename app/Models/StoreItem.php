@@ -20,7 +20,7 @@ class StoreItem extends Model
     	return $this->belongsTo('App\Models\ItemType','item_type_id','id');    	
     }    
 
-    
+   
 
   
 }

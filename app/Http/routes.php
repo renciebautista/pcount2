@@ -27,31 +27,48 @@ Route::get('testspeed', function(){
 });
 
 Route::group(['middleware' => 'auth'], function () {
+
+	Route::group(['middleware' => ['role:admin']], function () {
+
+		Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
+		Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
+
+		Route::get('store/{id}/mkl', 'StoreController@mkl');
+		Route::get('store/{id}/assortment', 'StoreController@assortment');
+		Route::resource('store', 'StoreController');
+
+		Route::get('item/removeig', array('as' => 'item.removeig', 'uses' => 'ItemController@removeig'));
+		Route::post('item/removeig', array('as' => 'item.postremoveig', 'uses' => 'ItemController@postremoveig'));
+		Route::get('item/updatedig', array('as' => 'item.updatedig', 'uses' => 'ItemController@updatedig'));
+		Route::get('item/downloadupdatedig', array('as' => 'item.downloadupdatedig', 'uses' => 'ItemController@downloadupdatedig'));
+		Route::get('item/{id}/othercode', 'ItemController@othercode');
+		Route::resource('item', 'ItemController');
+		Route::post('item', array('as' => 'item.postItemType', 'uses' => 'ItemController@postItemType'));
+
+		Route::get('store_user/{id}/store', 'StoreUserController@storelist');
+		Route::resource('store_user', 'StoreUserController');
+		
+		Route::get('device_user/{id}', 'DeviceUserController@logOut');
+		Route::resource('device_users', 'DeviceUserController');
+
+		Route::resource('settings', 'SettingsController', [
+		    'only' => ['index', 'store']
+		]);
+
+		Route::resource('apk', 'ApkController');
+	    Route::resource('testapk', 'TestApkController');
+
+	    Route::resource('roles', 'RoleController');
+	    Route::resource('devices', 'DeviceController');
+
+	});
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
 	Route::get('/dashboard', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
-	Route::resource('agency', 'AgencyController');
+	// Route::resource('agency', 'AgencyController');
 
-	Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
-	Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
-
-	Route::get('store/{id}/mkl', 'StoreController@mkl');
-	Route::get('store/{id}/assortment', 'StoreController@assortment');
-	Route::resource('store', 'StoreController');
-
-	Route::get('item/removeig', array('as' => 'item.removeig', 'uses' => 'ItemController@removeig'));
-	Route::post('item/removeig', array('as' => 'item.postremoveig', 'uses' => 'ItemController@postremoveig'));
-	Route::get('item/updatedig', array('as' => 'item.updatedig', 'uses' => 'ItemController@updatedig'));
-	Route::get('item/downloadupdatedig', array('as' => 'item.downloadupdatedig', 'uses' => 'ItemController@downloadupdatedig'));
-	Route::get('item/{id}/othercode', 'ItemController@othercode');
-	Route::resource('item', 'ItemController');
-	Route::post('item', array('as' => 'item.postItemType', 'uses' => 'ItemController@postItemType'));
-
-	Route::get('store_user/{id}/store', 'StoreUserController@storelist');
-	Route::resource('store_user', 'StoreUserController');
-	Route::get('device_user/{id}', 'DeviceUserController@logOut');
-	Route::resource('device_users', 'DeviceUserController');
+	
 
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
@@ -72,15 +89,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('assortment', 'AssortmentController', [
 	    'only' => ['index', 'store']
 	]);
-
-	Route::resource('settings', 'SettingsController', [
-	    'only' => ['index', 'store']
-	]);
-
-	Route::resource('apk', 'ApkController');
-    Route::resource('testapk', 'TestApkController');
-
-
 });
 
 
