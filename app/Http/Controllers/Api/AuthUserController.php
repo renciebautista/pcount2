@@ -26,11 +26,14 @@ class AuthUserController extends Controller
 
             $device = Device::where('device_id',$device_id)->first();
             // dd($device);
-            if(!empty($device)){
-                $device->version = $version;
-                $device->update();
-            }else{
-                Device::create(['device_id' => $device_id, 'version' => $version]);
+
+            if ($request->has('version')) {
+                if(!empty($device)){
+                    $device->version = $version;
+                    $device->update();
+                }else{
+                    Device::create(['device_id' => $device_id, 'version' => $version]);
+                }
             }
 
             if(($user->log_status == 0) || ($user->device_id == $device_id)){

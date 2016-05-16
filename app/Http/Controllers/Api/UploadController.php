@@ -20,6 +20,7 @@ use App\Models\ItemInventories;
 use App\Models\Item;
 use App\Models\StoreItem;
 use App\Models\UpdatedIg;
+use App\Models\OtherBarcode;
 
 class UploadController extends Controller
 {
@@ -171,8 +172,27 @@ class UploadController extends Controller
                                 $updated_ig->updated_at = date('Y-m-d H:i:s');
                                 $updated_ig->save();
                             }else{
-                                UpdatedIg::create(['store_code' => $store->store_code, 
+                                $other_code = OtherBarcode::where('item_id', $item->id)
+                                    ->where('area_id', $store->area->id)
+                                    ->first();
+                                $othercode = '';
+                                if(!empty($other_code)){
+                                    $othercode = $other_code->other_barcode;
+                                }
+                                UpdatedIg::create([
+                                    'area' => $store->area->area, 
+                                    'region_code' => $store->region->region_code;
+                                    'region' => $store->region->region
+                                    'distributor_code' => $store->distributor->distributor_code;
+                                    'distributor' => $store->distributor->distributor;
+                                    'agency_code' => $store->agency->agency_code;
+                                    'agency' => $store->agency->agency_name;
+                                    'storeid' => $store->storeid;
+                                    'store_code' => $store->store_code, 
                                     'store_name' => $store->store_name, 
+                                    'channel_code' => $store->channel->channel_code;
+                                    'channel' => $store->channel->channel_desc;
+                                    'other_code' => $othercode, 
                                     'sku_code' => $item->sku_code, 
                                     'description' => $item->description, 
                                     'division' => $item->division->division, 
@@ -184,6 +204,20 @@ class UploadController extends Controller
                                     'min_stock' => $store_item->min_stock,
                                     'lpbt' => $item->lpbt, 
                                     'ig' => $row[9]]);
+
+                                // UpdatedIg::create(['store_code' => $store->store_code, 
+                                //     'store_name' => $store->store_name, 
+                                //     'sku_code' => $item->sku_code, 
+                                //     'description' => $item->description, 
+                                //     'division' => $item->division->division, 
+                                //     'category' => $item->category->category, 
+                                //     'sub_category' => $item->subcategory->sub_category, 
+                                //     'brand' => $item->brand->brand, 
+                                //     'conversion' => $item->conversion,
+                                //     'fso_multiplier' => $row[8], 
+                                //     'min_stock' => $store_item->min_stock,
+                                //     'lpbt' => $item->lpbt, 
+                                //     'ig' => $row[9]]);
                             }
                         }
                     }

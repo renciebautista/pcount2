@@ -97,7 +97,16 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Item::findOrFail($id);
+
+        OtherBarcode::where('item_id', $item->id)->delete();
+        StoreItem::where('item_id', $item->id)->delete();
+
+        $item->delete();
+        
+        Session::flash('flash_class', 'alert-success');
+        Session::flash('flash_message', 'Item successfully deleted.');
+        return redirect()->route("item.index");
     }
 
     public function othercode($id){
@@ -116,22 +125,32 @@ class ItemController extends Controller
         $items = UpdatedIg::orderBy('updated_at', 'desc')->get();
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');
-        $writer->addRow(array('Store Code', 'Store Name', 'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Date Updated'));  
+        $writer->addRow(array('Area', 'Region', 'Distributor Name', 'Distributor Code', 'Agency', 
+            'Store Code', 'Store Id', 'Store Name', 'Channel Name', 'Other Code',
+            'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Date Updated'));  
 
         foreach ($items as $row) {
-            $data[0] = $row->store_code;
-            $data[1] = $row->store_name;
-            $data[2] = $row->sku_code;
-            $data[3] = $row->description;
-            $data[4] = $row->division;
-            $data[5] = $row->category;
-            $data[6] = $row->sub_category;
-            $data[7] = $row->brand;
-            $data[8] = $row->conversion;
-            $data[9] = $row->min_stock;
-            $data[10] = $row->lpbt;
-            $data[11] = $row->ig;
-            $data[12] = (string)$row->updated_at;
+            $data[0] = $row->area;
+            $data[1] = $row->region;
+            $data[2] = $row->distributor;
+            $data[3] = $row->distributor_code;
+            $data[4] = $row->agency;
+            $data[5] = $row->store_code;
+            $data[6] = $row->storeid;
+            $data[7] = $row->store_name;
+            $data[8] = $row->channel;
+            $data[9] = $row->other_code;
+            $data[10] = $row->sku_code;
+            $data[11] = $row->description;
+            $data[12] = $row->division;
+            $data[13] = $row->category;
+            $data[14] = $row->sub_category;
+            $data[15] = $row->brand;
+            $data[16] = $row->conversion;
+            $data[17] = $row->min_stock;
+            $data[18] = $row->lpbt;
+            $data[19] = $row->ig;
+            $data[20] = (string)$row->updated_at;
             $writer->addRow($data); 
         }
 

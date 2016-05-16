@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('item', array('as' => 'item.postItemType', 'uses' => 'ItemController@postItemType'));
 
 		Route::get('store_user/{id}/store', 'StoreUserController@storelist');
+		Route::get('store_user/{id}/changepassword', array('as' => 'store_user.changepassword', 'uses' => 'StoreUserController@changepassword'));
+		Route::put('store_user/{id}/postupdate', array('as' => 'store_user.postupdate', 'uses' => 'StoreUserController@postupdate'));
 		Route::resource('store_user', 'StoreUserController');
 		
 		Route::get('device_user/{id}', 'DeviceUserController@logOut');
@@ -62,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
 	    Route::resource('devices', 'DeviceController');
 
 	});
+
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
 	Route::get('/dashboard', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);

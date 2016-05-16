@@ -46,4 +46,24 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany('App\Role','role_user');
     }
 
+    public function isActive(){
+        return $this->attributes['active'];
+    }
+
+    public static function search($request){
+        return self::join('role_user', 'role_user.user_id', '=', 'users.id')
+            ->where(function($query) use ($request){
+            if ($request->has('role')) {
+                    $query->where('role_id', $request->role);
+                }
+            })
+            ->where(function($query) use ($request){
+                $query->where('name', 'LIKE', "%$request->search%");
+                $query->orWhere('username', 'LIKE', "%$request->search%");
+                $query->orWhere('email', 'LIKE', "%$request->search%");
+            })
+            ->get();
+
+    }
+
 }

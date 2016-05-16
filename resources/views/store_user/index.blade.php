@@ -13,9 +13,41 @@
 </div>
 <hr/>
 
+
+{!! Form::open(array('method' => 'get','class' => 'bs-component')) !!}
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+        <label>Search</label>
+      {!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'Keywords']) !!}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+        <label>Role</label>
+        {!! Form::select('role',$roles,null, array('class' => 'form-control', 'placeholder' => 'All Role')) !!}
+    </div>
+  </div>
+</div>
+
+<div class="box-footer">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+
+ {!!  Form::close() !!} 
+
+
+<!-- <hr> -->
+
+
+{!! Html::linkRoute('store_user.create', 'Add User', array(), ['class' => 'btn btn-success btn-sm pull-right']) !!}
+
 <div class="row">
     <div class="col-md-12">
-        {!! Html::linkRoute('store_user.create', 'Add User', array(), ['class' => 'btn btn-primary btn-sm']) !!}
+        
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -24,7 +56,9 @@
                         <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th></th>            
+                        <th>Status</th>
+                        <th></th> 
+                        <th></th>           
                     </tr>
                 </thead>
                 <tbody>    
@@ -35,11 +69,14 @@
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->roles[0]->name }}</td>
+                                <td></td>
                                 @if($user->roles[0]->name == 'field')
-                                <td>{!! link_to_action('StoreUserController@storelist', 'Stores', $user->id, ['class' => 'btn btn-xs btn btn-primary']) !!}</td>                    
+                                <td>{!! link_to_action('StoreUserController@storelist', 'Store Mapping', $user->id, ['class' => 'btn btn-xs btn btn-success']) !!}</td>                    
                                 @else
                                 <td></td>
                                 @endif
+                                <td>{!! link_to_action('StoreUserController@edit', 'Edit', $user->id, ['class' => 'btn btn-xs btn btn-primary']) !!}</td>                    
+
                             </tr>                
                         @endforeach
                     @else

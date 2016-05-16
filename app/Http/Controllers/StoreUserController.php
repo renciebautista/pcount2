@@ -16,16 +16,19 @@ class StoreUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $request->flash();
+        $users = User::search($request);
         // $roles = Role::where('id', '>', 2)->first();
 
         // if(!empty($roles)){
         //     $users = $roles->users()->get();
         // }
+        $roles = Role::orderBy('name')->lists('name', 'id');
 
-        return view('store_user.index',compact('users'));
+
+        return view('store_user.index',compact('users','roles'));
     }
 
     /**
@@ -36,7 +39,6 @@ class StoreUserController extends Controller
     public function create()
     {
         $roles = Role::orderBy('name')->lists('name', 'id');
-        // dd($roles);
         return view('store_user.create',compact('roles'));
     }
 
@@ -96,7 +98,10 @@ class StoreUserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = Role::orderBy('name')->lists('name', 'id');
+        // dd($roles);
+        return view('store_user.edit',compact('roles', 'user'));
     }
 
     /**
@@ -108,7 +113,29 @@ class StoreUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+            'name' => 'required',
+            'username' => 'required|unique:users,username,'.$id,
+            'email' => 'required|email|unique:users,email,'.$id,
+            'role' => 'required|integer|min:1'
+        ]);
+
+        $role = Role::findOrFail($request->role);
+        
+        $user->name = strtoupper($request->name);
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->update();
+
+        $user->detachRoles($user->roles);
+
+        $user->roles()->attach($role);
+
+        Session::flash('flash_message', 'User successfully updated.');
+        Session::flash('flash_class', 'alert-success');
+
+        return redirect()->route("store_user.index");
     }
 
     /**
@@ -124,5 +151,28 @@ class StoreUserController extends Controller
     public function storelist($id){
         $stores = StoreUser::where('user_id',$id)->get();
         return view('store_user.store', compact('stores'));
+    }
+
+    public function changepassword($id){
+        $user = User::findOrFail($id);
+        return view('store_user.changepassword',compact('user'));
+    }
+
+    public function postupdate(Request $request, $id){
+
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'same:password'
+        ]);
+
+        $user->password = \Hash::make($request->password);
+        $user->update();
+
+
+        Session::flash('flash_message', 'User password successfully updated.');
+        Session::flash('flash_class', 'alert-success');
+
+        return redirect()->route("store_user.edit", $user);
     }
 }
