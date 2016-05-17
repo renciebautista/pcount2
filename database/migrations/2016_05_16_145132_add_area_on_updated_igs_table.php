@@ -18,19 +18,19 @@ class AddAreaOnUpdatedIgsTable extends Migration
      */
     public function up()
     {
-        // Schema::table('updated_igs', function (Blueprint $table) {
-        //     $table->string('area')->after('id');
-        //     $table->string('region_code')->after('area');
-        //     $table->string('region')->after('region_code');
-        //     $table->string('distributor_code')->after('region');
-        //     $table->string('distributor')->after('distributor_code');
-        //     $table->string('agency_code')->after('distributor');
-        //     $table->string('agency')->after('agency_code');
-        //     $table->string('storeid')->after('agency');
-        //     $table->string('channel_code')->after('store_name');
-        //     $table->string('channel')->after('channel_code');
-        //     $table->string('other_code')->after('channel');
-        // });
+        Schema::table('updated_igs', function (Blueprint $table) {
+            $table->string('area')->after('id');
+            $table->string('region_code')->after('area');
+            $table->string('region')->after('region_code');
+            $table->string('distributor_code')->after('region');
+            $table->string('distributor')->after('distributor_code');
+            $table->string('agency_code')->after('distributor');
+            $table->string('agency')->after('agency_code');
+            $table->string('storeid')->after('agency');
+            $table->string('channel_code')->after('store_name');
+            $table->string('channel')->after('channel_code');
+            $table->string('other_code')->after('channel');
+        });
 
         set_time_limit(0);
         ini_set('memory_limit', -1);
