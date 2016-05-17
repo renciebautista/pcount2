@@ -34,7 +34,7 @@ class AuthUserController extends Controller
                 }else{
                     Device::create(['device_id' => $device_id,
                      'version' => $version,
-                     'username' => $username]);
+                     'username' => $usernameinput]);
                 }
             }
 
