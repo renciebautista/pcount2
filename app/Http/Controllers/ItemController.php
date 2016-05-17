@@ -122,6 +122,9 @@ class ItemController extends Controller
     }
 
     public function downloadupdatedig(){
+        set_time_limit(0);
+        ini_set('memory_limit', -1);
+        
         $items = UpdatedIg::orderBy('updated_at', 'desc')->get();
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');

@@ -13,12 +13,14 @@
 </div>
 <hr/>
 
+{!! Html::linkRoute('devices.create', 'Export Device List', array(), ['class' => 'btn btn-success btn-sm']) !!}
 
 
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
 <table class="table table-striped table-hover">
     <thead>
         <tr>
+            <th>Username</th>
             <th>Device ID</th>
             <th>Version</th>
             <th>Last Logged In</th>
@@ -28,6 +30,7 @@
         @if(count($devices) > 0)
             @foreach($devices as $device)                   
                 <tr>
+                    <td>{{ $device->username }}</td>
                     <td>{{ $device->device_id }}</td>
                     <td>{{ $device->version }}</td>
                     <td>{{ $device->updated_at }}</td>

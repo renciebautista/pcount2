@@ -4,6 +4,7 @@ Homestead.yaml
 Homestead.json
 .env
 *.txt
+/storage/report
 /storage/uploads
 /storage/prn
 /database/seeds/seed_files

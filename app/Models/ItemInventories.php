@@ -95,8 +95,8 @@ class ItemInventories extends Model
 			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->orderBy('created_at','desc')
-			// ->paginate(100);
-			->get();
+			->paginate(1000);
+			// ->get();
 	}
 
 	public static function getPartial($filters,$take,$skip){
@@ -170,6 +170,14 @@ class ItemInventories extends Model
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->skip($skip*$take)
 			->take($take)
+			->get();
+	}
+
+	public static function getByDate($date){
+		return self::select(\DB::raw('store_code,store_name, other_barcode,sku_code, description,ig,fso_multiplier,sapc,whpc,whcs,
+			so,fso,fso_val,osa,oos,transaction_date,created_at,signature'))
+			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
+			->where('transaction_date', '=', $date)
 			->get();
 	}
 

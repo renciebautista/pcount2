@@ -94,7 +94,6 @@
 </div>
 
 
-
 <div class="row">
 
     <div class="col-lg-4">
@@ -185,8 +184,8 @@
 </div>
 {!! Form::close() !!}
 
+{!! Paginate::show($items) !!}
 <!-- <hr> -->
-<label class="pull-right">{{ $items->count() }} records found.</label>
 <table class="table table-striped table-hover ">
   	<thead>
 		<tr>

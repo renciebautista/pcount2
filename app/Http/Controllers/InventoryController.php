@@ -36,21 +36,34 @@ class InventoryController extends Controller
             $report_type = 2;
         }
 
+        $sel_ag = []; 
+        $sel_cl = []; 
+        $sel_ch = [];   
+        $sel_ds = []; 
+        $sel_en = []; 
+        $sel_rg = []; 
+        $sel_st = [];
+
+        $sel_dv = [];
+        $sel_cat = [];
+        $sel_scat = [];
+        $sel_br = [];
+
         if($report_type == 2){
             $agencies = StoreInventories::getAgencyList();
-            $sel_ag = StoreInventories::getStoreCodes('agency_code'); 
-            $sel_cl = StoreInventories::getStoreCodes('client_code');    
-            $sel_ch = StoreInventories::getStoreCodes('channel_code');    
-            $sel_ds = StoreInventories::getStoreCodes('distributor_code');  
-            $sel_en = StoreInventories::getStoreCodes('enrollment_type'); 
-            $sel_rg = StoreInventories::getStoreCodes('region_code'); 
-            $sel_st = StoreInventories::getStoreCodes('store_id');
+            // $sel_ag = StoreInventories::getStoreCodes('agency_code'); 
+            // $sel_cl = StoreInventories::getStoreCodes('client_code');    
+            // $sel_ch = StoreInventories::getStoreCodes('channel_code');    
+            // $sel_ds = StoreInventories::getStoreCodes('distributor_code');  
+            // $sel_en = StoreInventories::getStoreCodes('enrollment_type'); 
+            // $sel_rg = StoreInventories::getStoreCodes('region_code'); 
+            // $sel_st = StoreInventories::getStoreCodes('store_id');
 
             $divisions = ItemInventories::getDivisionList();
-            $sel_dv = ItemInventories::getItemCodes('division');
-            $sel_cat = ItemInventories::getItemCodes('category');
-            $sel_scat = ItemInventories::getItemCodes('sub_category');
-            $sel_br = ItemInventories::getItemCodes('brand');
+            // $sel_dv = ItemInventories::getItemCodes('division');
+            // $sel_cat = ItemInventories::getItemCodes('category');
+            // $sel_scat = ItemInventories::getItemCodes('sub_category');
+            // $sel_br = ItemInventories::getItemCodes('brand');
         }else{
             $agencies = AssortmentInventories::getAgencyList();
             $sel_ag = AssortmentInventories::getStoreCodes('agency_code'); 

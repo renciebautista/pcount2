@@ -162,7 +162,27 @@ class UploadAssortmentController extends Controller
                             $updated_ig = UpdatedIg::where('store_code',$store->store_code)
                                 ->where('sku_code',$item->sku_code)
                                 ->first();
+
+                            $other_code = OtherBarcode::where('item_id', $item->id)
+                                ->where('area_id', $store->area->id)
+                                ->first();
+                            $othercode = '';
+                            if(!empty($other_code)){
+                                $othercode = $other_code->other_barcode;
+                            }
+
                             if(!empty($updated_ig)){
+                                $updated_ig->area = $store->area->area;
+                                $updated_ig->region_code = $store->region->region_code;
+                                $updated_ig->region = $store->region->region;
+                                $updated_ig->distributor_code = $store->distributor->distributor_code;
+                                $updated_ig->distributor = $store->distributor->distributor;
+                                $updated_ig->agency_code = $store->agency->agency_code;
+                                $updated_ig->agency = $store->agency->agency_name;
+                                $updated_ig->storeid = $store->storeid;
+                                $updated_ig->channel_code = $store->channel->channel_code;
+                                $updated_ig->channel = $store->channel->channel_desc;
+                                $updated_ig->other_code = $othercode;
                                 $updated_ig->division = $item->division->division;
                                 $updated_ig->category = $item->category->category; 
                                 $updated_ig->sub_category = $item->subcategory->sub_category; 
@@ -175,26 +195,20 @@ class UploadAssortmentController extends Controller
                                 $updated_ig->updated_at = date('Y-m-d H:i:s');
                                 $updated_ig->save();
                             }else{
-                                $other_code = OtherBarcode::where('item_id', $item->id)
-                                    ->where('area_id', $store->area->id)
-                                    ->first();
-                                $othercode = '';
-                                if(!empty($other_code)){
-                                    $othercode = $other_code->other_barcode;
-                                }
+                                
                                 UpdatedIg::create([
                                     'area' => $store->area->area, 
-                                    'region_code' => $store->region->region_code;
-                                    'region' => $store->region->region
-                                    'distributor_code' => $store->distributor->distributor_code;
-                                    'distributor' => $store->distributor->distributor;
-                                    'agency_code' => $store->agency->agency_code;
-                                    'agency' => $store->agency->agency_name;
-                                    'storeid' => $store->storeid;
+                                    'region_code' => $store->region->region_code,
+                                    'region' => $store->region->region,
+                                    'distributor_code' => $store->distributor->distributor_code,
+                                    'distributor' => $store->distributor->distributor,
+                                    'agency_code' => $store->agency->agency_code,
+                                    'agency' => $store->agency->agency_name,
+                                    'storeid' => $store->storeid,
                                     'store_code' => $store->store_code, 
                                     'store_name' => $store->store_name, 
-                                    'channel_code' => $store->channel->channel_code;
-                                    'channel' => $store->channel->channel_desc;
+                                    'channel_code' => $store->channel->channel_code,
+                                    'channel' => $store->channel->channel_desc,
                                     'other_code' => $othercode, 
                                     'sku_code' => $item->sku_code, 
                                     'description' => $item->description, 

@@ -217,10 +217,12 @@ class FilterController extends Controller
             if($report_type == 2){
                 $data['selection'] = ItemInventories::select('category')
                     ->whereIn('division',$divisions)
+                    ->groupBy('category')
                     ->orderBy('category')->lists('category', 'category');
             }else{
                 $data['selection'] = AssortmentItemInventories::select('category')
                     ->whereIn('division',$divisions)
+                    ->groupBy('category')
                     ->orderBy('category')->lists('category', 'category');
             }
             
@@ -243,11 +245,13 @@ class FilterController extends Controller
                 $data['selection'] = ItemInventories::select('sub_category')
                     ->whereIn('division',$divisions)
                     ->whereIn('category',$categories)
+                    ->groupBy('sub_category')
                     ->orderBy('sub_category')->lists('sub_category', 'sub_category');
             }else{
                 $data['selection'] = AssortmentItemInventories::select('sub_category')
                     ->whereIn('division',$divisions)
                     ->whereIn('category',$categories)
+                    ->groupBy('sub_category')
                     ->orderBy('sub_category')->lists('sub_category', 'sub_category');
             }
 
@@ -273,12 +277,14 @@ class FilterController extends Controller
                     ->whereIn('division',$divisions)
                     ->whereIn('category',$categories)
                     ->whereIn('sub_category',$sub_categories)
+                    ->groupBy('brand')
                     ->orderBy('brand')->lists('brand', 'brand');
             }else{
                 $data['selection'] = AssortmentItemInventories::select('brand')
                     ->whereIn('division',$divisions)
                     ->whereIn('category',$categories)
                     ->whereIn('sub_category',$sub_categories)
+                    ->groupBy('brand')
                     ->orderBy('brand')->lists('brand', 'brand');
             }
             

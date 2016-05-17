@@ -28,7 +28,14 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        //
+        $devices = Device::all();
+
+        \Excel::create("Device List", function($excel) use($devices){
+            $excel->sheet('Sheet1', function($sheet) use($devices) {
+                $sheet->fromModel($devices,null, 'A1', true);
+            })->download('xls');
+        });
+
     }
 
     /**

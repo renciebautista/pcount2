@@ -148,7 +148,7 @@ return [
         //manual added
         Collective\Html\HtmlServiceProvider::class,
         'Maatwebsite\Excel\ExcelServiceProvider',
-         Zizaco\Entrust\EntrustServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
 
     ],
@@ -204,6 +204,7 @@ return [
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Paginate' => App\Helpers\Paginate::class,
+        'Dates' => App\Helpers\Dates::class,
     ],
 
 ];
