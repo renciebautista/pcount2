@@ -39,6 +39,7 @@ class SettingsController extends Controller
         $settings->validate_printing_mkl = ($request->has('validate_printing_mkl')) ? 1 : 0;
         $settings->validate_posting_ass = ($request->has('validate_posting_ass')) ? 1 : 0;
         $settings->validate_printing_ass = ($request->has('validate_printing_ass')) ? 1 : 0;
+        $settings->device_password = $request->device_password;
         $settings->update();
 
         Session::flash('flash_message', 'Settings successfully updated.');

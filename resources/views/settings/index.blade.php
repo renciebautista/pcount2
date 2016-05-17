@@ -63,6 +63,10 @@
                   </label>
                 </div>
             </div>
+          <div class="form-group">
+                  <label>Device Default Password</label>
+                  {!! Form::text('device_password',$settings->device_password,['class' => 'form-control']) !!}
+                </div>
 		  	{!! Form::submit('Update', array('class' => 'btn btn-primary')) !!}
 	  	</div>
   	</div>

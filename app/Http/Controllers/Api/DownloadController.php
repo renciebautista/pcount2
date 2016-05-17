@@ -44,6 +44,7 @@ class DownloadController extends Controller
             $data[2] = $settings->validate_printing_mkl;
             $data[3] = $settings->validate_posting_ass;
             $data[4] = $settings->validate_printing_ass;
+            $data[5] = $settings->device_password;
             $writer->addRow($data); 
             
             $writer->close();

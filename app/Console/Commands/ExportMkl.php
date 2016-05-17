@@ -53,7 +53,7 @@ class ExportMkl extends Command
 
         $timeFirst  = strtotime(date('Y-m-d H:i:s'));
 
-        $filePath = storage_path().'/report/postedmkl/test.xlsx';
+        $filePath = storage_path().'/report/postedmkl/Posted MKL '.$startdate.' - '. $enddate.'.xlsx';
         $dates = Dates::getDatesFromRange($startdate, $enddate);
         $writer = WriterFactory::create(Type::XLSX);
         $writer->setShouldCreateNewSheetsAutomatically(true); // default value
