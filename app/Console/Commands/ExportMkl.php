@@ -53,13 +53,15 @@ class ExportMkl extends Command
 
         $timeFirst  = strtotime(date('Y-m-d H:i:s'));
 
-        $filePath = storage_path().'/report/postedmkl/Posted MKL '.$startdate.' - '. $enddate.'.xlsx';
+        $filePath = storage_path().'/report/postedmkl/Posted MKL '.$startdate.' - '. $enddate.'.csv';
         $dates = Dates::getDatesFromRange($startdate, $enddate);
-        $writer = WriterFactory::create(Type::XLSX);
-        $writer->setShouldCreateNewSheetsAutomatically(true); // default value
+        $writer = WriterFactory::create(Type::CSV); 
+        // $writer->setShouldCreateNewSheetsAutomatically(true); // default value
         $writer->openToFile($filePath);
-        $writer->addRow(array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
-                        'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
+        $writer->addRow(array('AREA', 'REGION', 'DISTRIBUTOR', 'DISTRIBUTOR CODE', 'STORE ID', 
+            'STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'DIVISION', 'BRAND', 'CATEGORY', 'SUB CATEGORY',
+            'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
+            'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
 
         foreach ($dates as $date) {
             $rows = NULL;
@@ -73,24 +75,33 @@ class ExportMkl extends Command
                 }else{
                     $link = '';
                 }
-                $row_data[0] = $row->store_code;
-                $row_data[1] = $row->store_name;
-                $row_data[2] = $row->other_barcode;
-                $row_data[3] = $row->sku_code;
-                $row_data[4] = $row->description;
-                $row_data[5] = $row->ig;
-                $row_data[6] = $row->fso_multiplier;
-                $row_data[7] = $row->sapc;
-                $row_data[8] = $row->whpc;
-                $row_data[9] = $row->whcs;
-                $row_data[10] = $row->so;
-                $row_data[11] = $row->fso;
-                $row_data[12] = (double)$row->fso_val;
-                $row_data[13] = $row->osa;
-                $row_data[14] = $row->oos;
-                $row_data[15] = $row->transaction_date;
-                $row_data[16] = $row->created_at;
-                $row_data[17] = $link;
+                $row_data[0] = $row->area;
+                $row_data[1] = $row->region_name;
+                $row_data[2] = $row->distributor;
+                $row_data[3] = $row->distributor_code;
+                $row_data[4] = $row->store_id;
+                $row_data[5] = $row->store_code;
+                $row_data[6] = $row->store_name;
+                $row_data[7] = $row->other_barcode;
+                $row_data[8] = $row->sku_code;
+                $row_data[9] = $row->division;
+                $row_data[10] = $row->brand;
+                $row_data[11] = $row->category;
+                $row_data[12] = $row->sub_category;
+                $row_data[13] = $row->description;
+                $row_data[14] = $row->ig;
+                $row_data[15] = $row->fso_multiplier;
+                $row_data[16] = $row->sapc;
+                $row_data[17] = $row->whpc;
+                $row_data[18] = $row->whcs;
+                $row_data[19] = $row->so;
+                $row_data[20] = $row->fso;
+                $row_data[21] = (double)$row->fso_val;
+                $row_data[22] = $row->osa;
+                $row_data[23] = $row->oos;
+                $row_data[24] = $row->transaction_date;
+                $row_data[25] = $row->created_at;
+                $row_data[26] = $link;
                 $plunck_data[] = $row_data;
             }
 

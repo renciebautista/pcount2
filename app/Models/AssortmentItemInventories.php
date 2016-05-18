@@ -103,7 +103,10 @@ class AssortmentItemInventories extends Model
 	
 	public static function getPartial($filters,$take,$skip){
 
-		return self::where(function($query) use ($filters){
+		return self::select(\DB::raw('area, region_name, distributor, distributor_code, store_id, store_code,store_name, other_barcode,sku_code,
+			division, brand, category, sub_category,description,ig,fso_multiplier,sapc,whpc,whcs,
+			so,fso,fso_val,osa,oos,transaction_date,created_at,signature'))
+			->where(function($query) use ($filters){
 			if(!empty($filters['from'])){
 					$date = explode("-", $filters['from']);
 					$query->where('transaction_date', '>=', $date[2].'-'.$date[0].'-'.$date[1]);
@@ -281,7 +284,7 @@ class AssortmentItemInventories extends Model
 	}
 
 	public static function getOsaPerStore($filters = null){
-		return self::select(\DB::raw('area, store_name,
+		return self::select(\DB::raw('area, region_name, distributor, agency, store_id, store_code, store_name,
 			count(
 				case
 					when osa = 1
@@ -377,7 +380,7 @@ class AssortmentItemInventories extends Model
 	}
 
 	public static function getAssortmentCompliance($filters){
-		return self::select(\DB::raw('area, store_name, client_name,
+		return self::select(\DB::raw('area, region_name, distributor , distributor_code, agency, store_id, store_code, store_name, client_name,
 			count(
 				case
 					when osa = 1

@@ -23,8 +23,10 @@ class AssortmentController extends Controller
         $to = date("m-d-Y");
 
         $areas = AssortmentInventories::getAreaList();
-        $sel_ar = AssortmentInventories::getStoreCodes('area');
-        $sel_st = AssortmentInventories::getStoreCodes('store_id');
+        $sel_ar = [];
+        $sel_st = [];
+        // $sel_ar = AssortmentInventories::getStoreCodes('area');
+        // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         
         
         if(!empty($sel_ar)){
@@ -52,14 +54,14 @@ class AssortmentController extends Controller
      */
     public function store(Request $request)
     {
-         $sel_ar = $request->ar;
+        $sel_ar = $request->ar;
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
 
         $areas = AssortmentInventories::getAreaList();
-        $sel_ar = AssortmentInventories::getStoreCodes('area');
-        $sel_st = AssortmentInventories::getStoreCodes('store_id');
+        // $sel_ar = AssortmentInventories::getStoreCodes('area');
+        // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         
         
         if(!empty($sel_ar)){
@@ -89,13 +91,15 @@ class AssortmentController extends Controller
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week);
                     $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
+                    $store_list[$value->area][$value->store_name] = $value;
                     $items[$value->area][$value->store_name]["Week ".$value->yr_week." of ".$value->yr] = ['passed' => $value->passed, 'failed' => $value->failed, 'client_name' => $value->client_name];
                 }
                 // dd($items);
                 ksort($weeks);
-                $excel->sheet('Sheet1', function($sheet) use ($items,$weeks) {
+                $excel->sheet('Sheet1', function($sheet) use ($items,$weeks,$store_list) {
+                    $default_store_col = 7;
                     $col_array =[];
-                    $col = 2;
+                    $col = 8;
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($col,2, $week);
                         $n_col = $col+3;
@@ -114,8 +118,14 @@ class AssortmentController extends Controller
                     );
                     
                     $area_col = 0;
-                    $store_col = 1;
+                    $store_col = $default_store_col;
                     $sheet->setCellValueByColumnAndRow($area_col,3, 'AREA');
+                    $sheet->setCellValueByColumnAndRow(1,3, 'REGION NAME');
+                    $sheet->setCellValueByColumnAndRow(2,3, 'DISTRIBUTOR NAME');
+                    $sheet->setCellValueByColumnAndRow(3,3, 'DISTRIBUTOR CODE');
+                    $sheet->setCellValueByColumnAndRow(4,3, 'AGENCY');
+                    $sheet->setCellValueByColumnAndRow(5,3, 'STORE CODE');
+                    $sheet->setCellValueByColumnAndRow(6,3, 'STORE ID');
                     $sheet->setCellValueByColumnAndRow($store_col,3, 'STORE NAME');
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($store_col+1,3, 'OOS');
@@ -155,7 +165,13 @@ class AssortmentController extends Controller
                             $oos_row_total = 0;
                             $withstock_row_total = 0;
                             $sheet->setCellValueByColumnAndRow(0,$row, $key );
-                            $sheet->setCellValueByColumnAndRow(1,$row, $skey);
+                            $sheet->setCellValueByColumnAndRow(1,$row, $store_list[$key][$skey]->region_name);
+                            $sheet->setCellValueByColumnAndRow(2,$row, $store_list[$key][$skey]->distributor);
+                            $sheet->setCellValueByColumnAndRow(3,$row, $store_list[$key][$skey]->distributor_code);
+                            $sheet->setCellValueByColumnAndRow(4,$row, $store_list[$key][$skey]->agency);
+                            $sheet->setCellValueByColumnAndRow(5,$row, $store_list[$key][$skey]->store_code);
+                            $sheet->setCellValueByColumnAndRow(6,$row, $store_list[$key][$skey]->store_id);
+                            $sheet->setCellValueByColumnAndRow(7,$row, $skey);
                             $grand_total = 0;
                             foreach ($record as $k => $rowValue) {
                                 $client_name = strtoupper($rowValue['client_name']);
@@ -194,7 +210,7 @@ class AssortmentController extends Controller
                         }
                         $per_area_total_rows[] = $row;
                         $sheet->setCellValueByColumnAndRow(0,$row, $key.' Total');
-                        $store_col = 1;
+                        $store_col = $default_store_col;
                         foreach ($weeks as $week) {
                             $sheet->setCellValueByColumnAndRow($store_col+1,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$last_row.")");
                             $sheet->setCellValueByColumnAndRow($store_col+2,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$last_row.")");

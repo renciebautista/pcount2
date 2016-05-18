@@ -167,14 +167,16 @@ class OsaController extends Controller
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
+        $sel_ar = [];
+        $sel_st = [];
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
-            $sel_ar = StoreInventories::getStoreCodes('area');
-            $sel_st = StoreInventories::getStoreCodes('store_id');
+            // $sel_ar = StoreInventories::getStoreCodes('area');
+            // $sel_st = StoreInventories::getStoreCodes('store_id');
         }else{
             $areas = AssortmentInventories::getAreaList();
-            $sel_ar = AssortmentInventories::getStoreCodes('area');
-            $sel_st = AssortmentInventories::getStoreCodes('store_id');
+            // $sel_ar = AssortmentInventories::getStoreCodes('area');
+            // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         }
         
         if(!empty($sel_ar)){
@@ -254,16 +256,18 @@ class OsaController extends Controller
                 foreach ($inventories as $value) {
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week);
+                    $store_list[$value->area][$value->store_name] = $value;
                     $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
                     $items[$value->area][$value->store_name]["Week ".$value->yr_week." of ".$value->yr] = ['passed' => $value->passed, 'failed' => $value->failed];
 
 
                 }
-                // dd($items);
+                // dd($store_list);
                 ksort($weeks);
-                $excel->sheet('Sheet1', function($sheet) use ($items,$weeks) {
+                $excel->sheet('Sheet1', function($sheet) use ($items,$weeks,$store_list) {
+                    $default_store_col = 6;
                     $col_array =[];
-                    $col = 2;
+                    $col = 7;
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($col,2, $week);
                         $n_col = $col+3;
@@ -282,8 +286,13 @@ class OsaController extends Controller
                     );
                     
                     $area_col = 0;
-                    $store_col = 1;
+                    $store_col = $default_store_col;
                     $sheet->setCellValueByColumnAndRow($area_col,3, 'AREA');
+                    $sheet->setCellValueByColumnAndRow(1,3, 'REGION NAME');
+                    $sheet->setCellValueByColumnAndRow(2,3, 'DISTRIBUTOR NAME');
+                    $sheet->setCellValueByColumnAndRow(3,3, 'AGENCY');
+                    $sheet->setCellValueByColumnAndRow(4,3, 'STORE CODE');
+                    $sheet->setCellValueByColumnAndRow(5,3, 'STORE ID');
                     $sheet->setCellValueByColumnAndRow($store_col,3, 'STORE NAME');
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($store_col+1,3, 'OOS');
@@ -322,7 +331,12 @@ class OsaController extends Controller
                             $oos_row_total = 0;
                             $withstock_row_total = 0;
                             $sheet->setCellValueByColumnAndRow(0,$row, $key );
-                            $sheet->setCellValueByColumnAndRow(1,$row, $skey);
+                            $sheet->setCellValueByColumnAndRow(1,$row, $store_list[$key][$skey]->region_name);
+                            $sheet->setCellValueByColumnAndRow(2,$row, $store_list[$key][$skey]->distributor);
+                            $sheet->setCellValueByColumnAndRow(3,$row, $store_list[$key][$skey]->agency);
+                            $sheet->setCellValueByColumnAndRow(4,$row, $store_list[$key][$skey]->store_id);
+                            $sheet->setCellValueByColumnAndRow(5,$row, $store_list[$key][$skey]->store_code);
+                            $sheet->setCellValueByColumnAndRow(6,$row, $skey);
                             $grand_total = 0;
                             foreach ($record as $k => $rowValue) {
                                 $oos_col = $col_array[$k];
@@ -354,7 +368,7 @@ class OsaController extends Controller
                         }
                         $per_area_total_rows[] = $row;
                         $sheet->setCellValueByColumnAndRow(0,$row, $key.' Total');
-                        $store_col = 1;
+                        $store_col = $default_store_col;
                         foreach ($weeks as $week) {
                             $sheet->setCellValueByColumnAndRow($store_col+1,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+1).$last_row.")");
                             $sheet->setCellValueByColumnAndRow($store_col+2,$row, "=SUM(".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$start_row.":".\PHPExcel_Cell::stringFromColumnIndex($store_col+2).$last_row.")");
@@ -371,7 +385,7 @@ class OsaController extends Controller
                     }
                     $sheet->setCellValueByColumnAndRow(0,$row, 'Grand Total');
 
-                    $store_col = 1;
+                    $store_col = $default_store_col;
                     foreach ($weeks as $week) {
                         $oos_row_cells = [];
                         $withstock_row_cells = [];
@@ -392,7 +406,7 @@ class OsaController extends Controller
                     $oos_row_cells = [];
                     $withstock_row_cells = [];
                     $total_row_cells =[];
-                    $oos_col = (count($col_array) * 4)+1;
+                    $oos_col = (count($col_array) * 4)+6;
                     // dd($oos_col);
                     foreach ($per_area_total_rows as $cell) {
                         $oos_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$cell;

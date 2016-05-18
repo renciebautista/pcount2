@@ -66,19 +66,19 @@ class InventoryController extends Controller
             // $sel_br = ItemInventories::getItemCodes('brand');
         }else{
             $agencies = AssortmentInventories::getAgencyList();
-            $sel_ag = AssortmentInventories::getStoreCodes('agency_code'); 
-            $sel_cl = AssortmentInventories::getStoreCodes('client_code');    
-            $sel_ch = AssortmentInventories::getStoreCodes('channel_code');    
-            $sel_ds = AssortmentInventories::getStoreCodes('distributor_code');  
-            $sel_en = AssortmentInventories::getStoreCodes('enrollment_type'); 
-            $sel_rg = AssortmentInventories::getStoreCodes('region_code'); 
-            $sel_st = AssortmentInventories::getStoreCodes('store_id');
+            // $sel_ag = AssortmentInventories::getStoreCodes('agency_code'); 
+            // $sel_cl = AssortmentInventories::getStoreCodes('client_code');    
+            // $sel_ch = AssortmentInventories::getStoreCodes('channel_code');    
+            // $sel_ds = AssortmentInventories::getStoreCodes('distributor_code');  
+            // $sel_en = AssortmentInventories::getStoreCodes('enrollment_type'); 
+            // $sel_rg = AssortmentInventories::getStoreCodes('region_code'); 
+            // $sel_st = AssortmentInventories::getStoreCodes('store_id');
 
             $divisions = AssortmentItemInventories::getDivisionList();
-            $sel_dv = AssortmentItemInventories::getItemCodes('division');
-            $sel_cat = AssortmentItemInventories::getItemCodes('category');
-            $sel_scat = AssortmentItemInventories::getItemCodes('sub_category');
-            $sel_br = AssortmentItemInventories::getItemCodes('brand');
+            // $sel_dv = AssortmentItemInventories::getItemCodes('division');
+            // $sel_cat = AssortmentItemInventories::getItemCodes('category');
+            // $sel_scat = AssortmentItemInventories::getItemCodes('sub_category');
+            // $sel_br = AssortmentItemInventories::getItemCodes('brand');
         }
         
 
@@ -236,11 +236,12 @@ class InventoryController extends Controller
             $take = 1000; // adjust this however you choose
             $skip = 0; // used to skip over the ones you've already processed
 
-            $writer = WriterFactory::create(Type::XLSX);
-            $writer->setShouldCreateNewSheetsAutomatically(true); // default value
-            $writer->openToBrowser($header.'.xlsx');
-            $writer->addRow(array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
-                        'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
+            $writer = WriterFactory::create(Type::CSV);
+            $writer->openToBrowser($header.'.csv');
+            $writer->addRow(array('AREA', 'REGION', 'DISTRIBUTOR', 'DISTRIBUTOR CODE', 'STORE ID', 
+                'STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'DIVISION', 'BRAND', 'CATEGORY', 'SUB CATEGORY',
+                'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
+                'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
 
             if($report_type == 2){
                 while($rows = ItemInventories::getPartial($data,$take,$skip))
@@ -262,24 +263,33 @@ class InventoryController extends Controller
                         }else{
                             $link = '';
                         }
-                        $row_data[0] = $row->store_code;
-                        $row_data[1] = $row->store_name;
-                        $row_data[2] = $row->other_barcode;
-                        $row_data[3] = $row->sku_code;
-                        $row_data[4] = $row->description;
-                        $row_data[5] = $row->ig;
-                        $row_data[6] = $row->fso_multiplier;
-                        $row_data[7] = $row->sapc;
-                        $row_data[8] = $row->whpc;
-                        $row_data[9] = $row->whcs;
-                        $row_data[10] = $row->so;
-                        $row_data[11] = $row->fso;
-                        $row_data[12] = (double)$row->fso_val;
-                        $row_data[13] = $row->osa;
-                        $row_data[14] = $row->oos;
-                        $row_data[15] = $row->transaction_date;
-                        $row_data[16] = $row->created_at;
-                        $row_data[17] = $link;
+                        $row_data[0] = $row->area;
+                        $row_data[1] = $row->region_name;
+                        $row_data[2] = $row->distributor;
+                        $row_data[3] = $row->distributor_code;
+                        $row_data[4] = $row->store_id;
+                        $row_data[5] = $row->store_code;
+                        $row_data[6] = $row->store_name;
+                        $row_data[7] = $row->other_barcode;
+                        $row_data[8] = $row->sku_code;
+                        $row_data[9] = $row->division;
+                        $row_data[10] = $row->brand;
+                        $row_data[11] = $row->category;
+                        $row_data[12] = $row->sub_category;
+                        $row_data[13] = $row->description;
+                        $row_data[14] = $row->ig;
+                        $row_data[15] = $row->fso_multiplier;
+                        $row_data[16] = $row->sapc;
+                        $row_data[17] = $row->whpc;
+                        $row_data[18] = $row->whcs;
+                        $row_data[19] = $row->so;
+                        $row_data[20] = $row->fso;
+                        $row_data[21] = (double)$row->fso_val;
+                        $row_data[22] = $row->osa;
+                        $row_data[23] = $row->oos;
+                        $row_data[24] = $row->transaction_date;
+                        $row_data[25] = $row->created_at;
+                        $row_data[26] = $link;
                         $plunck_data[] = $row_data;
                     }
 
@@ -306,24 +316,33 @@ class InventoryController extends Controller
                         }else{
                             $link = '';
                         }
-                        $row_data[0] = $row->store_code;
-                        $row_data[1] = $row->store_name;
-                        $row_data[2] = $row->other_barcode;
-                        $row_data[3] = $row->sku_code;
-                        $row_data[4] = $row->description;
-                        $row_data[5] = $row->ig;
-                        $row_data[6] = $row->fso_multiplier;
-                        $row_data[7] = $row->sapc;
-                        $row_data[8] = $row->whpc;
-                        $row_data[9] = $row->whcs;
-                        $row_data[10] = $row->so;
-                        $row_data[11] = $row->fso;
-                        $row_data[12] = (double)$row->fso_val;
-                        $row_data[13] = $row->osa;
-                        $row_data[14] = $row->oos;
-                        $row_data[15] = $row->transaction_date;
-                        $row_data[16] = $row->created_at;
-                        $row_data[17] = $link;
+                        $row_data[0] = $row->area;
+                        $row_data[1] = $row->region_name;
+                        $row_data[2] = $row->distributor;
+                        $row_data[3] = $row->distributor_code;
+                        $row_data[4] = $row->store_id;
+                        $row_data[5] = $row->store_code;
+                        $row_data[6] = $row->store_name;
+                        $row_data[7] = $row->other_barcode;
+                        $row_data[8] = $row->sku_code;
+                        $row_data[9] = $row->division;
+                        $row_data[10] = $row->brand;
+                        $row_data[11] = $row->category;
+                        $row_data[12] = $row->sub_category;
+                        $row_data[13] = $row->description;
+                        $row_data[14] = $row->ig;
+                        $row_data[15] = $row->fso_multiplier;
+                        $row_data[16] = $row->sapc;
+                        $row_data[17] = $row->whpc;
+                        $row_data[18] = $row->whcs;
+                        $row_data[19] = $row->so;
+                        $row_data[20] = $row->fso;
+                        $row_data[21] = (double)$row->fso_val;
+                        $row_data[22] = $row->osa;
+                        $row_data[23] = $row->oos;
+                        $row_data[24] = $row->transaction_date;
+                        $row_data[25] = $row->created_at;
+                        $row_data[26] = $link;
                         $plunck_data[] = $row_data;
                     }
 
@@ -334,56 +353,6 @@ class InventoryController extends Controller
             
 
             $writer->close();
-
-
-            // \Excel::create($header, function($excel)  use ($items,$report_type){
-            //     $excel->sheet('Sheet1', function($sheet) use ($items,$report_type) {
-            //         $sheet->row(1, array('STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
-            //             'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
-            //         $row = 2;
-            //         foreach ($items as $item) {
-            //             if(!is_null($item->signature)){
-            //                 if($report_type == 2){
-            //                     $link = url('api/pcountimage', [$item->signature]);
-            //                 }else{
-            //                     $link = url('api/assortmentimage', [$item->signature]);
-            //                 }
-                            
-            //             }else{
-            //                 $link = '';
-            //             }
-            //             // dd($item);
-
-            //             $sheet->setCellValueByColumnAndRow(0,$row, $item->store_code);
-            //             $sheet->setCellValueByColumnAndRow(1,$row, $item->store_name);
-            //             $sheet->setCellValueByColumnAndRow(2,$row, $item->other_barcode);
-            //             $sheet->setCellValueByColumnAndRow(3,$row, $item->sku_code);
-            //             $sheet->setCellValueByColumnAndRow(4,$row, $item->description);
-            //             $sheet->setCellValueByColumnAndRow(5,$row, $item->ig);
-            //             $sheet->setCellValueByColumnAndRow(6,$row, $item->fso_multiplier);
-            //             $sheet->setCellValueByColumnAndRow(7,$row, $item->sapc);
-            //             $sheet->setCellValueByColumnAndRow(8,$row, $item->whpc);
-            //             $sheet->setCellValueByColumnAndRow(9,$row, $item->whcs);
-            //             $sheet->setCellValueByColumnAndRow(10,$row, $item->so);
-            //             $sheet->setCellValueByColumnAndRow(11,$row, $item->fso);
-            //             $sheet->setCellValueByColumnAndRow(12,$row, $item->fso_val);
-            //             $sheet->setCellValueByColumnAndRow(13,$row, $item->osa);
-            //             $sheet->setCellValueByColumnAndRow(14,$row, $item->oos);
-            //             $sheet->setCellValueByColumnAndRow(15,$row, $item->transaction_date);
-            //             $sheet->setCellValueByColumnAndRow(16,$row, $item->created_at);
-            //             $sheet->setCellValueByColumnAndRow(17,$row, $link);
-                        
-
-            //             $sheet->setCellValue('R'.$row, $link);
-            //             $sheet->getCell('R'.$row)->getHyperlink()->setUrl($link);
-            //             $sheet->getCell('R'.$row)->getHyperlink()->setTooltip('Download Signature');
-            //             $sheet->getStyle('R'.$row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-
-            //             $row++;
-            //         }
-
-            //     });
-            // })->download('xlsx');
         }
     }
 
