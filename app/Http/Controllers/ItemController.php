@@ -12,6 +12,8 @@ use App\Models\ItemType;
 use App\Models\StoreItem;
 use App\Models\OtherBarcode;
 use App\Models\UpdatedIg;
+use App\Models\UpdateHash;
+use App\Models\Store;
 
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
@@ -103,6 +105,14 @@ class ItemController extends Controller
         StoreItem::where('item_id', $item->id)->delete();
 
         $item->delete();
+
+        $hash = UpdateHash::find(1);
+        if(empty($hash)){
+            UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+        }else{
+            $hash->hash = md5(date('Y-m-d H:i:s'));
+            $hash->update();
+        }
         
         Session::flash('flash_class', 'alert-success');
         Session::flash('flash_message', 'Item successfully deleted.');
@@ -115,8 +125,9 @@ class ItemController extends Controller
     }
 
 
-    public function updatedig(){
-        $items = UpdatedIg::orderBy('updated_at', 'desc')->paginate(100);
+    public function updatedig(Request $request){
+        $request->flash();
+        $items = UpdatedIg::search($request);
             
         return view('item.updatedig',compact('items'));
     }
@@ -174,15 +185,13 @@ class ItemController extends Controller
                 $reader = ReaderFactory::create(Type::XLSX); // for XLSX files
                 $reader->open($file_path);
 
-                
-
                 foreach ($reader->getSheetIterator() as $sheet) {
                     if($sheet->getName() == 'Sheet1'){
                         $cnt = 0;
                         foreach ($sheet->getRowIterator() as $row) {
-                            if(!empty($row[0])){
-                                UpdatedIg::where('store_code',$row[0])
-                                    ->where('sku_code',$row[2])
+                            if(!empty($row[5])){
+                                UpdatedIg::where('store_code',$row[5])
+                                    ->where('sku_code',$row[10])
                                     ->delete();
                             }
                             
@@ -211,4 +220,73 @@ class ItemController extends Controller
         }
         return redirect()->route("item.updatedig");
     }
+
+    public function updateig(){
+        return view('item.updateig');
+    }
+
+    public function postupdateig(Request $request){
+        if ($request->hasFile('file'))
+        {
+            $file_path = $request->file('file')->move(storage_path().'/uploads/temp/',$request->file('file')->getClientOriginalName());
+            
+            \DB::beginTransaction();
+            try {
+                $reader = ReaderFactory::create(Type::XLSX); // for XLSX files
+                $reader->open($file_path);
+
+                foreach ($reader->getSheetIterator() as $sheet) {
+                    if($sheet->getName() == 'Sheet1'){
+                        $cnt = 0;
+                        foreach ($sheet->getRowIterator() as $row) {
+                            if(!empty($row[5])){
+                                UpdatedIg::where('store_code',$row[5])
+                                    ->where('sku_code',$row[10])
+                                    ->update(['ig' => $row[19]]);
+
+                                $store = Store::where('store_code',$row[5])->first();
+                                if(!empty($store)){
+                                    $item = Item::where('sku_code', $row[10])->first();
+                                    if(!empty($item)){
+                                        StoreItem::where('store_id', $store->id)
+                                            ->where('item_id', $item->id)
+                                            ->update(['ig' => $row[19]]);
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                    
+                }
+                $hash = UpdateHash::find(1);
+                if(empty($hash)){
+                    UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+                }else{
+                    $hash->hash = md5(date('Y-m-d H:i:s'));
+                    $hash->update();
+                }
+                 \DB::commit();
+
+                $reader->close();
+            } catch (\Exception $e) {
+                dd($e);
+                \DB::rollback();
+            }
+
+            if (\File::exists($file_path))
+            {
+                \File::delete($file_path);
+            }
+
+            Session::flash('flash_message', 'Updated IG successfully updated.');
+            Session::flash('flash_class', 'alert-success');
+        }else{
+            Session::flash('flash_message', 'Error updating item IG.');
+            Session::flash('flash_class', 'alert-danger');
+            
+        }
+        return redirect()->route("item.updatedig");
+    }
+
 }

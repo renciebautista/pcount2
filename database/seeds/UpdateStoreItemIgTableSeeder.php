@@ -15,6 +15,8 @@ class UpdateStoreItemIgTableSeeder extends Seeder
      */
     public function run()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', -1);
         $updated_igs = UpdatedIg::all();
         foreach ($updated_igs as $row) {
         	$store = Store::where('store_code',$row->store_code)->first();

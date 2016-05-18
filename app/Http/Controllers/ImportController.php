@@ -31,7 +31,7 @@ class ImportController extends Controller
             $file_path = $request->file('file')->move($folderpath,'Masterfile.xlsx');
 
             $setting = Setting::find(1);
-            $this->dispatch(new UpdateMasterfile($setting));
+            // $this->dispatch(new UpdateMasterfile($setting));
 
 		    $hash = UpdateHash::find(1);
             if(empty($hash)){

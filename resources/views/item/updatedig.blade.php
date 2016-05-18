@@ -13,14 +13,27 @@
 </div>
 <hr/>
 
+<div class="box box-default">
+        {!! Form::open(array('method' => 'get','class' => 'bs-component')) !!}
+        <div class="form-group">
+            <label>Search</label>
+          {!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'Keywords']) !!}
+        </div>
+
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        {!!  Form::close() !!}
+    </div>
 
 <!-- <hr> -->
 {!! $items->render() !!}
 {!! Paginate::show($items) !!}
 <br>
-<a href="{{ route('item.downloadupdatedig') }}" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span> Export to Excel</a>
+<a href="{{ route('item.downloadupdatedig') }}" class="btn btn-success"><span class="glyphicon glyphicon glyphicon-save"></span> Export to Excel</a>
 <a href="{{ route('item.removeig') }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Remove Items</a>
-
+<a href="{{ route('item.updateig') }}" class="btn btn-success"><span class="glyphicon glyphicon glyphicon-open"></span> Update Item IG</a>
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
 <table class="table table-striped table-hover">
     <thead>

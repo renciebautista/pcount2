@@ -12,7 +12,7 @@ use App\Models\Store;
 use App\Models\Item;
 use App\Models\ItemType;
 use App\Models\StoreItem;
-
+use App\Models\InvalidMapping;
 
 class UploadAssortmentTableSeeder extends Seeder
 {    
@@ -48,56 +48,68 @@ class UploadAssortmentTableSeeder extends Seeder
 				foreach ($sheet->getRowIterator() as $row) {
 					if($row[0] != ''){
 						if($cnt > 0){
-							$channel = '';
-							$customer = '';
-							$store = '';
-							if(trim($row[0]) != "All Channels"){
-								$channel = Channel::where('channel_code', trim($row[0]))->first();
-							}
-							if(trim($row[1]) != "All Customers"){
-								$customer = Customer::where('customer_code', trim($row[1]))->first();
-							}
-							if(trim($row[2]) != "All Stores"){
-								$store = Store::where('store_code', trim($row[2]))->first();
-							}
+							if(!ctype_digit(trim($row[4]))){
+								InvalidMapping::create([
+									'premise_code' => trim($row[0]),
+									'customer_code' => trim($row[1]),
+									'store_code' => trim($row[2]),
+									'sku_code' => trim($row[3]),
+									'ig' => trim($row[4]),
+									'multiplier' => trim($row[5]),
+									'minstock' => trim($row[6]),
+									'type' => 'Assortment Mapping',
+									'remarks' => 'Invalid mapping',
+									]);
+							}else{
+								$channel = '';
+								$customer = '';
+								$store = '';
+								if(trim($row[0]) != "All Channels"){
+									$channel = Channel::where('channel_code', trim($row[0]))->first();
+								}
+								if(trim($row[1]) != "All Customers"){
+									$customer = Customer::where('customer_code', trim($row[1]))->first();
+								}
+								if(trim($row[2]) != "All Stores"){
+									$store = Store::where('store_code', trim($row[2]))->first();
+								}
 
-							$stores = Store::where(function($query) use ($channel){
-								if(!empty($channel)){
-										$query->where('channel_id',$channel->id);
-									}
-								})
-								->where(function($query) use ($customer){
-								if(!empty($customer)){
-										$query->where('customer_id',$customer->id);
-									}
-								})
-								->where(function($query) use ($store){
-								if(!empty($store)){
-										$query->where('store',$store->id);
-									}
-								})
-								->get();
-								
-							$item = Item::where('sku_code', trim($row[3]))->first();
-							if(!empty($item)){
-								$item_type = ItemType::where('type',"ASSORTMENT")->first();
-								foreach ($stores as $store) {
-									$w_mkl = StoreItem::where('store_id',$store->id)->where('item_id',$item->id)->get();
-									if(count($w_mkl) == 0){
-										StoreItem::firstOrCreate([
-											'store_id' => $store->id,
-											'item_id' => $item->id,
-											'item_type_id' =>$item_type->id,
-											'ig' => trim($row[4]),
-											'fso_multiplier' => trim($row[5]),
-											'min_stock' => trim($row[6])
-										]);
-									}
+								$stores = Store::where(function($query) use ($channel){
+									if(!empty($channel)){
+											$query->where('channel_id',$channel->id);
+										}
+									})
+									->where(function($query) use ($customer){
+									if(!empty($customer)){
+											$query->where('customer_id',$customer->id);
+										}
+									})
+									->where(function($query) use ($store){
+									if(!empty($store)){
+											$query->where('store',$store->id);
+										}
+									})
+									->get();
 									
+								$item = Item::where('sku_code', trim($row[3]))->first();
+								if(!empty($item)){
+									$item_type = ItemType::where('type',"ASSORTMENT")->first();
+									foreach ($stores as $store) {
+										$w_mkl = StoreItem::where('store_id',$store->id)->where('item_id',$item->id)->get();
+										if(count($w_mkl) == 0){
+											StoreItem::firstOrCreate([
+												'store_id' => $store->id,
+												'item_id' => $item->id,
+												'item_type_id' =>$item_type->id,
+												'ig' => trim($row[4]),
+												'fso_multiplier' => trim($row[5]),
+												'min_stock' => trim($row[6])
+											]);
+										}
+										
+									}
 								}
 							}
-							
-							
 						}
 						$cnt++;	
 						

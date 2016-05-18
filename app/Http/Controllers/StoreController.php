@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Store;
 use App\Models\StoreItem;
+use App\Models\InvalidStore;
+
 class StoreController extends Controller
 {
     /**
@@ -126,5 +128,12 @@ class StoreController extends Controller
             ->orderBy('store_items.id', 'asc')
             ->get();
         return view('store.assortment', compact('assortment','store'));
+    }
+
+    public function invalid(Request $request)
+    {
+        $request->flash();
+        $stores = InvalidStore::search($request);
+        return view('store.invalid', compact('stores'));
     }
 }

@@ -18,6 +18,7 @@ use App\Models\Store;
 use App\User;
 use App\Role;
 use App\Models\StoreUser;
+use App\Models\InvalidStore;
 
 class UploadStoresTableSeeder extends Seeder
 {
@@ -55,7 +56,7 @@ class UploadStoresTableSeeder extends Seeder
 		DB::table('regions')->truncate();
 		DB::table('customers')->truncate();
 		DB::table('stores')->truncate();
-		// DB::table('users')->truncate();
+		DB::table('invalid_stores')->truncate();
 		DB::table('store_users')->truncate();
 		// $role = Role::find(2)->users()->delete();
 
@@ -66,53 +67,55 @@ class UploadStoresTableSeeder extends Seeder
 			if($sheet->getName() == 'Stores'){
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
-					// dd($row);
+					
 					if($row[0] != ''){
 						if($cnt > 0){
-							$area = Area::firstOrCreate(['area' => strtoupper($row[0])]);
-							$enrollment = Enrollment::firstOrCreate(['enrollment' => strtoupper($row[1])]);
-							$distributor = Distributor::firstOrCreate(['distributor_code' => strtoupper($row[2]), 'distributor' => strtoupper($row[3])]);
-							$client = Client::firstOrCreate(['client_code' => strtoupper($row[8]), 'client_name' => strtoupper($row[9])]);
-							$channel = Channel::firstOrCreate(['channel_code' => strtoupper($row[10]), 'channel_desc' => strtoupper($row[11])]);
-							$agency = Agency::firstOrCreate(['agency_code' => strtoupper($row[19]), 'agency_name' => strtoupper($row[20])]);
-							$region = Region::firstOrCreate(['region_code' => strtoupper($row[16]), 'region' => strtoupper($row[15]), 'region_short' => strtoupper($row[14])]);
-							$customer = Customer::firstOrCreate(['customer_code' => strtoupper($row[12]), 'customer_name' => strtoupper($row[13])]);
-
-							$user = User::where('username',strtoupper($row[22]))->first();
-							if((empty($user)) && (!empty($row[22]))){
-								$user = User::firstOrCreate([
-								'username' => strtoupper($row[22]),
-								'name' => strtoupper($row[22]),
-								'email' => strtoupper($row[22]).'@pcount.com',
-								'password' => Hash::make($row[22])]);
-
-								$user->roles()->attach(2);
-							}
-
-							$storeExist = Store::where('store_code',strtoupper($row[5])->first();
-							if(empty($storeExist)){
-								$store = Store::create([
-									'storeid' => strtoupper($row[4]),
-									'store_code' => strtoupper($row[5]),
-									'store_code_psup' => strtoupper($row[6	]),
-									'store_name' => strtoupper($row[7]),
-									'area_id' => $area->id,
-									'enrollment_id' => $enrollment->id,
-									'distributor_id' => $distributor->id,
-									'client_id' => $client->id,
-									'channel_id' => $channel->id,
-									'customer_id' => $customer->id,
-									'region_id' => $region->id,
-									'agency_id' => $agency->id
-									]);
-								if(!empty($row[22])){
-									StoreUser::insert(['store_id' => $store->id, 'user_id' => $user->id]);
-								}
+							if(strtoupper($row[23]) == 'INACTIVE'){
+								InvalidStore::invalid($row,'Inactive Store');
 							}else{
-								
+								$area = Area::firstOrCreate(['area' => strtoupper($row[0])]);
+								$enrollment = Enrollment::firstOrCreate(['enrollment' => strtoupper($row[1])]);
+								$distributor = Distributor::firstOrCreate(['distributor_code' => strtoupper($row[2]), 'distributor' => strtoupper($row[3])]);
+								$client = Client::firstOrCreate(['client_code' => strtoupper($row[8]), 'client_name' => strtoupper($row[9])]);
+								$channel = Channel::firstOrCreate(['channel_code' => strtoupper($row[10]), 'channel_desc' => strtoupper($row[11])]);
+								$agency = Agency::firstOrCreate(['agency_code' => strtoupper($row[19]), 'agency_name' => strtoupper($row[20])]);
+								$region = Region::firstOrCreate(['region_code' => strtoupper($row[16]), 'region' => strtoupper($row[15]), 'region_short' => strtoupper($row[14])]);
+								$customer = Customer::firstOrCreate(['customer_code' => strtoupper($row[12]), 'customer_name' => strtoupper($row[13])]);
+
+								$user = User::where('username',strtoupper($row[22]))->first();
+								if((empty($user)) && (!empty($row[22]))){
+									$user = User::firstOrCreate([
+									'username' => strtoupper($row[22]),
+									'name' => strtoupper($row[22]),
+									'email' => strtoupper($row[22]).'@pcount.com',
+									'password' => Hash::make($row[22])]);
+
+									$user->roles()->attach(2);
+								}
+								$storeExist = Store::where('store_code',strtoupper($row[5]))->first();
+								if((empty($storeExist)) && (!empty($row[22]))){
+									$store = Store::create([
+										'storeid' => strtoupper($row[4]),
+										'store_code' => strtoupper($row[5]),
+										'store_code_psup' => strtoupper($row[6	]),
+										'store_name' => strtoupper($row[7]),
+										'area_id' => $area->id,
+										'enrollment_id' => $enrollment->id,
+										'distributor_id' => $distributor->id,
+										'client_id' => $client->id,
+										'channel_id' => $channel->id,
+										'customer_id' => $customer->id,
+										'region_id' => $region->id,
+										'agency_id' => $agency->id
+										]);
+									if(!empty($row[22])){
+										StoreUser::insert(['store_id' => $store->id, 'user_id' => $user->id]);
+									}
+								}else{
+									InvalidStore::invalid($row,'Duplicate Store Code');
+								}
 							}
 
-							
 							
 						}
 						$cnt++;	

@@ -73,6 +73,8 @@
                 <li>{!! Html::linkRoute('item.updatedig', 'Updated Inventory Goal', array(), array()) !!}</li>
                 <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('devices.index', 'Device Lists', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('store.invalid', 'Invalid Store List', array(), array()) !!}</li>
+                <li>{!! Html::linkRoute('mapping.invalid', 'Invalid Mapping List', array(), array()) !!}</li>
                 @endif
               </ul>
             </li>
@@ -81,6 +83,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('export.stores', 'Export Store Masterfile', array(), array()) !!}</li>
                 </ul>
             </li>
             @endif

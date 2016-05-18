@@ -49,9 +49,6 @@ class Store extends Model
     }
    
     public static function search($request){
-        // return self::with(['area' => function ($query) {
-        //         $query->orderBy('area', 'desc');
-        //     }])
             return self::where('store_name', 'LIKE', "%$request->search%")
             ->paginate(100)
             ->appends(['search' => $request->search]);

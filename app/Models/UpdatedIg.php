@@ -32,4 +32,12 @@ class UpdatedIg extends Model
         'lpbt',
         'ig'
     	];
+
+    public static function search($request){
+        return self::where('store_code', 'LIKE', "%$request->search%")
+            ->orWhere('store_name', 'LIKE', "%$request->search%")
+            ->orWhere('sku_code', 'LIKE', "%$request->search%")
+            ->paginate(100)
+            ->appends(['search' => $request->search]);
+    }
 }

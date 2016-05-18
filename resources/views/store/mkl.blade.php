@@ -28,6 +28,9 @@
             <th>Brand</th>
             <th>Conversion</th>
             <th>LPBT</th>
+            <th>IG</th>
+            <th>Multiplier</th>
+            <th>Min Stock</th>
         </tr>
     </thead>
   <tbody>
@@ -42,11 +45,14 @@
             <td>{{ $sku->item->brand->brand }}</td>
             <td>{{ $sku->item->conversion }}</td>
             <td>{{ $sku->item->lpbt }}</td>
+            <td>{{ $sku->ig }}</td>
+            <td>{{ $sku->fso_multiplier }}</td>
+            <td>{{ $sku->min_stock }}</td>
         </tr>
         @endforeach
         @else
         <tr>
-            <td colspan="8">No record found.</td>
+            <td colspan="11">No record found.</td>
         </tr>
         @endif
     </tbody>

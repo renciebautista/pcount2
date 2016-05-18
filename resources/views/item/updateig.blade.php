@@ -9,13 +9,13 @@
 <div id="banner">
     <div class="row">
       	<div class="col-lg-12">
-        	<h3>Remove Updated IG</h3>
+        	<h3>Update Item IG</h3>
       	</div>
   	</div>
 </div>
 <hr/>
 
-{!! Form::open(array('action' => array('ItemController@postremoveig'),  'class' => 'bs-component','files'=>true)) !!}
+{!! Form::open(array('action' => array('ItemController@postupdateig'),  'class' => 'bs-component','files'=>true)) !!}
 	<div class="row">
 		<div class="col-lg-6">
 		  	<div class="form-group">
