@@ -13,6 +13,20 @@
 </div>
 <hr/>
 
+<div class="box box-default">
+        {!! Form::open(array('method' => 'get','class' => 'bs-component')) !!}
+        <div class="form-group">
+            <label>Search</label>
+          {!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'SKU Code / Description']) !!}
+        </div>
+
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        {!!  Form::close() !!}
+    </div>
+<br>
 
 <a href="javascript:history.back()" ><button type="button" class="btn btn-default ">Back </button></a>
 <!-- <hr> -->

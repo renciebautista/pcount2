@@ -27,8 +27,8 @@ class UpdatedIg extends Model
         'sub_category',
         'brand',
         'conversion',
-        'fso_multiplier',
         'min_stock',
+        'fso_multiplier',
         'lpbt',
         'ig'
     	];
@@ -37,6 +37,7 @@ class UpdatedIg extends Model
         return self::where('store_code', 'LIKE', "%$request->search%")
             ->orWhere('store_name', 'LIKE', "%$request->search%")
             ->orWhere('sku_code', 'LIKE', "%$request->search%")
+            ->orderBy('updated_at', 'desc')
             ->paginate(100)
             ->appends(['search' => $request->search]);
     }

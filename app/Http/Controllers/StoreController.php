@@ -96,37 +96,17 @@ class StoreController extends Controller
         return view('store.items', compact('skus'));
     }
 
-    public function mkl($id){
+    public function mkl(Request $request, $id){
+        $request->flash();
         $store = Store::findOrFail($id);
-        $mkl = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
-            ->join('items', 'items.id', '=', 'store_items.item_id')
-            ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
-            ->join('categories', 'categories.id', '=', 'items.category_id')
-            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
-            ->join('brands', 'brands.id', '=', 'items.brand_id')
-            ->join('divisions', 'divisions.id', '=', 'items.division_id')
-            ->where('item_type_id',1)
-            ->whereRaw('other_barcodes.area_id = stores.area_id')
-            ->where('store_items.store_id', $id)
-            ->orderBy('store_items.id', 'asc')
-            ->get();
+        $mkl = StoreItem::search($request,1,$id);
         return view('store.mkl', compact('mkl','store'));
     }
 
-    public function assortment($id){
+    public function assortment(Request $request, $id){
+        $request->flash();
         $store = Store::findOrFail($id);
-        $assortment = StoreItem::join('stores', 'stores.id', '=', 'store_items.store_id')
-            ->join('items', 'items.id', '=', 'store_items.item_id')
-            ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
-            ->join('categories', 'categories.id', '=', 'items.category_id')
-            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
-            ->join('brands', 'brands.id', '=', 'items.brand_id')
-            ->join('divisions', 'divisions.id', '=', 'items.division_id')
-            ->where('item_type_id',2)
-            ->whereRaw('other_barcodes.area_id = stores.area_id')
-            ->where('store_items.store_id', $id)
-            ->orderBy('store_items.id', 'asc')
-            ->get();
+        $assortment = StoreItem::search($request,2,$id);
         return view('store.assortment', compact('assortment','store'));
     }
 

@@ -139,32 +139,37 @@ class ItemController extends Controller
         $items = UpdatedIg::orderBy('updated_at', 'desc')->get();
         $writer = WriterFactory::create(Type::XLSX); 
         $writer->openToBrowser('Store Item Updated IG.xlsx');
-        $writer->addRow(array('Area', 'Region', 'Distributor Name', 'Distributor Code', 'Agency', 
-            'Store Code', 'Store Id', 'Store Name', 'Channel Name', 'Other Code',
-            'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'LPBT', 'IG', 'Date Updated'));  
+        $writer->addRow(array('Area', 'Region Code', 'Region', 'Distributor Code', 'Distributor Name', 'Agency Code', 'Agency', 
+            'Store ID', 'Store Code', 'Store Name', 'Channel Code',  'Channel', 'Other Code',
+            'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'FSO Multiplier', 'LPBT', 'IG', 'Created At', 'Date Updated'));  
 
         foreach ($items as $row) {
             $data[0] = $row->area;
-            $data[1] = $row->region;
-            $data[2] = $row->distributor;
+            $data[1] = $row->region_code;
+            $data[2] = $row->region;
             $data[3] = $row->distributor_code;
-            $data[4] = $row->agency;
-            $data[5] = $row->store_code;
-            $data[6] = $row->storeid;
-            $data[7] = $row->store_name;
-            $data[8] = $row->channel;
-            $data[9] = $row->other_code;
-            $data[10] = $row->sku_code;
-            $data[11] = $row->description;
-            $data[12] = $row->division;
-            $data[13] = $row->category;
-            $data[14] = $row->sub_category;
-            $data[15] = $row->brand;
-            $data[16] = $row->conversion;
-            $data[17] = $row->min_stock;
-            $data[18] = $row->lpbt;
-            $data[19] = $row->ig;
-            $data[20] = (string)$row->updated_at;
+            $data[4] = $row->distributor;
+            $data[5] = $row->agency_code;
+            $data[6] = $row->agency;
+            $data[7] = $row->storeid;
+            $data[8] = $row->store_code;
+            $data[9] = $row->store_name;
+            $data[10] = $row->channel_code;
+            $data[11] = $row->channel;
+            $data[12] = $row->other_code;
+            $data[13] = $row->sku_code;
+            $data[14] = $row->description;
+            $data[15] = $row->division;
+            $data[16] = $row->category;
+            $data[17] = $row->sub_category;
+            $data[18] = $row->brand;
+            $data[19] = $row->conversion;
+            $data[20] = $row->min_stock;
+            $data[21] = $row->fso_multiplier;
+            $data[22] = $row->lpbt;
+            $data[23] = $row->ig;
+            $data[24] = (string)$row->created_at;
+            $data[25] = (string)$row->updated_at;
             $writer->addRow($data); 
         }
 
@@ -190,8 +195,8 @@ class ItemController extends Controller
                         $cnt = 0;
                         foreach ($sheet->getRowIterator() as $row) {
                             if(!empty($row[5])){
-                                UpdatedIg::where('store_code',$row[5])
-                                    ->where('sku_code',$row[10])
+                                UpdatedIg::where('store_code',$row[8])
+                                    ->where('sku_code',$row[13])
                                     ->delete();
                             }
                             
@@ -239,22 +244,57 @@ class ItemController extends Controller
                     if($sheet->getName() == 'Sheet1'){
                         $cnt = 0;
                         foreach ($sheet->getRowIterator() as $row) {
-                            if(!empty($row[5])){
-                                UpdatedIg::where('store_code',$row[5])
-                                    ->where('sku_code',$row[10])
-                                    ->update(['ig' => $row[19]]);
-
-                                $store = Store::where('store_code',$row[5])->first();
-                                if(!empty($store)){
-                                    $item = Item::where('sku_code', $row[10])->first();
-                                    if(!empty($item)){
-                                        StoreItem::where('store_id', $store->id)
-                                            ->where('item_id', $item->id)
-                                            ->update(['ig' => $row[19]]);
+                            if($cnt > 0){
+                                if(!empty($row[5])){
+                                    // dd($row);
+                                    $updated_ig = UpdatedIg::where('store_code',$row[8])
+                                        ->where('sku_code',$row[13])->first();
+                                    if(!empty($updated_ig)){
+                                        $updated_ig->ig = $row[23];
+                                        $updated_ig->update();
+                                    }else{
+                                        // dd($row);
+                                        UpdatedIg::firstOrCreate([
+                                            'area' => $row[0],
+                                            'region_code' => $row[1],
+                                            'region' => $row[2],
+                                            'distributor_code' => $row[3],
+                                            'distributor' => $row[4],
+                                            'agency_code' => $row[5],
+                                            'agency' => $row[6],
+                                            'storeid' => $row[7],
+                                            'store_code' => $row[8],
+                                            'store_name' => $row[9],
+                                            'channel_code' => $row[10],
+                                            'channel' => $row[11],
+                                            'other_code' => $row[12],
+                                            'sku_code' => $row[13],
+                                            'description' => $row[14],
+                                            'division' => $row[15],
+                                            'category' => $row[16],
+                                            'sub_category' => $row[17],
+                                            'brand' => $row[18],
+                                            'conversion' => $row[19],
+                                            'min_stock' => $row[20],
+                                            'fso_multiplier' => $row[21],
+                                            'lpbt' => $row[22],
+                                            'ig' => $row[23],
+                                        ]);
                                     }
+
+                                    $store = Store::where('store_code',$row[8])->first();
+                                    if(!empty($store)){
+                                        $item = Item::where('sku_code', $row[13])->first();
+                                        if(!empty($item)){
+                                            StoreItem::where('store_id', $store->id)
+                                                ->where('item_id', $item->id)
+                                                ->update(['ig' => $row[23]]);
+                                        }
+                                    }
+     
                                 }
                             }
-                            
+                            $cnt++;
                         }
                     }
                     
