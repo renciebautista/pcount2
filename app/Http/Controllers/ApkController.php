@@ -146,4 +146,10 @@ class ApkController extends Controller
         return redirect()->route("apk.index");
 
     }
+
+    public function latest(){
+        $apk = Apk::first();
+        $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
+        return \Response::download($path, $apk->file_name);
+    }
 }

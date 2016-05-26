@@ -24,6 +24,8 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' => 'auth.dologin', 'uses' =>  'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses' =>  'Auth\AuthController@getLogout']);
 
+
+Route::get('latest', 'ApkController@latest');
 Route::get('testspeed', function(){
 	return view('testspeed');
 });
@@ -151,4 +153,5 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('betaprotected/{token}/{file_name}', 'Api\UpdateapkController@betadownload');
 	Route::post('betacheck', 'Api\CheckupdateController@betacheck');
 	Route::post('betaverify', 'Api\CheckupdateController@betaverify');
+
 });
