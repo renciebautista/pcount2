@@ -84,6 +84,8 @@
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('export.stores', 'Export Store Masterfile', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('export.items', 'Export Items Masterfile', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('export.othercode', 'Export Item Other Code Masterfile', array(), array()) !!}</li>
                 </ul>
             </li>
             @endif

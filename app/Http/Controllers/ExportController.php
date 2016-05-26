@@ -13,6 +13,8 @@ use Box\Spout\Writer\WriterFactory;
 
 use App\Models\Store;
 use App\Models\StoreUser;
+use App\Models\Item;
+use App\Models\OtherBarcode;
 
 
 class ExportController extends Controller
@@ -40,7 +42,6 @@ class ExportController extends Controller
             ->join('agencies', 'agencies.id', '=', 'stores.agency_id')
             ->join('users', 'users.id', '=', 'store_users.user_id')
             ->get();
-        // dd($stores->count());
         $pluckdata =[];
         foreach ($stores as $store) {
             $data[0] = $store->area;
@@ -67,6 +68,63 @@ class ExportController extends Controller
             $data[21] = '';
             $data[22] = $store->username;
             $data[23] = 'Active';
+            $pluckdata[] = $data;
+        }
+        $writer->addRows($pluckdata); // add multiple rows at a time
+        $writer->close();
+    }
+
+    public function items(){
+        $fileName = "Items Mastefile.csv";
+        $writer = WriterFactory::create(Type::CSV); // for CSV files
+        $writer->openToBrowser($fileName); // stream data directly to the browser
+
+        $writer->addRow(array('Category Long Description', 'Category Short Description', 'SKU Code', 'Barcode', 'Item Short Description', 
+                'Item Long Description', 'Conversion', 'Sub Category', 'Brand', 'Division', 'LPBT/Cond Value (PC)'));
+
+        $items = Item::select(\DB::raw('category_long, category, sku_code, barcode, description, 
+            description_long, conversion, sub_category, brand, division, lpbt'))
+            ->join('categories', 'categories.id', '=', 'items.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
+            ->join('brands', 'brands.id', '=', 'items.brand_id')
+            ->join('divisions', 'divisions.id', '=', 'items.division_id')
+            ->get();
+        $pluckdata =[];
+        foreach ($items as $item) {
+            $data[0] = $item->category_long;
+            $data[1] = $item->category;
+            $data[2] = $item->sku_code;
+            $data[3] = $item->barcode;
+            $data[4] = $item->description;
+            $data[5] = $item->description_long;
+            $data[6] = $item->conversion;
+            $data[7] = $item->sub_category;
+            $data[8] = $item->brand;
+            $data[9] = $item->division;
+            $data[10] = $item->lpbt;
+            $pluckdata[] = $data;
+        }
+        $writer->addRows($pluckdata); // add multiple rows at a time
+        $writer->close();
+    }
+
+    public function othercode(){
+        $fileName = "Item Other Code Masterfile.csv";
+        $writer = WriterFactory::create(Type::CSV); // for CSV files
+        $writer->openToBrowser($fileName); // stream data directly to the browser
+
+        $writer->addRow(array('Sku Code', 'Area', 'Other Code'));
+
+        $items = OtherBarcode::select(\DB::raw('sku_code, area, other_barcode'))
+            ->join('items', 'items.id', '=', 'other_barcodes.item_id')
+            ->join('areas', 'areas.id', '=', 'other_barcodes.area_id')
+            ->orderBy('sku_code')
+            ->get();
+        $pluckdata =[];
+        foreach ($items as $item) {
+            $data[0] = $item->sku_code;
+            $data[1] = $item->area;
+            $data[2] = $item->other_barcode;
             $pluckdata[] = $data;
         }
         $writer->addRows($pluckdata); // add multiple rows at a time

@@ -36,6 +36,9 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
 
 		Route::get('export/stores', ['as' => 'export.stores', 'uses' => 'ExportController@stores']);
+		Route::get('export/items', ['as' => 'export.items', 'uses' => 'ExportController@items']);
+		Route::get('export/othercode', ['as' => 'export.othercode', 'uses' => 'ExportController@othercode']);
+		Route::get('export/storeitems', ['as' => 'export.storeitems', 'uses' => 'ExportController@storeitems']);
 
 		Route::get('store/invalid', array('as' => 'store.invalid', 'uses' => 'StoreController@invalid'));
 		Route::get('store/{id}/mkl', 'StoreController@mkl');
