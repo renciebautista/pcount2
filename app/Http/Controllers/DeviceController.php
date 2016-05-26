@@ -17,7 +17,7 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        $devices = Device::all();
+        $devices = Device::orderBy('updated_at')->get();
         return view('devices.index',compact('devices'));
     }
 
