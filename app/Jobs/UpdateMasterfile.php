@@ -33,6 +33,8 @@ class UpdateMasterfile extends Job implements SelfHandling, ShouldQueue
      */
     public function handle(Mailer $mailer)
     {   
+        // test update
+      
         \Artisan::call('db:seed', ['--class' => 'UpdateMasterfile']);
 
         $data = [];
