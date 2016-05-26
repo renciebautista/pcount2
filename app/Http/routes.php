@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('export/items', ['as' => 'export.items', 'uses' => 'ExportController@items']);
 		Route::get('export/othercode', ['as' => 'export.othercode', 'uses' => 'ExportController@othercode']);
 		Route::get('export/storeitems', ['as' => 'export.storeitems', 'uses' => 'ExportController@storeitems']);
+		Route::get('export/storeosa', ['as' => 'export.storeosa', 'uses' => 'ExportController@storeosa']);
+		Route::get('export/storeassortment', ['as' => 'export.storeassortment', 'uses' => 'ExportController@storeassortment']);
 
 		Route::get('store/invalid', array('as' => 'store.invalid', 'uses' => 'StoreController@invalid'));
 		Route::get('store/{id}/mkl', 'StoreController@mkl');
@@ -104,6 +106,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('assortment', 'AssortmentController', [
 	    'only' => ['index', 'store']
 	]);
+
+	Route::resource('compliance', 'ComplianceReportController', [
+	    'only' => ['index', 'store']
+	]);
 });
 
 
@@ -128,6 +134,8 @@ Route::group(array('prefix' => 'api'), function()
 	Route::post('regionlist', array('as' => 'regionlist', 'uses' => 'Api\FilterController@regionlist'));
 	Route::post('storelist', array('as' => 'storelist', 'uses' => 'Api\FilterController@storelist'));
 	Route::post('areastorelist', array('as' => 'areastorelist', 'uses' => 'Api\FilterController@areastorelist'));
+
+	Route::post('allareastorelist', array('as' => 'allareastorelist', 'uses' => 'ComplianceReportController@allareastorelist'));
 
 	Route::post('categorylist', array('as' => 'categorylist', 'uses' => 'Api\FilterController@categorylist'));
 	Route::post('subcategorylist', array('as' => 'subcategorylist', 'uses' => 'Api\FilterController@subcategorylist'));

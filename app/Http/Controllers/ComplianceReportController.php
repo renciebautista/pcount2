@@ -6,12 +6,22 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\AssortmentInventories;
-use App\Models\AssortmentItemInventories;
 
+use App\Models\ComplianceRepository;
 
-class AssortmentController extends Controller
+class ComplianceReportController extends Controller
 {
+
+    public function allareastorelist(Request $request){
+        if(\Request::ajax()){
+            $areas = $request->areas;
+
+            $data['selection'] = ComplianceRepository::allareastorelist($areas);
+            
+            return \Response::json($data,200);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,11 +32,9 @@ class AssortmentController extends Controller
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
 
-        $areas = AssortmentInventories::getAreaList();
+        $areas = ComplianceRepository::getAllArea();
         $sel_ar = [];
         $sel_st = [];
-        // $sel_ar = AssortmentInventories::getStoreCodes('area');
-        // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         
         
         if(!empty($sel_ar)){
@@ -42,27 +50,28 @@ class AssortmentController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = AssortmentItemInventories::getAssortmentCompliance($data);
+        $compliances = ComplianceRepository::getAssortmentCompliance($data);
         
-        return view('assortment.index', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+        return view('compliance.index', compact('compliances','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        set_time_limit(0);
+        
         $sel_ar = $request->ar;
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
 
-        $areas = AssortmentInventories::getAreaList();
-        // $sel_ar = AssortmentInventories::getStoreCodes('area');
-        // $sel_st = AssortmentInventories::getStoreCodes('store_id');
-        
+        $areas = ComplianceRepository::getAllArea();
         
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
@@ -77,17 +86,18 @@ class AssortmentController extends Controller
             $data['to'] = $to;
         }
 
-        $inventories = AssortmentItemInventories::getAssortmentCompliance($data);
+        $compliances = ComplianceRepository::getAssortmentCompliance($data);
 
         if ($request->has('submit')) {
-            return view('assortment.index', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+            return view('compliance.index', compact('compliances','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
         }
 
         if ($request->has('download')) {
-            \Excel::create('Assortment Compliance Report', function($excel)  use ($inventories){
+
+            \Excel::create('Total Compliance Report', function($excel)  use ($compliances){
                 $weeks = [];
                 $items = [];
-                foreach ($inventories as $value) {
+                foreach ($compliances as $value) {
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week);
                     $weeks[$week_start->format('Y-m-d')] = "Week ".$value->yr_week." of ".$value->yr;
@@ -233,48 +243,10 @@ class AssortmentController extends Controller
                         }
                         $row++;
                     }
-                    // $sheet->setCellValueByColumnAndRow(0,$row, 'Grand Total');
-
-                    // $store_col = 1;
-                    // foreach ($weeks as $week) {
-                    //     $oos_row_cells = [];
-                    //     $withstock_row_cells = [];
-                    //     $total_row_cells =[];
-                    //     $oos_col = $col_array[$week];
-                    //     foreach ($per_area_total_rows as $cell) {
-                    //         $oos_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col).$cell;
-                    //         $withstock_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$cell;
-                    //         $total_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$cell;
-                    //     }
-
-                    //     $sheet->setCellValueByColumnAndRow($oos_col,$row, '=sum('.implode(",", $oos_row_cells).')');
-                    //     $sheet->setCellValueByColumnAndRow($oos_col+1,$row, '=sum('.implode(",", $withstock_row_cells).')');
-                    //     $sheet->setCellValueByColumnAndRow($oos_col+2,$row, '=sum('.implode(",", $total_row_cells).')');
-                    //     $sheet->setCellValueByColumnAndRow($oos_col+3,$row, '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($oos_col).$row.','.\PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$row.'),"")');
-                    // }
-
-                    // $oos_row_cells = [];
-                    // $withstock_row_cells = [];
-                    // $total_row_cells =[];
-                    // $oos_col = (count($col_array) * 4)+1;
-                    // // dd($oos_col);
-                    // foreach ($per_area_total_rows as $cell) {
-                    //     $oos_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$cell;
-                    //     $withstock_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$cell;
-                    //     $total_row_cells[] = \PHPExcel_Cell::stringFromColumnIndex($oos_col+3).$cell;
-                    // }
-
-                    // $sheet->setCellValueByColumnAndRow($oos_col+1,$row, '=sum('.implode(",", $oos_row_cells).')');
-                    // $sheet->setCellValueByColumnAndRow($oos_col+2,$row, '=sum('.implode(",", $withstock_row_cells).')');
-                    // $sheet->setCellValueByColumnAndRow($oos_col+3,$row, '=sum('.implode(",", $total_row_cells).')');
-                    // $sheet->setCellValueByColumnAndRow($oos_col+4,$row, '=IFERROR('.\PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$row.'/SUM('.\PHPExcel_Cell::stringFromColumnIndex($oos_col+1).$row.','.\PHPExcel_Cell::stringFromColumnIndex($oos_col+2).$row.'),"")');
-
                     
                 });
             })->download('xlsx');
         }
-
     }
 
-    
 }

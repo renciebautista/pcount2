@@ -15,6 +15,7 @@ use App\Models\Store;
 use App\Models\StoreUser;
 use App\Models\Item;
 use App\Models\OtherBarcode;
+use App\Models\StoreItem;
 
 
 class ExportController extends Controller
@@ -128,6 +129,70 @@ class ExportController extends Controller
             $pluckdata[] = $data;
         }
         $writer->addRows($pluckdata); // add multiple rows at a time
+        $writer->close();
+    }
+
+    public function storeosa(){
+        $take = 1000; // adjust this however you choose
+        $skip = 0; // used to skip over the ones you've already processed
+
+        $writer = WriterFactory::create(Type::CSV);
+        $writer->openToBrowser('Store OSA Item Masterfile.csv');
+        $writer->addRow(array('STORE CODE', 'STORE NAME', 'SKU CODE', 'BARCODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'MIN STOCK'));
+        set_time_limit(0);
+        while($rows = StoreItem::getPartial($take,$skip,1))
+        {
+            if(count($rows) == 0){
+                break;
+            }
+            $skip ++;
+            $plunck_data = [];
+            foreach($rows as $row)
+            {
+                $row_data[0] = $row->store_code;
+                $row_data[1] = $row->store_name;
+                $row_data[2] = $row->sku_code;
+                $row_data[3] = $row->barcode;
+                $row_data[4] = $row->description;
+                $row_data[5] = $row->ig;
+                $row_data[6] = $row->fso_multiplier;
+                $row_data[7] = $row->min_stock;
+                $plunck_data[] = $row_data;
+            }
+            $writer->addRows($plunck_data); 
+        }
+        $writer->close();
+    }
+
+    public function storeassortment(){
+        $take = 1000; // adjust this however you choose
+        $skip = 0; // used to skip over the ones you've already processed
+
+        $writer = WriterFactory::create(Type::CSV);
+        $writer->openToBrowser('Store Assortment Masterfile.csv');
+        $writer->addRow(array('STORE CODE', 'STORE NAME', 'SKU CODE', 'BARCODE', 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'MIN STOCK'));
+        set_time_limit(0);
+        while($rows = StoreItem::getPartial($take,$skip,2))
+        {
+            if(count($rows) == 0){
+                break;
+            }
+            $skip ++;
+            $plunck_data = [];
+            foreach($rows as $row)
+            {
+                $row_data[0] = $row->store_code;
+                $row_data[1] = $row->store_name;
+                $row_data[2] = $row->sku_code;
+                $row_data[3] = $row->barcode;
+                $row_data[4] = $row->description;
+                $row_data[5] = $row->ig;
+                $row_data[6] = $row->fso_multiplier;
+                $row_data[7] = $row->min_stock;
+                $plunck_data[] = $row_data;
+            }
+            $writer->addRows($plunck_data); 
+        }
         $writer->close();
     }
 }

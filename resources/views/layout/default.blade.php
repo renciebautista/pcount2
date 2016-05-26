@@ -66,6 +66,8 @@
                 <li>{!! Html::linkRoute('osa.store', 'Assortment OSA Per Store Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('oos.sku', 'Assortment OOS SKU Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('assortment.index', 'Assortment Compliance Report', array(), array()) !!}</li>
+                <li role="separator" class="divider"></li>
+                <li>{!! Html::linkRoute('compliance.index', 'Total Compliance Report', array(), array()) !!}</li>
                 @if(Entrust::hasRole('admin'))
                 <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('device_users.index', 'Currently Logged in Device', array(), array()) !!}</li>
@@ -73,6 +75,7 @@
                 <li>{!! Html::linkRoute('item.updatedig', 'Updated Inventory Goal', array(), array()) !!}</li>
                 <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('devices.index', 'Device Lists', array(), array()) !!}</li>
+                <li role="separator" class="divider"></li>
                 <li>{!! Html::linkRoute('store.invalid', 'Invalid Store List', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('mapping.invalid', 'Invalid Mapping List', array(), array()) !!}</li>
                 @endif
@@ -83,9 +86,12 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('import.masterfile', 'Import Masterfile', array(), array()) !!}</li>
+                    <li role="separator" class="divider"></li>
                     <li>{!! Html::linkRoute('export.stores', 'Export Store Masterfile', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('export.items', 'Export Items Masterfile', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('export.othercode', 'Export Item Other Code Masterfile', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('export.storeosa', 'Export Store OSA Item Masterfile', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('export.storeassortment', 'Export Store Assortment Masterfile', array(), array()) !!}</li>
                 </ul>
             </li>
             @endif

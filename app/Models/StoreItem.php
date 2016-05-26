@@ -39,7 +39,15 @@ class StoreItem extends Model
             ->get();
     }
 
-   
+   public static function getPartial($take,$skip,$type){
+        return self::select(\DB::raw('store_code, store_name, sku_code, barcode, description, ig,fso_multiplier, min_stock'))
+            ->join('stores', 'stores.id', '=', 'store_items.store_id')
+            ->join('items', 'items.id', '=', 'store_items.item_id')
+            ->where('item_type_id', $type)
+            ->skip($skip*$take)
+            ->take($take)
+            ->get();
+   }
 
   
 }
