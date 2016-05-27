@@ -154,20 +154,22 @@ class ApkController extends Controller
         // dd(filesize($path));
         // return \Response::download($path, $filename);
 
-        // header('Content-Type: application/vnd.android.package-archive');
-        // header('Content-Disposition: attachment; filename="'.$apk->filename.'"');
-        // readfile($path);
-
-        header('Content-Description: File Transfer');
         header('Content-Type: application/vnd.android.package-archive');
         header('Content-Disposition: attachment; filename="'.$apk->filename.'"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
         header('Content-Length: ' . filesize($path));
-        ob_clean();
-        flush();
         readfile($path);
+
+        // header('Content-Description: File Transfer');
+        // header('Content-Type: application/vnd.android.package-archive');
+        // header('Content-Type: application/vnd.android.package-archive');
+        // header('Content-Disposition: attachment; filename="'.$apk->filename.'"');
+        // header('Content-Transfer-Encoding: binary');
+        // header('Expires: 0');
+        // header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        // header('Pragma: public');
+        // header('Content-Length: ' . filesize($path));
+        // ob_clean();
+        // flush();
+        // readfile($path);
     }
 }
