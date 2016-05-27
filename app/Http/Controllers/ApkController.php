@@ -153,7 +153,7 @@ class ApkController extends Controller
         // return \Response::download($path, $filename);
 
         header('Content-Type: application/vnd.android.package-archive');
-        header('Content-Disposition: attachment; filename="Foo.apk"');
+        header('Content-Disposition: attachment; filename="'.$apk->filename.'"');
         readfile($path);
     }
 }
