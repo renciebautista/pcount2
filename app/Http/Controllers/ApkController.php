@@ -168,6 +168,6 @@ class ApkController extends Controller
         header('Content-Length: ' . filesize($path));
         ob_clean();
         flush();
-        readfile($file);
+        readfile($path);
     }
 }
