@@ -97,6 +97,7 @@ class ComplianceReportController extends Controller
             \Excel::create('Total Compliance Report', function($excel)  use ($compliances){
                 $weeks = [];
                 $items = [];
+                $store_list = [];
                 foreach ($compliances as $value) {
                     $week_start = new \DateTime();
                     $week_start->setISODate($value->yr,$value->yr_week);

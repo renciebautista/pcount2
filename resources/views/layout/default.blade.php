@@ -67,6 +67,7 @@
                 <li>{!! Html::linkRoute('oos.sku', 'Assortment OOS SKU Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('assortment.index', 'Assortment Compliance Report', array(), array()) !!}</li>
                 <li role="separator" class="divider"></li>
+                <li>{!! Html::linkRoute('history.posting', 'Posting History Report', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('compliance.index', 'Total Compliance Report', array(), array()) !!}</li>
                 @if(Entrust::hasRole('admin'))
                 <li role="separator" class="divider"></li>

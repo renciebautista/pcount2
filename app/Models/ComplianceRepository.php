@@ -17,6 +17,57 @@ class ComplianceRepository extends Model
 
     }
 
+    public static function getAllAgency(){
+        $mkl = DB::table('store_inventories')->select('agency_code', 'agency');
+        
+        return DB::table('assortment_inventories')->select('agency_code', 'agency')
+            ->union($mkl)
+            ->orderBy('agency')
+            ->groupBy('agency_code')
+            ->lists('agency', 'agency_code');
+
+    }
+
+    public static function getAllRegion(){
+        $mkl = DB::table('store_inventories')->select('region_code', 'region_name');
+        
+        return DB::table('assortment_inventories')->select('region_code', 'region_name')
+            ->union($mkl)
+            ->orderBy('region_name')
+            ->groupBy('region_code')
+            ->lists('region_name', 'region_code');
+    }
+
+    public static function getAllChannel(){
+        $mkl = DB::table('store_inventories')->select('channel_code', 'channel_name');
+        
+        return DB::table('assortment_inventories')->select('channel_code', 'channel_name')
+            ->union($mkl)
+            ->orderBy('channel_name')
+            ->groupBy('channel_code')
+            ->lists('channel_name', 'channel_code');
+    }
+
+    public static function getAllStore(){
+        $mkl = DB::table('store_inventories')->select('store_code', 'store_name');
+        
+        return DB::table('assortment_inventories')->select('store_code', 'store_name')
+            ->union($mkl)
+            ->orderBy('store_name')
+            ->groupBy('store_code')
+            ->lists('store_name', 'store_code');
+    }
+
+    public static function getAllUser(){
+        $mkl = DB::table('store_inventories')->select('username');
+        
+        return DB::table('assortment_inventories')->select('username')
+            ->union($mkl)
+            ->orderBy('username')
+            ->groupBy('username')
+            ->lists('username', 'username');
+    }
+
     public static function allareastorelist($areas){
     	
     	$mkl = DB::table('store_inventories')->select('store_id', 'store_name')->whereIn('area',$areas);

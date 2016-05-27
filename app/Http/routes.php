@@ -79,6 +79,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	    Route::get('mapping/invalid', array('as' => 'mapping.invalid', 'uses' => 'InvalidMappingController@invalid'));
 
+	    Route::get('history/posting', array('as' => 'history.posting', 'uses' => 'HistoryController@posting'));
+	    Route::post('history/posting', array('as' => 'history.postposting', 'uses' => 'HistoryController@postposting'));
+
 	});
 
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
