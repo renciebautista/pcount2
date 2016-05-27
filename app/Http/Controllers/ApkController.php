@@ -147,9 +147,12 @@ class ApkController extends Controller
 
     }
 
-    public function latest($filename){
+    public function latest(){
         $apk = Apk::first();
         $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
-        return \Response::download($path, $filename);
+        $headers = array(
+            'Content-Type: application/vnd.android.package-archive',
+        );
+        return \Response::download($path, $apk->filename,$headers);
     }
 }
