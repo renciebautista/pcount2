@@ -25,7 +25,7 @@ Route::post('auth/login', ['as' => 'auth.dologin', 'uses' =>  'Auth\AuthControll
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses' =>  'Auth\AuthController@getLogout']);
 
 
-Route::get('latest', 'ApkController@latest');
+Route::get('latest/{filename}', 'ApkController@latest');
 Route::get('testspeed', function(){
 	return view('testspeed');
 });

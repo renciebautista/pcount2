@@ -147,9 +147,9 @@ class ApkController extends Controller
 
     }
 
-    public function latest(){
+    public function latest($filename){
         $apk = Apk::first();
         $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
-        return \Response::download($path, $apk->file_name);
+        return \Response::download($path, $filename);
     }
 }
