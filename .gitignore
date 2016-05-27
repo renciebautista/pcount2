@@ -9,3 +9,4 @@ Homestead.json
 /storage/prn
 /database/seeds/seed_files
 *.pem
+*.csv
