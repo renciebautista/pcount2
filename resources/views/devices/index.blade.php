@@ -16,7 +16,7 @@
 {!! Html::linkRoute('devices.create', 'Export Device List', array(), ['class' => 'btn btn-success btn-sm']) !!}
 
 
-<!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
+<label class="pull-right">{{ $device->count() }} records found.</label>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
