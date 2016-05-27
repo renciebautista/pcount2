@@ -150,11 +150,27 @@ class ApkController extends Controller
     public function latest(){
         $apk = Apk::first();
         $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
-        $headers = array(
-            'Content-Type: application/vnd.android.package-archive',
-        );
+        // $headers = array(
+        //     'Content-Type: application/vnd.android.package-archive',
+        // );
 
-        return response()->download($path, $apk->filename,$headers);
+        // return response()->download($path, $apk->filename,$headers);
         // return \Response::download($path, $apk->filename,$headers);
+
+        $file = $path; //not public folder
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/vnd.android.package-archive');
+            header('Content-Disposition: attachment; filename='.basename($file));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            ob_clean();
+            flush();
+            readfile($file);
+            exit;
+        }
     }
 }
