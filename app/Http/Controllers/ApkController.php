@@ -150,18 +150,10 @@ class ApkController extends Controller
     public function latest(){
         $apk = Apk::first();
         $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
-        // $headers = array(
-        //     'Content-Type: application/vnd.android.package-archive',
-        // );
-
-        // return response()->download($path, $apk->filename,$headers);
-        // return \Response::download($path, $apk->filename,$headers);
+        // return \Response::download($path, $filename);
 
         header('Content-Type: application/vnd.android.package-archive');
-        header("Content-length: " . filesize($path ));
-        header('Content-Disposition: attachment; filename="' . $apk->filename . '"');
-        ob_end_flush();
+        header('Content-Disposition: attachment; filename="Foo.apk"');
         readfile($path);
-        return true;
     }
 }
