@@ -80,21 +80,21 @@ class DownloadController extends Controller
                 $data[3] = $store->channel_id;
                 $data[4] = $store->channel_desc;
                 $data[5] = $store->area;
-                // $data[6] = $store->enrollment;
-                // $data[7] = $store->distributor_code;
-                // $data[8] = $store->distributor;
-                // $data[9] = $store->storeid;
-                // $data[10] = $store->store_code_psup;
-                // $data[11] = $store->client_code;
-                // $data[12] = $store->client_name;
-                // $data[13] = $store->channel_code;
-                // $data[14] = $store->customer_code;
-                // $data[15] = $store->customer_name;
-                // $data[16] = $store->region_code;
-                // $data[17] = $store->region_short;
-                // $data[18] = $store->region;
-                // $data[19] = $store->agency_code;
-                // $data[20] = $store->agency_name;
+                $data[6] = $store->enrollment;
+                $data[7] = $store->distributor_code;
+                $data[8] = $store->distributor;
+                $data[9] = $store->storeid;
+                $data[10] = $store->store_code_psup;
+                $data[11] = $store->client_code;
+                $data[12] = $store->client_name;
+                $data[13] = $store->channel_code;
+                $data[14] = $store->customer_code;
+                $data[15] = $store->customer_name;
+                $data[16] = $store->region_code;
+                $data[17] = $store->region_short;
+                $data[18] = $store->region;
+                $data[19] = $store->agency_code;
+                $data[20] = $store->agency_name;
                 $writer->addRow($data); 
             }
 
@@ -152,8 +152,8 @@ class DownloadController extends Controller
                 $data[11] = $sku->fso_multiplier;
                 $data[12] = $sku->barcode;
                 $data[13] = $sku->min_stock;
-                // $data[14] = $sku->category;
-                // $data[15] = $sku->description_long;
+                $data[14] = $sku->category;
+                $data[15] = $sku->description_long;
                 $writer->addRow($data); 
             }
 
