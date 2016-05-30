@@ -41,9 +41,10 @@
 
 
 <!-- <hr> -->
+<br>
 
 
-{!! Html::linkRoute('store_user.create', 'Add User', array(), ['class' => 'btn btn-success btn-sm pull-right']) !!}
+{!! Html::linkRoute('store_user.create', 'Add User', array(), ['class' => 'btn btn-success btn-sm pull-left']) !!}
 
 <label class="pull-right">{{ $users->count() }} records found.</label>
 
