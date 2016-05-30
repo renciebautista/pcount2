@@ -16,7 +16,7 @@ class DeviceUserController extends Controller
      */
     public function index()
     {
-        $users = User::where('log_status',1)->get();
+        $users = User::where('log_status',1)->orderby('updated_at')->get();
         return view('device_user.index',['users'=>$users]);
     }
 
