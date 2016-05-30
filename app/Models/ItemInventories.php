@@ -289,7 +289,7 @@ class ItemInventories extends Model
 	}
 
 	public static function getOsaPerStore($filters = null){
-		return self::select(\DB::raw('area, region_name, distributor, agency, store_id, store_code, store_name,
+		return self::select(\DB::raw('area, region_name, distributor_code, distributor, agency, store_id, store_code, store_name, channel_code, channel_name,
 			count(
 				case
 					when osa = 1

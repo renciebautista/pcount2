@@ -115,6 +115,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('compliance', 'ComplianceReportController', [
 	    'only' => ['index', 'store']
 	]);
+
+	Route::get('deviceerror', ['as' => 'deviceerror.index', 'uses' => 'DeviceErrorController@index']);
+    Route::get('deviceerror/getfile/{filename}', ['as' => 'deviceerror.getfile', 'uses' => 'DeviceErrorController@getfile']);
 });
 
 
@@ -156,5 +159,7 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('betaprotected/{token}/{file_name}', 'Api\UpdateapkController@betadownload');
 	Route::post('betacheck', 'Api\CheckupdateController@betacheck');
 	Route::post('betaverify', 'Api\CheckupdateController@betaverify');
+
+	Route::post('uploadtrace', 'Api\UploadController@uploadtrace');
 
 });

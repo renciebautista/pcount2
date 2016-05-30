@@ -21,6 +21,7 @@ use App\Models\Item;
 use App\Models\StoreItem;
 use App\Models\UpdatedIg;
 use App\Models\OtherBarcode;
+use App\DeviceError;
 
 class UploadController extends Controller
 {
@@ -273,5 +274,25 @@ class UploadController extends Controller
         $request->file('data')->move($destinationPath, $fileName);
 
         return response()->json(array('msg' => 'file uploaded', 'status' => 0));
+    }
+
+    public function uploadtrace(Request $request){
+        if ($request->hasFile('data'))
+        {
+            $destinationPath = storage_path().'/uploads/traces/';
+            $filename = $request->file('data')->getClientOriginalName();
+            $request->file('data')->move($destinationPath, $filename);
+
+            $error = DeviceError::where('filename',$filename)->first();
+            if(!empty($error)){
+                $error->updated_at = date('Y-m-d H:i:s');
+                $error->update();
+            }else{
+                DeviceError::create(['filename' => $filename]);
+            }
+
+            return response()->json(array('msg' => 'Error trace successfully submitted.', 'status' => 0));
+        }
+        return response()->json(array('msg' => 'Failed in submitting error trace.', 'status' => 1));
     }
 }

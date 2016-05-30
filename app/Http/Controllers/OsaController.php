@@ -265,9 +265,9 @@ class OsaController extends Controller
                 // dd($store_list);
                 ksort($weeks);
                 $excel->sheet('Sheet1', function($sheet) use ($items,$weeks,$store_list) {
-                    $default_store_col = 6;
+                    $default_store_col = 9;
                     $col_array =[];
-                    $col = 7;
+                    $col = 10;
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($col,2, $week);
                         $n_col = $col+3;
@@ -289,10 +289,13 @@ class OsaController extends Controller
                     $store_col = $default_store_col;
                     $sheet->setCellValueByColumnAndRow($area_col,3, 'AREA');
                     $sheet->setCellValueByColumnAndRow(1,3, 'REGION NAME');
-                    $sheet->setCellValueByColumnAndRow(2,3, 'DISTRIBUTOR NAME');
-                    $sheet->setCellValueByColumnAndRow(3,3, 'AGENCY');
-                    $sheet->setCellValueByColumnAndRow(4,3, 'STORE CODE');
-                    $sheet->setCellValueByColumnAndRow(5,3, 'STORE ID');
+                    $sheet->setCellValueByColumnAndRow(2,3, 'DISTRIBUTOR CODE');
+                    $sheet->setCellValueByColumnAndRow(3,3, 'DISTRIBUTOR NAME');
+                    $sheet->setCellValueByColumnAndRow(4,3, 'AGENCY');
+                    $sheet->setCellValueByColumnAndRow(5,3, 'STORE CODE');
+                    $sheet->setCellValueByColumnAndRow(6,3, 'STORE ID');
+                    $sheet->setCellValueByColumnAndRow(7,3, 'CHANNEL CODE');
+                    $sheet->setCellValueByColumnAndRow(8,3, 'CHANNEL NAME');
                     $sheet->setCellValueByColumnAndRow($store_col,3, 'STORE NAME');
                     foreach ($weeks as $week) {
                         $sheet->setCellValueByColumnAndRow($store_col+1,3, 'OOS');
@@ -332,11 +335,14 @@ class OsaController extends Controller
                             $withstock_row_total = 0;
                             $sheet->setCellValueByColumnAndRow(0,$row, $key );
                             $sheet->setCellValueByColumnAndRow(1,$row, $store_list[$key][$skey]->region_name);
-                            $sheet->setCellValueByColumnAndRow(2,$row, $store_list[$key][$skey]->distributor);
-                            $sheet->setCellValueByColumnAndRow(3,$row, $store_list[$key][$skey]->agency);
-                            $sheet->setCellValueByColumnAndRow(4,$row, $store_list[$key][$skey]->store_id);
+                            $sheet->setCellValueByColumnAndRow(2,$row, $store_list[$key][$skey]->distributor_code);
+                            $sheet->setCellValueByColumnAndRow(3,$row, $store_list[$key][$skey]->distributor);
+                            $sheet->setCellValueByColumnAndRow(4,$row, $store_list[$key][$skey]->agency);
                             $sheet->setCellValueByColumnAndRow(5,$row, $store_list[$key][$skey]->store_code);
-                            $sheet->setCellValueByColumnAndRow(6,$row, $skey);
+                            $sheet->setCellValueByColumnAndRow(6,$row, $store_list[$key][$skey]->store_id);
+                            $sheet->setCellValueByColumnAndRow(7,$row, $store_list[$key][$skey]->channel_code);
+                            $sheet->setCellValueByColumnAndRow(8,$row, $store_list[$key][$skey]->channel_name);
+                            $sheet->setCellValueByColumnAndRow(9,$row, $skey);
                             $grand_total = 0;
                             foreach ($record as $k => $rowValue) {
                                 $oos_col = $col_array[$k];
