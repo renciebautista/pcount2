@@ -26,12 +26,29 @@ class DownloadController extends Controller
         $type = $request->type;
 
         $storelist = DB::table('store_users')
-                    ->select('stores.id', 'stores.store_code', 'stores.store_name', 'stores.channel_id', 'channels.channel_desc', 'areas.area')
+                    ->select('stores.id', 'stores.store_code', 'stores.store_name', 
+                        'stores.channel_id', 'channels.channel_desc', 'areas.area',
+                        'enrollments.enrollment',
+                        'distributors.distributor_code', 'distributors.distributor',
+                        'stores.storeid', 'stores.store_code_psup',
+                        'clients.client_code', 'clients.client_name',
+                        'channels.channel_code',
+                        'customers.customer_code', 'customers.customer_name',
+                        'regions.region_code', 'regions.region', 'regions.region_short',
+                        'agencies.agency_code', 'agencies.agency_name'
+                        )
                     ->join('stores', 'stores.id', '=', 'store_users.store_id')
                     ->join('channels', 'channels.id', '=', 'stores.channel_id')
                     ->join('areas', 'areas.id', '=', 'stores.area_id')
+                    ->join('enrollments', 'enrollments.id', '=', 'stores.enrollment_id')
+                    ->join('distributors', 'distributors.id', '=', 'stores.distributor_id')
+                    ->join('clients', 'clients.id', '=', 'stores.client_id')
+                    ->join('customers', 'customers.id', '=', 'stores.customer_id')
+                    ->join('regions', 'regions.id', '=', 'stores.region_id')
+                    ->join('agencies', 'agencies.id', '=', 'stores.agency_id')
                     ->where('store_users.user_id', $user)
                     ->get();
+        // dd($storelist);
 
          if($type == 1){
             $writer = WriterFactory::create(Type::CSV); 
@@ -63,6 +80,22 @@ class DownloadController extends Controller
                 $data[3] = $store->channel_id;
                 $data[4] = $store->channel_desc;
                 $data[5] = $store->area;
+                $data[6] = $store->enrollment;
+                $data[7] = $store->distributor_code;
+                $data[8] = $store->distributor;
+                $data[9] = $store->storeid;
+                $data[10] = $store->store_code_psup;
+                $data[11] = $store->client_code;
+                $data[12] = $store->client_name;
+                $data[13] = $store->channel_code;
+                $data[14] = $store->channel_desc;
+                $data[15] = $store->customer_code;
+                $data[16] = $store->customer_name;
+                $data[17] = $store->region_code;
+                $data[18] = $store->region_short;
+                $data[19] = $store->region;
+                $data[20] = $store->agency_code;
+                $data[21] = $store->agency_name;
                 $writer->addRow($data); 
             }
 
@@ -79,9 +112,12 @@ class DownloadController extends Controller
 
 
             $skus = DB::table('store_items')
-                ->select('store_items.id', 'store_items.store_id', 'items.description', 
+                ->select('store_items.id', 'store_items.store_id', 
+                    'items.description', 'items.description_long', 
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
-                    'items.lpbt', 'categories.category_long','sub_categories.sub_category', 
+                    'items.lpbt', 
+                     'categories.category', 'categories.category_long',
+                    'sub_categories.sub_category', 
                     'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 
                     'items.sku_code', 'items.barcode', 'store_items.min_stock')
                 ->join('stores', 'stores.id', '=', 'store_items.store_id')
@@ -117,6 +153,8 @@ class DownloadController extends Controller
                 $data[11] = $sku->fso_multiplier;
                 $data[12] = $sku->barcode;
                 $data[13] = $sku->min_stock;
+                $data[14] = $sku->category;
+                $data[15] = $sku->description_long;
                 $writer->addRow($data); 
             }
 
@@ -132,11 +170,14 @@ class DownloadController extends Controller
             }
 
             $skus = DB::table('store_items')
-                ->select('store_items.id', 'store_items.store_id', 'items.description', 
+                ->select('store_items.id', 'store_items.store_id', 
+                    'items.description', 'items.description_long', 
                     'items.conversion', 'store_items.ig', 'store_items.fso_multiplier', 
-                    'items.lpbt', 'categories.category_long','sub_categories.sub_category', 
+                    'items.lpbt', 
+                     'categories.category', 'categories.category_long',
+                    'sub_categories.sub_category', 
                     'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 
-                    'items.sku_code', 'items.barcode','store_items.min_stock')
+                    'items.sku_code', 'items.barcode', 'store_items.min_stock')
                 ->join('stores', 'stores.id', '=', 'store_items.store_id')
                 ->join('items', 'items.id', '=', 'store_items.item_id')
                 ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
@@ -170,6 +211,8 @@ class DownloadController extends Controller
                 $data[11] = $sku->fso_multiplier;
                 $data[12] = $sku->barcode;
                 $data[13] = $sku->min_stock;
+                $data[14] = $sku->category;
+                $data[15] = $sku->description_long;
                 $writer->addRow($data); 
             }
 
