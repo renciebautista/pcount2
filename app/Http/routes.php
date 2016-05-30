@@ -161,5 +161,6 @@ Route::group(array('prefix' => 'api'), function()
 	Route::post('betaverify', 'Api\CheckupdateController@betaverify');
 
 	Route::post('uploadtrace', 'Api\UploadController@uploadtrace');
+	Route::get('checkhash', 'Api\AuthUserController@checkhash');
 
 });

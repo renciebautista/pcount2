@@ -83,5 +83,10 @@ class AuthUserController extends Controller
 
         return response()->json(array('msg' => 'Device successfuly logout', 'status' => 0));
     }
+
+    public function checkhash(){
+        $hash = UpdateHash::find(1);
+        return response()->json($hash->hash);
+    }
 }
 

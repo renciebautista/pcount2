@@ -88,14 +88,13 @@ class DownloadController extends Controller
                 $data[11] = $store->client_code;
                 $data[12] = $store->client_name;
                 $data[13] = $store->channel_code;
-                $data[14] = $store->channel_desc;
-                $data[15] = $store->customer_code;
-                $data[16] = $store->customer_name;
-                $data[17] = $store->region_code;
-                $data[18] = $store->region_short;
-                $data[19] = $store->region;
-                $data[20] = $store->agency_code;
-                $data[21] = $store->agency_name;
+                $data[14] = $store->customer_code;
+                $data[15] = $store->customer_name;
+                $data[16] = $store->region_code;
+                $data[17] = $store->region_short;
+                $data[18] = $store->region;
+                $data[19] = $store->agency_code;
+                $data[20] = $store->agency_name;
                 $writer->addRow($data); 
             }
 
