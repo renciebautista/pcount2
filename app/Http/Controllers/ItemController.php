@@ -120,8 +120,9 @@ class ItemController extends Controller
     }
 
     public function othercode($id){
+        $item = Item::findOrFail($id);
         $items = OtherBarcode::where('item_id',$id)->get();
-        return view('item.othercode', compact('items'));
+        return view('item.othercode', compact('item', 'items'));
     }
 
 

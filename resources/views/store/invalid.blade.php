@@ -7,7 +7,7 @@
 <div id="banner">
 	<div class="row">
 		<div class="col-lg-12">
-			<h3>Store List</h3>
+			<h3>Invalid Store List</h3>
 		</div>
 	</div>
 </div>

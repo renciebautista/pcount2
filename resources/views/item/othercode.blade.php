@@ -7,11 +7,13 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>Other Barcode</h3>
+            <h3>{{ $item->sku_code }} - {{ $item->description }}</h3>
         </div>
     </div>
 </div>
 <hr/>
+
+
 
 
 <a href="javascript:history.back()" ><button type="button" class="btn btn-default ">Back </button></a>
