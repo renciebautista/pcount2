@@ -19,7 +19,7 @@ class FixWrongIg extends Migration
         foreach ($updated_igs as $updated_ig) {
             $item = DB::table('item_inventories')->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
                 ->where('sku_code', $updated_ig->sku_code)
-                ->where('store_code', $updated_ig->sku_code)
+                ->where('store_code', $updated_ig->store_code)
                 ->where('updated_at', '<', '2016-05-26')
                 ->orderBy('updated_at','desc')
                 ->first();
