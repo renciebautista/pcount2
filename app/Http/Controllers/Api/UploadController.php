@@ -175,7 +175,7 @@ class UploadController extends Controller
                             'osa' => $osa,
                             'oos' => $oos]);
 
-                        // if($settings->enable_ig_edit){
+                        if($settings->enable_ig_edit){
                             if(!empty($store_item)){
                                 if($store_item->ig != $row[9]){
                                     $store_item->ig = $row[9];
@@ -247,7 +247,7 @@ class UploadController extends Controller
                                     }
                                 }
                             }
-                        // }
+                        }
                     }
                 }
             }

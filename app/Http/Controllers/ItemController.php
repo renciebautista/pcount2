@@ -238,6 +238,7 @@ class ItemController extends Controller
             
             \DB::beginTransaction();
             try {
+                set_time_limit(0);
                 $reader = ReaderFactory::create(Type::XLSX); // for XLSX files
                 $reader->open($file_path);
 
