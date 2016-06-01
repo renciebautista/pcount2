@@ -26,6 +26,7 @@ class FixWrongIg extends Migration
             if(!empty($item)){
                 // dd($item);
                 $updated_ig->ig = $item->ig;
+                $updated_ig->updated_at = date('Y-m-d H:i:s');
                 $updated_ig->save();
                 $cnt++;
             }
