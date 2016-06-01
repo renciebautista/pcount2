@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Setting;
 use Session;
+use App\Models\UpdateHash;
+
 
 class SettingsController extends Controller
 {
@@ -41,6 +43,14 @@ class SettingsController extends Controller
         $settings->validate_printing_ass = ($request->has('validate_printing_ass')) ? 1 : 0;
         $settings->device_password = $request->device_password;
         $settings->update();
+
+        $hash = UpdateHash::find(1);
+        if(empty($hash)){
+            UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+        }else{
+            $hash->hash = md5(date('Y-m-d H:i:s'));
+            $hash->update();
+        }
 
         Session::flash('flash_message', 'Settings successfully updated.');
         Session::flash('flash_class', 'alert-success');
