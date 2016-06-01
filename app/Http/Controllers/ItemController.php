@@ -311,8 +311,8 @@ class ItemController extends Controller
 
                 $reader->close();
             } catch (\Exception $e) {
-                dd($e);
                 \DB::rollback();
+                 dd($e);
             }
 
             if (\File::exists($file_path))
