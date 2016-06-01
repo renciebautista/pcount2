@@ -173,77 +173,77 @@ class UploadAssortmentController extends Controller
                             'oos' => $oos]);
 
 
-                        if(!empty($store_item)){
-                            if($store_item->ig != $row[9]){
-                                $store_item->ig = $row[9];
-                                $store_item->ig_updated = 1;
-                                $store_item->update();
+                        // if(!empty($store_item)){
+                        //     if($store_item->ig != $row[9]){
+                        //         $store_item->ig = $row[9];
+                        //         $store_item->ig_updated = 1;
+                        //         $store_item->update();
                                 
-                                $updated_ig = UpdatedIg::where('store_code',$store->store_code)
-                                    ->where('sku_code',$item->sku_code)
-                                    ->first();
+                        //         $updated_ig = UpdatedIg::where('store_code',$store->store_code)
+                        //             ->where('sku_code',$item->sku_code)
+                        //             ->first();
 
-                                $other_code = OtherBarcode::where('item_id', $item->id)
-                                    ->where('area_id', $store->area->id)
-                                    ->first();
-                                $othercode = '';
-                                if(!empty($other_code)){
-                                    $othercode = $other_code->other_barcode;
-                                }
+                        //         $other_code = OtherBarcode::where('item_id', $item->id)
+                        //             ->where('area_id', $store->area->id)
+                        //             ->first();
+                        //         $othercode = '';
+                        //         if(!empty($other_code)){
+                        //             $othercode = $other_code->other_barcode;
+                        //         }
 
-                                if(!empty($updated_ig)){
-                                    $updated_ig->area = $store->area->area;
-                                    $updated_ig->region_code = $store->region->region_code;
-                                    $updated_ig->region = $store->region->region;
-                                    $updated_ig->distributor_code = $store->distributor->distributor_code;
-                                    $updated_ig->distributor = $store->distributor->distributor;
-                                    $updated_ig->agency_code = $store->agency->agency_code;
-                                    $updated_ig->agency = $store->agency->agency_name;
-                                    $updated_ig->storeid = $store->storeid;
-                                    $updated_ig->channel_code = $store->channel->channel_code;
-                                    $updated_ig->channel = $store->channel->channel_desc;
-                                    $updated_ig->other_code = $othercode;
-                                    $updated_ig->division = $item->division->division;
-                                    $updated_ig->category = $item->category->category; 
-                                    $updated_ig->sub_category = $item->subcategory->sub_category; 
-                                    $updated_ig->brand = $item->brand->brand; 
-                                    $updated_ig->conversion = $item->conversion;
-                                    $updated_ig->fso_multiplier = $row[8]; 
-                                    $updated_ig->min_stock = $store_item->min_stock;
-                                    $updated_ig->lpbt = $item->lpbt;
-                                    $updated_ig->ig = $row[9];
-                                    $updated_ig->updated_at = date('Y-m-d H:i:s');
-                                    $updated_ig->save();
-                                }else{
+                        //         if(!empty($updated_ig)){
+                        //             $updated_ig->area = $store->area->area;
+                        //             $updated_ig->region_code = $store->region->region_code;
+                        //             $updated_ig->region = $store->region->region;
+                        //             $updated_ig->distributor_code = $store->distributor->distributor_code;
+                        //             $updated_ig->distributor = $store->distributor->distributor;
+                        //             $updated_ig->agency_code = $store->agency->agency_code;
+                        //             $updated_ig->agency = $store->agency->agency_name;
+                        //             $updated_ig->storeid = $store->storeid;
+                        //             $updated_ig->channel_code = $store->channel->channel_code;
+                        //             $updated_ig->channel = $store->channel->channel_desc;
+                        //             $updated_ig->other_code = $othercode;
+                        //             $updated_ig->division = $item->division->division;
+                        //             $updated_ig->category = $item->category->category; 
+                        //             $updated_ig->sub_category = $item->subcategory->sub_category; 
+                        //             $updated_ig->brand = $item->brand->brand; 
+                        //             $updated_ig->conversion = $item->conversion;
+                        //             $updated_ig->fso_multiplier = $row[8]; 
+                        //             $updated_ig->min_stock = $store_item->min_stock;
+                        //             $updated_ig->lpbt = $item->lpbt;
+                        //             $updated_ig->ig = $row[9];
+                        //             $updated_ig->updated_at = date('Y-m-d H:i:s');
+                        //             $updated_ig->save();
+                        //         }else{
                                     
-                                    UpdatedIg::create([
-                                        'area' => $store->area->area, 
-                                        'region_code' => $store->region->region_code,
-                                        'region' => $store->region->region,
-                                        'distributor_code' => $store->distributor->distributor_code,
-                                        'distributor' => $store->distributor->distributor,
-                                        'agency_code' => $store->agency->agency_code,
-                                        'agency' => $store->agency->agency_name,
-                                        'storeid' => $store->storeid,
-                                        'store_code' => $store->store_code, 
-                                        'store_name' => $store->store_name, 
-                                        'channel_code' => $store->channel->channel_code,
-                                        'channel' => $store->channel->channel_desc,
-                                        'other_code' => $othercode, 
-                                        'sku_code' => $item->sku_code, 
-                                        'description' => $item->description, 
-                                        'division' => $item->division->division, 
-                                        'category' => $item->category->category, 
-                                        'sub_category' => $item->subcategory->sub_category, 
-                                        'brand' => $item->brand->brand, 
-                                        'conversion' => $item->conversion,
-                                        'fso_multiplier' => $row[8], 
-                                        'min_stock' => $store_item->min_stock,
-                                        'lpbt' => $item->lpbt, 
-                                        'ig' => $row[9]]);
-                                }
-                            }
-                        }
+                        //             UpdatedIg::create([
+                        //                 'area' => $store->area->area, 
+                        //                 'region_code' => $store->region->region_code,
+                        //                 'region' => $store->region->region,
+                        //                 'distributor_code' => $store->distributor->distributor_code,
+                        //                 'distributor' => $store->distributor->distributor,
+                        //                 'agency_code' => $store->agency->agency_code,
+                        //                 'agency' => $store->agency->agency_name,
+                        //                 'storeid' => $store->storeid,
+                        //                 'store_code' => $store->store_code, 
+                        //                 'store_name' => $store->store_name, 
+                        //                 'channel_code' => $store->channel->channel_code,
+                        //                 'channel' => $store->channel->channel_desc,
+                        //                 'other_code' => $othercode, 
+                        //                 'sku_code' => $item->sku_code, 
+                        //                 'description' => $item->description, 
+                        //                 'division' => $item->division->division, 
+                        //                 'category' => $item->category->category, 
+                        //                 'sub_category' => $item->subcategory->sub_category, 
+                        //                 'brand' => $item->brand->brand, 
+                        //                 'conversion' => $item->conversion,
+                        //                 'fso_multiplier' => $row[8], 
+                        //                 'min_stock' => $store_item->min_stock,
+                        //                 'lpbt' => $item->lpbt, 
+                        //                 'ig' => $row[9]]);
+                        //         }
+                        //     }
+                        // }
                     }
                     
                 }
