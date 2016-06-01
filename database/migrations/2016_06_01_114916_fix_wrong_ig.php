@@ -24,7 +24,7 @@ class FixWrongIg extends Migration
                 ->orderBy('updated_at','desc')
                 ->first();
             if(!empty($item)){
-                dd($item);
+                // dd($item);
                 $updated_ig->ig = $item->ig;
                 $updated_ig->save();
                 $cnt++;
