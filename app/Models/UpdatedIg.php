@@ -15,6 +15,7 @@ class UpdatedIg extends Model
         'agency_code',
         'agency',
         'storeid',
+        'store_id',
     	'store_code',
     	'store_name',
         'channel_code',
