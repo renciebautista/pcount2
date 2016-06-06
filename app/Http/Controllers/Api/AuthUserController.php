@@ -12,6 +12,29 @@ use App\Device;
 
 class AuthUserController extends Controller
 {
+    public function getLastLogin(Request $request){
+        $device_id = $request->device_id;
+        $usernameinput =  $request->email;
+
+        $user = User::where('username',$usernameinput)  
+            ->where('device_id',$device_id)
+            ->where('log_status', 1)
+            ->first();
+
+        if(empty($user)){
+            return response()->json(array('msg' => 'Device database currently not sync', 'status' => 1));
+        }else{
+            $t1 = StrToTime(date('Y-m-d H:i:s'));
+            $t2 = StrToTime($user->last_login);
+            $diff = ($t1 - $t2)/ ( 60 * 60 );
+            if($diff >= 24){
+                return response()->json(array('msg' => 'Device database currently not sync', 'status' => 1));
+            }else{
+                return response()->json(array('msg' => 'Device database currently sync', 'status' => 0));
+            }
+        }
+        
+    }
     public function auth(Request $request){
         $device_id = $request->device_id;
         $usernameinput =  $request->email;

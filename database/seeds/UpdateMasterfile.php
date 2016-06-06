@@ -16,8 +16,10 @@ class UpdateMasterfile extends Seeder
         $this->call(UploadStoresTableSeeder::class);
         $this->call(UploadItemsTableSeeder::class);
         $this->call(UploadOtherBarcodesTableSeeder::class);
+
         $this->call(UploadStoreItemsTableSeeder::class);
         $this->call(UploadAssortmentTableSeeder::class);
+        
         // $this->call(UpdateStoreItemIgTableSeeder::class);
 
         $hash = UpdateHash::find(1);

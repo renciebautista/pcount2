@@ -12,6 +12,7 @@ class StoreInventories extends Model
         'distributor_code',
         'distributor',
         'store_id',
+        'store_pri_id',
         'store_code',
         'store_code_psup',
         'store_name',

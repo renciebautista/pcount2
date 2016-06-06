@@ -11,8 +11,6 @@ use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 
-
-
 use DB;
 
 use App\Models\StoreInventories;
@@ -81,21 +79,6 @@ class DownloadController extends Controller
                 $data[4] = $store->channel_desc;
                 $data[5] = $store->area;
 
-                $data[6] = $store->enrollment;
-                $data[7] = $store->distributor_code;
-                $data[8] = $store->distributor;
-                $data[9] = $store->storeid;
-                $data[10] = $store->store_code_psup;
-                $data[11] = $store->client_code;
-                $data[12] = $store->client_name;
-                $data[13] = $store->channel_code;
-                $data[14] = $store->customer_code;
-                $data[15] = $store->customer_name;
-                $data[16] = $store->region_code;
-                $data[17] = $store->region_short;
-                $data[18] = $store->region;
-                $data[19] = $store->agency_code;
-                $data[20] = $store->agency_name;
                 $writer->addRow($data); 
             }
 
@@ -108,8 +91,6 @@ class DownloadController extends Controller
             foreach ($storelist as $store) {
                 $ids[] = $store->id;
             }
-
-
 
             $skus = DB::table('store_items')
                 ->select('store_items.id', 'store_items.store_id', 
@@ -132,6 +113,22 @@ class DownloadController extends Controller
                 ->whereIn('store_items.store_id', $ids)
                 ->orderBy('store_items.id', 'asc')
                 ->get();
+
+            $updated_igs = DB::table('updated_igs')
+                ->whereIn('store_id', $ids)
+                ->get();
+            $updated_ig_list = [];
+            if(!empty($updated_igs)){
+                foreach ($updated_igs as $updated_ig) {
+                    if(!isset($updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code])){
+                        $updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code] = 0;
+                    }
+                    $updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code] = $updated_ig->ig;
+                    
+                }
+            }
+            // dd(count($skus));
+            // dd($updated_ig_list);
                 
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('mkl.txt');
@@ -139,9 +136,16 @@ class DownloadController extends Controller
                 'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'));
             
             foreach ($skus as $sku) {
+
                 $data[0] = $sku->other_barcode;
                 $data[1] = $sku->description;
-                $data[2] = $sku->ig;
+
+                if(isset($updated_ig_list[$sku->store_id][$sku->sku_code])){
+                    $data[2] = $updated_ig_list[$sku->store_id][$sku->sku_code];
+                }else{
+                    $data[2] = $sku->ig;
+                }
+               
                 $data[3] = $sku->conversion;
                 $data[4] = $sku->lpbt;
                 $data[5] = $sku->category_long;
@@ -153,7 +157,6 @@ class DownloadController extends Controller
                 $data[11] = $sku->fso_multiplier;
                 $data[12] = $sku->barcode;
                 $data[13] = $sku->min_stock;
-
                 $data[14] = $sku->category;
                 $data[15] = $sku->description_long;
                 
@@ -236,7 +239,7 @@ class DownloadController extends Controller
         }else{
             return \Response::download($myfile, $name);
         }
-        
+
     }
 
     public function assortmentimage($name){
@@ -250,7 +253,6 @@ class DownloadController extends Controller
         }else{
             return \Response::download($myfile, $name);
         }
-        
     }
 
     public function prnlist(){

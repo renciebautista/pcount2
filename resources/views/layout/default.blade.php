@@ -67,19 +67,9 @@
                 <li>{!! Html::linkRoute('oos.sku', 'Assortment OOS SKU Report', array('type' => 'assortment'), array()) !!}</li>
                 <li>{!! Html::linkRoute('assortment.index', 'Assortment Compliance Report', array(), array()) !!}</li>
                 <li role="separator" class="divider"></li>
-                <li>{!! Html::linkRoute('history.posting', 'Posting History Report', array(), array()) !!}</li>
                 <li>{!! Html::linkRoute('compliance.index', 'Total Compliance Report', array(), array()) !!}</li>
                 @if(Entrust::hasRole('admin'))
-                <li role="separator" class="divider"></li>
-                <li>{!! Html::linkRoute('device_users.index', 'Currently Logged in Device', array(), array()) !!}</li>
-                <li role="separator" class="divider"></li>
-                <li>{!! Html::linkRoute('item.updatedig', 'Updated Inventory Goal', array(), array()) !!}</li>
-                <li role="separator" class="divider"></li>
-                <li>{!! Html::linkRoute('devices.index', 'Device Lists', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('deviceerror.index', 'Device Error Report', array(), array()) !!}</li>
-                <li role="separator" class="divider"></li>
-                <li>{!! Html::linkRoute('store.invalid', 'Invalid Store List', array(), array()) !!}</li>
-                <li>{!! Html::linkRoute('mapping.invalid', 'Invalid Mapping List', array(), array()) !!}</li>
+                
                 @endif
               </ul>
             </li>
@@ -94,6 +84,17 @@
                     <li>{!! Html::linkRoute('export.othercode', 'Export Item Other Code Masterfile', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('export.storeosa', 'Export Store OSA Item Masterfile', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('export.storeassortment', 'Export Store Assortment Masterfile', array(), array()) !!}</li>
+                    <li role="separator" class="divider"></li>
+                    <li>{!! Html::linkRoute('item.updatedig', 'Updated Inventory Goal', array(), array()) !!}</li>
+                    <li role="separator" class="divider"></li>
+                    <li>{!! Html::linkRoute('history.posting', 'Posting History Report', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('device_users.index', 'Currently Logged in Device', array(), array()) !!}</li>
+                    <li role="separator" class="divider"></li>
+                    <li>{!! Html::linkRoute('devices.index', 'Device Lists', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('deviceerror.index', 'Device Error Report', array(), array()) !!}</li>
+                    <li role="separator" class="divider"></li>
+                    <li>{!! Html::linkRoute('store.invalid', 'Invalid Store List', array(), array()) !!}</li>
+                    <li>{!! Html::linkRoute('mapping.invalid', 'Invalid Mapping List', array(), array()) !!}</li>
                 </ul>
             </li>
             @endif

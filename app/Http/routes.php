@@ -123,6 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(array('prefix' => 'api'), function()
 {
+	Route::get('lastlogin', 'Api\AuthUserController@getLastLogin');
+
 	Route::get('auth', 'Api\AuthUserController@auth');
 	Route::get('logout', 'Api\AuthUserController@logout');
 	Route::get('download', 'Api\DownloadController@index');
@@ -134,6 +136,7 @@ Route::group(array('prefix' => 'api'), function()
 	Route::post('uploadassortment', 'Api\UploadAssortmentController@uploadassortment');
 	Route::post('uploadassortmentimage', 'Api\UploadAssortmentController@uploadimage');   
 	Route::get('assortmentimage/{name}', 'Api\DownloadController@assortmentimage');
+
 
 	Route::post('clientlist', array('as' => 'clientlist', 'uses' => 'Api\FilterController@clientlist'));
 	Route::post('channellist', array('as' => 'channellist', 'uses' => 'Api\FilterController@channellist'));

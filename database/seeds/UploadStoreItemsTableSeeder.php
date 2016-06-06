@@ -68,10 +68,10 @@ class UploadStoreItemsTableSeeder extends Seeder
 								$customer = '';
 								$store = '';
 								if(trim($row[0]) != "All Channels"){
-									$channel = Channel::where('channel_code', trim($row[0]))->first();
+									$channel = Channel::where('channel_code', trim($row[0]))->get();
 								}
 								if(trim($row[1]) != "All Customers"){
-									$customer = Customer::where('customer_code', trim($row[1]))->first();
+									$customer = Customer::where('customer_code', trim($row[1]))->get();
 								}
 								if(trim($row[2]) != "All Stores"){
 									$store = Store::where('store_code', trim($row[2]))->first();
@@ -79,12 +79,20 @@ class UploadStoreItemsTableSeeder extends Seeder
 
 								$stores = Store::where(function($query) use ($channel){
 									if(!empty($channel)){
-											$query->where('channel_id',$channel->id);
+											$channel_id = [];
+											foreach ($channel as $value) {
+												$channel_id[] = $value->id;
+											}
+											$query->whereIn('channel_id',$channel_id);
 										}
 									})
 									->where(function($query) use ($customer){
 									if(!empty($customer)){
-											$query->where('customer_id',$customer->id);
+											$customer_id = [];
+											foreach ($customer as $value) {
+												$customer_id[] = $value->id;
+											}
+											$query->whereIn('customer_id',$customer_id);
 										}
 									})
 									->where(function($query) use ($store){
