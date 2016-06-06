@@ -36,7 +36,7 @@ class UploadController extends Controller
         $filePath = storage_path().'/uploads/pcount/' . $fileName;
 
         $filename_data = explode("-", $fileName);
-        if((count($filename_data) == 5) && ($filename_data[5] == '5')){
+        if((count($filename_data) == 6) && ($filename_data[5] == '5')){
             $storeid = $filename_data[0];
             $userid = $filename_data[1];
             $year = explode(".", $filename_data[4]);
