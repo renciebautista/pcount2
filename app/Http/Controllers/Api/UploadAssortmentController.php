@@ -37,7 +37,7 @@ class UploadAssortmentController extends Controller
         
         $filename_data = explode("-", $fileName);
 
-        
+
         if((count($filename_data) == 6) && ($filename_data[5] == '5.csv')){
             $storeid = $filename_data[0];
             $userid = $filename_data[1];
@@ -59,7 +59,7 @@ class UploadAssortmentController extends Controller
                     ->find($storeid);
             
             // dd($store->store_code);
-            $user = User::find($userid)
+            $user = User::find($userid);
 
             DB::beginTransaction();
             try {
