@@ -64,13 +64,13 @@ class UploadAssortmentTableSeeder extends Seeder
 								$channel = '';
 								$customer = '';
 								$store = '';
-								if(trim($row[0]) != "All Channel"){
+								if(trim($row[0]) != ''){
 									$channel = Channel::where('channel_code', trim($row[0]))->get();
 								}
-								if(trim($row[1]) != "All Customer"){
+								if(trim($row[1]) != ''){
 									$customer = Customer::where('customer_code', trim($row[1]))->get();
 								}
-								if(trim($row[2]) != "All Store"){
+								if(trim($row[2]) != ''){
 									$store = Store::where('store_code', trim($row[2]))->first();
 								}
 
