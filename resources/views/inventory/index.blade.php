@@ -202,6 +202,8 @@
 	  		<th>FSO</th>
             <th>OSA</th>
             <th>OOS</th>
+            <th>OSA Tagged</th>
+            <th>NPI Tagged</th>
 	  		<th>Transanction Date</th>
 		</tr>
   	</thead>
@@ -222,12 +224,16 @@
 			<td class="right">{{ number_format($item->fso) }}</td>
             <td class="right">{{ $item->osa }}</td>
             <td class="right">{{ $item->oos }}</td>
+
+            <td class="right">{{ $item->osa_tagged }}</td>
+            <td class="right">{{ $item->npi_tagged }}</td>
+
 			<td class="right">{{ $item->transaction_date }}</td>
 		</tr>
 		@endforeach
 		@else
 		<tr>
-	  		<td colspan="14">No record found.</td>
+	  		<td colspan="16">No record found.</td>
 		</tr>
 		@endif
   	</tbody>

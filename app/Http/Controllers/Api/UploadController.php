@@ -157,7 +157,9 @@ class UploadController extends Controller
                                 'fso' => $row[5],
                                 'fso_val' => $row[6],
                                 'osa' => $osa,
-                                'oos' => $oos]);
+                                'oos' => $oos,
+                                'osa_tagged' => $row[11],
+                                'npi_tagged' => $row[12]]);
 
                             if($settings->enable_ig_edit){
                                 if(!empty($store_item)){

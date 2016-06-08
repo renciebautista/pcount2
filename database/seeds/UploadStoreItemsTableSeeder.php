@@ -106,13 +106,24 @@ class UploadStoreItemsTableSeeder extends Seeder
 								if(!empty($item)){
 									$item_type = ItemType::where('type',"MKL")->first();							
 									foreach ($stores as $store) {
+										$osa_tagging = 0;
+										if(isset($row[7])){
+											$osa_tagging = trim($row[7]);
+										}
+										$npi_tagging = 0;
+										if(isset($row[8])){
+											$npi_tagging = trim($row[8]);
+										}
+
 										StoreItem::firstOrCreate([
 											'store_id' => $store->id,
 											'item_id' => $item->id,
 											'item_type_id' => $item_type->id,
 											'ig' => trim($row[4]),
 											'fso_multiplier' => trim($row[5]),
-											'min_stock' => trim($row[6])
+											'min_stock' => trim($row[6]),
+											'osa_tagged' => $osa_tagging,
+											'npi_tagged' => $npi_tagging
 										]);
 									}
 								}

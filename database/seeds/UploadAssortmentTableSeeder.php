@@ -111,7 +111,9 @@ class UploadAssortmentTableSeeder extends Seeder
 												'item_type_id' =>$item_type->id,
 												'ig' => trim($row[4]),
 												'fso_multiplier' => trim($row[5]),
-												'min_stock' => trim($row[6])
+												'min_stock' => trim($row[6]),
+												'osa_tagged' => false,
+												'npi_tagged' => false
 											]);
 										}
 										

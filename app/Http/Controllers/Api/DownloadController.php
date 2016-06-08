@@ -100,7 +100,8 @@ class DownloadController extends Controller
                      'categories.category', 'categories.category_long',
                     'sub_categories.sub_category', 
                     'brands.brand', 'divisions.division', 'other_barcodes.other_barcode', 
-                    'items.sku_code', 'items.barcode', 'store_items.min_stock')
+                    'items.sku_code', 'items.barcode', 'store_items.min_stock',
+                    'store_items.osa_tagged', 'store_items.npi_tagged')
                 ->join('stores', 'stores.id', '=', 'store_items.store_id')
                 ->join('items', 'items.id', '=', 'store_items.item_id')
                 ->join('other_barcodes', 'other_barcodes.item_id', '=', 'items.id')
@@ -133,7 +134,8 @@ class DownloadController extends Controller
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('mkl.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'));
+                'Conversion', 'LPBT', 'Category Long', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'
+                'Category', 'Long Desc', 'OSA Tagged', 'NPI Tagged'));
             
             foreach ($skus as $sku) {
 
@@ -159,6 +161,9 @@ class DownloadController extends Controller
                 $data[13] = $sku->min_stock;
                 $data[14] = $sku->category;
                 $data[15] = $sku->description_long;
+
+                $data[16] = $sku->osa_tagged;
+                $data[17] = $sku->npi_tagged;
                 
                 $writer->addRow($data); 
             }
