@@ -134,7 +134,7 @@ class DownloadController extends Controller
             $writer = WriterFactory::create(Type::CSV); 
             $writer->openToBrowser('mkl.txt');
             $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category Long', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'
+                'Conversion', 'LPBT', 'Category Long', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock',
                 'Category', 'Long Desc', 'OSA Tagged', 'NPI Tagged'));
             
             foreach ($skus as $sku) {

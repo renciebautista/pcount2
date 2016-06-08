@@ -67,13 +67,13 @@ class UploadStoreItemsTableSeeder extends Seeder
 								$channel = '';
 								$customer = '';
 								$store = '';
-								if(trim($row[0]) != "All Channels"){
+								if(trim($row[0]) != "All Channel"){
 									$channel = Channel::where('channel_code', trim($row[0]))->get();
 								}
-								if(trim($row[1]) != "All Customers"){
+								if(trim($row[1]) != "All Customer"){
 									$customer = Customer::where('customer_code', trim($row[1]))->get();
 								}
-								if(trim($row[2]) != "All Stores"){
+								if(trim($row[2]) != "All Store"){
 									$store = Store::where('store_code', trim($row[2]))->first();
 								}
 

@@ -64,16 +64,17 @@ class UploadAssortmentTableSeeder extends Seeder
 								$channel = '';
 								$customer = '';
 								$store = '';
-								if(trim($row[0]) != "All Channels"){
+								if(trim($row[0]) != "All Channel"){
 									$channel = Channel::where('channel_code', trim($row[0]))->get();
 								}
-								if(trim($row[1]) != "All Customers"){
+								if(trim($row[1]) != "All Customer"){
 									$customer = Customer::where('customer_code', trim($row[1]))->get();
 								}
-								if(trim($row[2]) != "All Stores"){
+								if(trim($row[2]) != "All Store"){
 									$store = Store::where('store_code', trim($row[2]))->first();
 								}
 
+								// dd($store);
 								$stores = Store::where(function($query) use ($channel){
 									if(!empty($channel)){
 											$channel_id = [];
@@ -98,8 +99,9 @@ class UploadAssortmentTableSeeder extends Seeder
 										}
 									})
 									->get();
-									
+								// dd($stores);
 								$item = Item::where('sku_code', trim($row[3]))->first();
+								
 								if(!empty($item)){
 									$item_type = ItemType::where('type',"ASSORTMENT")->first();
 									foreach ($stores as $store) {
@@ -112,8 +114,8 @@ class UploadAssortmentTableSeeder extends Seeder
 												'ig' => trim($row[4]),
 												'fso_multiplier' => trim($row[5]),
 												'min_stock' => trim($row[6]),
-												'osa_tagged' => false,
-												'npi_tagged' => false
+												'osa_tagged' => 0,
+												'npi_tagged' => 0
 											]);
 										}
 										
