@@ -93,6 +93,17 @@ class ItemInventories extends Model
 					$query->whereIn('brand', $filters['brands']);
 				}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['tags'])){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->orderBy('created_at','desc')
 			->paginate(1000);

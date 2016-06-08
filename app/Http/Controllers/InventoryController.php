@@ -48,7 +48,8 @@ class InventoryController extends Controller
         $sel_cat = [];
         $sel_scat = [];
         $sel_br = [];
-
+        $sel_tag = [];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
         if($report_type == 2){
             $agencies = StoreInventories::getAgencyList();
             // $sel_ag = StoreInventories::getStoreCodes('agency_code'); 
@@ -135,7 +136,7 @@ class InventoryController extends Controller
 
         return view('inventory.index',compact('frm', 'to', 'agencies','sel_ag',
             'sel_cl', 'sel_ch', 'sel_ds', 'sel_en', 'sel_rg', 'sel_st',
-            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type'));
+            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type', 'sel_tag', 'tags'));
     }
 
     /**
@@ -153,6 +154,9 @@ class InventoryController extends Controller
         $sel_en = $request->en;
         $sel_rg = $request->rg;
         $sel_st = $request->st;
+        $sel_tag = $request->tags;
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
+
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -215,6 +219,9 @@ class InventoryController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
+        if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
+        }
 
         if($report_type == 2){
             $items = ItemInventories::filter($data);
@@ -227,7 +234,7 @@ class InventoryController extends Controller
         if ($request->has('submit')) {
             return view('inventory.index',compact('frm', 'to', 'agencies','sel_ag',
             'sel_cl', 'sel_ch', 'sel_ds', 'sel_en', 'sel_rg', 'sel_st',
-            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type'));
+            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type', 'sel_tag', 'tags'));
         }
 
         set_time_limit(0);

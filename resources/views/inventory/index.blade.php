@@ -153,7 +153,12 @@
         </div>
 	</div>
 	<div class="col-lg-4">
-		
+		 <div class="form-group">
+                {!! Form::label('tag', 'Item Tag', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('tags[]', $tags, $sel_tag, array('class' => 'form-control select_form', 'id' => 'tag', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
 	</div>
 
 	<div class="col-lg-4">
@@ -290,6 +295,16 @@ $(document).ready(function() {
           	updateclient();	
         }
     });
+
+     $('#tag').multiselect({
+        maxHeight: 200,
+        includeSelectAllOption: true,
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'form-control',
+    });
+
 
     function updateclient(){
         $.ajax({
