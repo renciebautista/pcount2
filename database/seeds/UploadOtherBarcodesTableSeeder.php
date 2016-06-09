@@ -47,7 +47,7 @@ class UploadOtherBarcodesTableSeeder extends Seeder
 						if($cnt > 0){
 							$item = Item::where('sku_code', trim($row[0]))->first();
 							$area = Area::where('area', strtoupper($row[1]))->first();
-							if((!empty($item)) || (!empty($area))){
+							if((!empty($item)) && (!empty($area))){
 								OtherBarcode::firstOrCreate([
 									'item_id' => $item->id,
 									'area_id' => $area->id,
