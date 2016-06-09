@@ -115,20 +115,20 @@ class DownloadController extends Controller
                 ->orderBy('store_items.id', 'asc')
                 ->get();
 
-            $updated_igs = DB::table('updated_igs')
-                ->whereIn('store_id', $ids)
-                ->get();
+            // $updated_igs = DB::table('updated_igs')
+            //     ->whereIn('store_id', $ids)
+            //     ->get();
 
-            $updated_ig_list = [];
-            if(!empty($updated_igs)){
-                foreach ($updated_igs as $updated_ig) {
-                    if(!isset($updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code])){
-                        $updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code] = 0;
-                    }
-                    $updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code] = $updated_ig->ig;
+            // $updated_ig_list = [];
+            // if(!empty($updated_igs)){
+            //     foreach ($updated_igs as $updated_ig) {
+            //         if(!isset($updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code])){
+            //             $updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code] = 0;
+            //         }
+            //         $updated_ig_list[$updated_ig->store_id][$updated_ig->sku_code] = $updated_ig->ig;
                     
-                }
-            }
+            //     }
+            // }
             
                 
             $writer = WriterFactory::create(Type::CSV); 
@@ -141,12 +141,13 @@ class DownloadController extends Controller
 
                 $data[0] = $sku->other_barcode;
                 $data[1] = $sku->description;
+                $data[2] = $sku->ig;
 
-                if(isset($updated_ig_list[$sku->store_id][$sku->sku_code])){
-                    $data[2] = $updated_ig_list[$sku->store_id][$sku->sku_code];
-                }else{
-                    $data[2] = $sku->ig;
-                }
+                // if(isset($updated_ig_list[$sku->store_id][$sku->sku_code])){
+                //     $data[2] = $updated_ig_list[$sku->store_id][$sku->sku_code];
+                // }else{
+                //     $data[2] = $sku->ig;
+                // }
                
                 $data[3] = $sku->conversion;
                 $data[4] = $sku->lpbt;
