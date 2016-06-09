@@ -43,7 +43,7 @@ class UploadOtherBarcodesTableSeeder extends Seeder
 			if($sheet->getName() == 'Other Codes'){
 				$cnt = 0;
 				foreach ($sheet->getRowIterator() as $row) {
-					if(!is_null($row[0])){
+					if((!is_null($row[0])) && (trim($row[0]) != '')){
 						if($cnt > 0){
 							$item = Item::where('sku_code', trim($row[0]))->first();
 							$area = Area::where('area', strtoupper($row[1]))->first();
