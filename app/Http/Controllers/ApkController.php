@@ -99,8 +99,17 @@ class ApkController extends Controller
     public function show($id)
     {
         $apk = Apk::findOrFail($id);
+        // $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
+        // return \Response::download($path, $apk->file_name);
         $path = base_path().'/storage/apk/'.$apk->pkgname.'/'.$apk->filename;
-        return \Response::download($path, $apk->file_name);
+
+        // dd(filesize($path));
+        // return \Response::download($path, $filename);
+
+        header('Content-Type: application/vnd.android.package-archive');
+        header('Content-Disposition: attachment; filename="'.$apk->filename.'"');
+        header('Content-Length: ' . filesize($path));
+        readfile($path);
     }
 
     /**
