@@ -124,13 +124,10 @@ class UploadAssortmentController extends Controller
                             if(!empty($store_item)){
                                 $min_stock = $store_item->min_stock;
                             }
-                            // if($total_stockcs > 0){
-                            //     $osa = 1;
-                            // }else{
-                            //     $oos = 1;
-                            // }
+ 
 
-                            if($total_stockcs > $min_stock){
+                            // if($total_stockcs > $min_stock){
+                            if($row[1] > $min_stock){
                                 $osa = 1;
                             }else{
                                 $oos = 1;
@@ -150,6 +147,7 @@ class UploadAssortmentController extends Controller
                                 'lpbt' => $item->lpbt,
                                 'conversion' => $row[10],
                                 'ig' => $row[9],
+                                'min_stock' => $min_stock,
                                 'fso_multiplier' => $row[8],
                                 'sapc' => $row[1],
                                 'whpc' => $row[2],

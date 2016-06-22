@@ -120,15 +120,16 @@ class UploadController extends Controller
 
                             $osa = 0;
                             $oos = 0;
+
                             $total_stockcs = $row[1]+$row[2]+ ($row[3] * $row[10]);
                             $min_stock = 0;
+
                             if(!empty($store_item)){
                                 $min_stock = $store_item->min_stock;
                             }
                         
-                            // stocks > min_stock = osa
-
-                            if($total_stockcs > $min_stock){
+                            // if($total_stockcs > $min_stock){
+                            if($row[1] > $min_stock){
                                 $osa = 1;
                             }else{
                                 $oos = 1;
@@ -148,6 +149,7 @@ class UploadController extends Controller
                                 'description_long' => $item->description_long,
                                 'lpbt' => $item->lpbt,
                                 'conversion' => $row[10],
+                                'min_stock' => $min_stock,
                                 'ig' => $row[9],
                                 'fso_multiplier' => $row[8],
                                 'sapc' => $row[1],
