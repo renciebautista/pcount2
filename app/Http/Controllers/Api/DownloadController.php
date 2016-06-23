@@ -22,6 +22,7 @@ class DownloadController extends Controller
     public function index(Request $request){
         $user = $request->id;
         $type = $request->type;
+        $ext = $request->ext;
 
         $storelist = DB::table('store_users')
                     ->select('stores.id', 'stores.store_code', 'stores.store_name', 
@@ -49,40 +50,59 @@ class DownloadController extends Controller
         // dd($storelist);
 
          if($type == 1){
-            $writer = WriterFactory::create(Type::CSV); 
-            $writer->openToBrowser('settings.txt');
-
             $settings = Setting::find(1);
-
-            $data[0] = $settings->enable_ig_edit;
-            $data[1] = $settings->validate_posting_mkl;
-            $data[2] = $settings->validate_printing_mkl;
-            $data[3] = $settings->validate_posting_ass;
-            $data[4] = $settings->validate_printing_ass;
-            $data[5] = $settings->device_password;
-            $writer->addRow($data); 
+            if($ext == 'json'){
+                return response()->json($settings);
+            }else{
+                $writer = WriterFactory::create(Type::CSV); 
+                $writer->openToBrowser('settings.txt');
+                $data[0] = $settings->enable_ig_edit;
+                $data[1] = $settings->validate_posting_mkl;
+                $data[2] = $settings->validate_printing_mkl;
+                $data[3] = $settings->validate_posting_ass;
+                $data[4] = $settings->validate_printing_ass;
+                $data[5] = $settings->device_password;
+                $writer->addRow($data); 
+                $writer->close();
+            }
             
-            $writer->close();
         }
 
         // get store list          
         if($type == 2){
-            $writer = WriterFactory::create(Type::CSV); 
-            $writer->openToBrowser('stores.txt');
-            $writer->addRow(array('ID', 'Store Code', 'Store Name' , 'Channel Id', 'Channel', 'Area'));  
+            if($ext == 'json'){
+                $json_data = new \stdClass();
+                $json_data->total_count = count($storelist);
+                foreach ($storelist as $store) {
+                    $data = new \stdClass();
+                    $data->id = $store->id;
+                    $data->store_code = $store->store_code;
+                    $data->store_name = $store->store_name;
+                    $data->channel_id = $store->channel_id;
+                    $data->channel_desc = $store->channel_desc;
+                    $data->area = $store->area;
+                    $json_data->stores[] = $data;
+                }
+                return response()->json($json_data);
+            }else{
+                $writer = WriterFactory::create(Type::CSV); 
+                $writer->openToBrowser('stores.txt');
+                $writer->addRow(array('ID', 'Store Code', 'Store Name' , 'Channel Id', 'Channel', 'Area'));  
 
-            foreach ($storelist as $store) {
-                $data[0] = $store->id;
-                $data[1] = $store->store_code;
-                $data[2] = $store->store_name;
-                $data[3] = $store->channel_id;
-                $data[4] = $store->channel_desc;
-                $data[5] = $store->area;
+                foreach ($storelist as $store) {
+                    $data[0] = $store->id;
+                    $data[1] = $store->store_code;
+                    $data[2] = $store->store_name;
+                    $data[3] = $store->channel_id;
+                    $data[4] = $store->channel_desc;
+                    $data[5] = $store->area;
 
-                $writer->addRow($data); 
+                    $writer->addRow($data); 
+                }
+
+                $writer->close();
             }
-
-            $writer->close();
+            
         }
 
         //get store sku list
@@ -130,45 +150,71 @@ class DownloadController extends Controller
                 }
             }
             
-                
-            $writer = WriterFactory::create(Type::CSV); 
-            $writer->openToBrowser('mkl.txt');
-            $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category Long', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock',
-                'Category', 'Long Desc', 'OSA Tagged', 'NPI Tagged'));
-            
-            foreach ($skus as $sku) {
-
-                $data[0] = $sku->other_barcode;
-                $data[1] = $sku->description;
-
-                if(isset($updated_ig_list[$sku->store_id][$sku->sku_code])){
-                    $data[2] = $updated_ig_list[$sku->store_id][$sku->sku_code];
-                }else{
-                    $data[2] = $sku->ig;
+            if($ext == 'json'){
+                $json_data = new \stdClass();
+                $json_data->total_count = count($skus);
+                foreach ($skus as $sku) {
+                    $data = new \stdClass();
+                    $data->conversion = $sku->conversion;
+                    $data->lpbt = $sku->lpbt;
+                    $data->category_long = $sku->category_long;
+                    $data->sub_category = $sku->sub_category;
+                    $data->brand = $sku->brand;
+                    $data->division = $sku->division;
+                    $data->store_id = $sku->store_id;
+                    $data->sku_code = $sku->sku_code;
+                    $data->fso_multiplier = $sku->fso_multiplier;
+                    $data->barcode = $sku->barcode;
+                    $data->min_stock = $sku->min_stock;
+                    $data->category = $sku->category;
+                    $data->description_long = $sku->description_long;
+                    $data->osa_tagged = $sku->osa_tagged;
+                    $data->npi_tagged = $sku->npi_tagged;
+                    $json_data->skus[] = $data;
                 }
-               
-                $data[3] = $sku->conversion;
-                $data[4] = $sku->lpbt;
-                $data[5] = $sku->category_long;
-                $data[6] = $sku->sub_category;
-                $data[7] = $sku->brand;
-                $data[8] = $sku->division;
-                $data[9] = $sku->store_id;
-                $data[10] = $sku->sku_code;
-                $data[11] = $sku->fso_multiplier;
-                $data[12] = $sku->barcode;
-                $data[13] = $sku->min_stock;
-                $data[14] = $sku->category;
-                $data[15] = $sku->description_long;
-
-                $data[16] = $sku->osa_tagged;
-                $data[17] = $sku->npi_tagged;
+                return response()->json($json_data);
+            }else{
+                $writer = WriterFactory::create(Type::CSV); 
+                $writer->openToBrowser('mkl.txt');
+                $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
+                    'Conversion', 'LPBT', 'Category Long', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock',
+                    'Category', 'Long Desc', 'OSA Tagged', 'NPI Tagged'));
                 
-                $writer->addRow($data); 
-            }
+                foreach ($skus as $sku) {
 
-            $writer->close();
+                    $data[0] = $sku->other_barcode;
+                    $data[1] = $sku->description;
+
+                    if(isset($updated_ig_list[$sku->store_id][$sku->sku_code])){
+                        $data[2] = $updated_ig_list[$sku->store_id][$sku->sku_code];
+                    }else{
+                        $data[2] = $sku->ig;
+                    }
+                   
+                    $data[3] = $sku->conversion;
+                    $data[4] = $sku->lpbt;
+                    $data[5] = $sku->category_long;
+                    $data[6] = $sku->sub_category;
+                    $data[7] = $sku->brand;
+                    $data[8] = $sku->division;
+                    $data[9] = $sku->store_id;
+                    $data[10] = $sku->sku_code;
+                    $data[11] = $sku->fso_multiplier;
+                    $data[12] = $sku->barcode;
+                    $data[13] = $sku->min_stock;
+                    $data[14] = $sku->category;
+                    $data[15] = $sku->description_long;
+
+                    $data[16] = $sku->osa_tagged;
+                    $data[17] = $sku->npi_tagged;
+                    
+                    $writer->addRow($data); 
+                }
+
+                $writer->close();
+            }
+                
+            
         }
 
 
@@ -201,32 +247,56 @@ class DownloadController extends Controller
                 ->orderBy('store_items.id', 'asc')
                 ->get();
 
-            $writer = WriterFactory::create(Type::CSV); 
-            $writer->openToBrowser('assortment.txt');
-            $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
-                'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'));
-            
-            foreach ($skus as $sku) {
-                $data[0] = $sku->other_barcode;
-                $data[1] = $sku->description;
-                $data[2] = $sku->ig;
-                $data[3] = $sku->conversion;
-                $data[4] = $sku->lpbt;
-                $data[5] = $sku->category_long;
-                $data[6] = $sku->sub_category;
-                $data[7] = $sku->brand;
-                $data[8] = $sku->division;
-                $data[9] = $sku->store_id;
-                $data[10] = $sku->sku_code;
-                $data[11] = $sku->fso_multiplier;
-                $data[12] = $sku->barcode;
-                $data[13] = $sku->min_stock;
-                $data[14] = $sku->category;
-                $data[15] = $sku->description_long;
-                $writer->addRow($data); 
-            }
+            if($ext == 'json'){
+                $json_data = new \stdClass();
+                $json_data->total_count = count($skus);
+                foreach ($skus as $sku) {
+                    $data = new \stdClass();
+                    $data->conversion = $sku->conversion;
+                    $data->lpbt = $sku->lpbt;
+                    $data->category_long = $sku->category_long;
+                    $data->sub_category = $sku->sub_category;
+                    $data->brand = $sku->brand;
+                    $data->division = $sku->division;
+                    $data->store_id = $sku->store_id;
+                    $data->sku_code = $sku->sku_code;
+                    $data->fso_multiplier = $sku->fso_multiplier;
+                    $data->barcode = $sku->barcode;
+                    $data->min_stock = $sku->min_stock;
+                    $data->category = $sku->category;
+                    $data->description_long = $sku->description_long;
+                    $json_data->skus[] = $data;
+                }
+                return response()->json($json_data);
+            }else{
 
-            $writer->close();
+                $writer = WriterFactory::create(Type::CSV); 
+                $writer->openToBrowser('assortment.txt');
+                $writer->addRow(array('Other Barcode', 'Item Description', 'Inventory Goal', 
+                    'Conversion', 'LPBT', 'Category', 'Sub-Category', 'Brand', 'Division', 'Store ID', 'Web ID', 'FSO Multiplier', 'Item Barcode', 'Min Stock'));
+                
+                foreach ($skus as $sku) {
+                    $data[0] = $sku->other_barcode;
+                    $data[1] = $sku->description;
+                    $data[2] = $sku->ig;
+                    $data[3] = $sku->conversion;
+                    $data[4] = $sku->lpbt;
+                    $data[5] = $sku->category_long;
+                    $data[6] = $sku->sub_category;
+                    $data[7] = $sku->brand;
+                    $data[8] = $sku->division;
+                    $data[9] = $sku->store_id;
+                    $data[10] = $sku->sku_code;
+                    $data[11] = $sku->fso_multiplier;
+                    $data[12] = $sku->barcode;
+                    $data[13] = $sku->min_stock;
+                    $data[14] = $sku->category;
+                    $data[15] = $sku->description_long;
+                    $writer->addRow($data); 
+                }
+
+                $writer->close();
+            }
         }
 
         if($type == 5){
@@ -238,18 +308,32 @@ class DownloadController extends Controller
                 ->select('store_id','sku_code', 'ig' )
                 ->whereIn('store_id', $ids)->get();
 
-            $writer = WriterFactory::create(Type::CSV); 
-            $writer->openToBrowser('updatedig.txt');
-            $writer->addRow(array('Store Id', 'SKU Code', 'IG'));
+            if($ext == 'json'){
+                $json_data = new \stdClass();
+                $json_data->total_count = count($updated_igs);
+                foreach ($updated_igs as $ig) {
+                    $data = new \stdClass();
+                    $data->store_id = $ig->store_id;
+                    $data->sku_code = $ig->sku_code;
+                    $data->ig = $ig->ig;
+                    $json_data->updated_igs[] = $data;
+                }
+                return response()->json($json_data);
+            }else{
 
-            foreach ($updated_igs as $ig) {
-                $data[0] = $ig->store_id;
-                $data[1] = $ig->sku_code;
-                $data[2] = $ig->ig;
-                $writer->addRow($data); 
+                $writer = WriterFactory::create(Type::CSV); 
+                $writer->openToBrowser('updatedig.txt');
+                $writer->addRow(array('Store Id', 'SKU Code', 'IG'));
+
+                foreach ($updated_igs as $ig) {
+                    $data[0] = $ig->store_id;
+                    $data[1] = $ig->sku_code;
+                    $data[2] = $ig->ig;
+                    $writer->addRow($data); 
+                }
+
+                $writer->close();
             }
-
-            $writer->close();
 
         }
 
