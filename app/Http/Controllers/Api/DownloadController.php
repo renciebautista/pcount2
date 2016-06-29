@@ -46,6 +46,7 @@ class DownloadController extends Controller
                     ->join('regions', 'regions.id', '=', 'stores.region_id')
                     ->join('agencies', 'agencies.id', '=', 'stores.agency_id')
                     ->where('store_users.user_id', $user)
+                    ->where('stores.active', 1)
                     ->get();
         // dd($storelist);
 

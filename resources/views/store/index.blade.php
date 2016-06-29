@@ -15,11 +15,23 @@
 
 <div class="box box-default">
 		{!! Form::open(array('method' => 'get','class' => 'bs-component')) !!}
+
+
         <div class="form-group">
          	<label>Search Store Name</label>
-          {!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'Keywords']) !!}
+          	{!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'Keywords']) !!}
         </div>
-
+        <div class="form-group">
+			<label class="radio-inline">
+				{!! Form::radio('status', 1, true) !!} Active
+			</label>
+			<label class="radio-inline">
+				{!!  Form::radio('status', 2) !!} In-active			
+			</label>
+			<label class="radio-inline">
+			  	{!! Form::radio('status', 3) !!} All	
+			</label>
+        </div>
 
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Search</button>
@@ -46,6 +58,7 @@
 			<th>Customer</th>
 			<th>Region</th>
 			<th>Agency</th>
+			<th>Status</th>
 			<th colspan="2"></th>
 		</tr>
 	</thead>
@@ -63,8 +76,8 @@
 			<td>{{ $store->customer->customer_name }}</td>
 			<td>{{ $store->region->region_short }}</td>
 			<td>{{ $store->agency->agency_name }}</td>
+			<td>{{ $store->status() }}</td>
 			<td>
-				
 				{!! link_to_action('StoreController@mkl', 'MKL', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
 			</td>
 			<td>

@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('item/downloadupdatedig', array('as' => 'item.downloadupdatedig', 'uses' => 'ItemController@downloadupdatedig'));
 		Route::get('item/{id}/othercode', 'ItemController@othercode');
 		Route::resource('item', 'ItemController');
-		Route::post('item', array('as' => 'item.postItemType', 'uses' => 'ItemController@postItemType'));
+		// Route::post('item', array('as' => 'item.postItemType', 'uses' => 'ItemController@postItemType'));
 
 		Route::get('store_user/{id}/store', 'StoreUserController@storelist');
 		Route::get('store_user/{id}/changepassword', array('as' => 'store_user.changepassword', 'uses' => 'StoreUserController@changepassword'));

@@ -114,28 +114,28 @@ class UploadController extends Controller
                             ->first();
 
                         if(!empty($item)){
-                            $store_item = StoreItem::where('store_id',$store->id)
-                                ->where('item_id',$item->id)
-                                ->first();
-
                             $osa = 0;
                             $oos = 0;
-
-                            $total_stockcs = $row[1]+$row[2]+ ($row[3] * $row[10]);
                             $min_stock = 0;
 
-                            if(!empty($store_item)){
-                                $min_stock = $store_item->min_stock;
+                            $store_item = StoreItem::where('store_id',$store->id)
+                                    ->where('item_id',$item->id)
+                                    ->first();
+
+                            if(!isset($row[13])){
+                                if(!empty($store_item)){
+                                    $min_stock = $store_item->min_stock;
+                                }
+                            }else{
+                                $min_stock = $row[13];
                             }
-                        
-                            // if($total_stockcs > $min_stock){
+                            
                             if($row[1] > $min_stock){
                                 $osa = 1;
                             }else{
                                 $oos = 1;
                             }
                             
-
                             ItemInventories::insert([
                                 'store_inventory_id' => $store_inventory->id,
                                 'division' => $item->division->division,
@@ -166,9 +166,6 @@ class UploadController extends Controller
                             if($settings->enable_ig_edit){
                                 if(!empty($store_item)){
                                     if($store_item->ig != $row[9]){
-                                        // $store_item->ig = $row[9];
-                                        // $store_item->ig_updated = 1;
-                                        // $store_item->update();
 
                                         $updated_ig = UpdatedIg::where('store_id',$store->id)
                                             ->where('sku_code',$item->sku_code)
@@ -200,13 +197,12 @@ class UploadController extends Controller
                                             $updated_ig->brand = $item->brand->brand; 
                                             $updated_ig->conversion = $item->conversion;
                                             $updated_ig->fso_multiplier = $row[8]; 
-                                            $updated_ig->min_stock = $store_item->min_stock;
+                                            $updated_ig->min_stock = $min_stock;
                                             $updated_ig->lpbt = $item->lpbt;
                                             $updated_ig->ig = $row[9];
                                             $updated_ig->updated_at = date('Y-m-d H:i:s');
                                             $updated_ig->save();
                                         }else{
-                                            
                                             UpdatedIg::create([
                                                 'area' => $store->area->area, 
                                                 'region_code' => $store->region->region_code,
@@ -230,7 +226,7 @@ class UploadController extends Controller
                                                 'brand' => $item->brand->brand, 
                                                 'conversion' => $item->conversion,
                                                 'fso_multiplier' => $row[8], 
-                                                'min_stock' => $store_item->min_stock,
+                                                'min_stock' => $min_stock,
                                                 'lpbt' => $item->lpbt, 
                                                 'ig' => $row[9]]);
                                         }

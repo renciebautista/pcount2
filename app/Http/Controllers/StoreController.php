@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\StoreItem;
 use App\Models\InvalidStore;
+use Session;
+use App\Models\UpdateHash;
 
 class StoreController extends Controller
 {
@@ -32,7 +34,7 @@ class StoreController extends Controller
      */
     public function create()
     {
-        //
+        // return view('store.create');
     }
 
     /**
@@ -43,7 +45,34 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // // dd($request);
+        // if ($request->hasFile('file'))
+        // {
+        //     $file_path = $request->file('file')->move(storage_path().'/uploads/temp/',$request->file('file')->getClientOriginalName());
+            
+        //     Store::upload($file_path);
+
+        //     if (\File::exists($file_path))
+        //     {
+        //         \File::delete($file_path);
+        //     }
+
+        //     $hash = UpdateHash::find(1);
+        //     if(empty($hash)){
+        //         UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+        //     }else{
+        //         $hash->hash = md5(date('Y-m-d H:i:s'));
+        //         $hash->update();
+        //     }
+
+        //     Session::flash('flash_message', 'Store Masterfile successfully uploaded.');
+        //     Session::flash('flash_class', 'alert-success');
+        // }else{
+        //     Session::flash('flash_message', 'Error uploading masterfile.');
+        //     Session::flash('flash_class', 'alert-danger');
+            
+        // }
+        // return redirect()->route("store.create");
     }
 
     /**

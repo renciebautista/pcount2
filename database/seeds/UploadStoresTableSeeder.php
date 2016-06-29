@@ -47,17 +47,18 @@ class UploadStoresTableSeeder extends Seeder
 		$filePath = $folderpath.$latest.'/Masterfile.xlsx';
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
-		DB::table('areas')->truncate();
-		DB::table('enrollments')->truncate();
-		DB::table('distributors')->truncate();
-		DB::table('clients')->truncate();
-		DB::table('channels')->truncate();
-		DB::table('agencies')->truncate();
-		DB::table('regions')->truncate();
-		DB::table('customers')->truncate();
-		DB::table('stores')->truncate();
-		DB::table('invalid_stores')->truncate();
-		DB::table('store_users')->truncate();
+		echo 'Seeding '. $filePath. PHP_EOL;
+		// DB::table('areas')->truncate();
+		// DB::table('enrollments')->truncate();
+		// DB::table('distributors')->truncate();
+		// DB::table('clients')->truncate();
+		// DB::table('channels')->truncate();
+		// DB::table('agencies')->truncate();
+		// DB::table('regions')->truncate();
+		// DB::table('customers')->truncate();
+		// DB::table('stores')->truncate();
+		// DB::table('invalid_stores')->truncate();
+		// DB::table('store_users')->truncate();
 		// $role = Role::find(2)->users()->delete();
 
 		// dd($role);
@@ -66,13 +67,14 @@ class UploadStoresTableSeeder extends Seeder
 		foreach ($reader->getSheetIterator() as $sheet) {
 			if($sheet->getName() == 'Stores'){
 				$cnt = 0;
+				Store::where('active',1)->update(['active' => 0]);
 				foreach ($sheet->getRowIterator() as $row) {
 					
 					if($row[0] != ''){
 						if($cnt > 0){
-							if(strtoupper($row[23]) == 'INACTIVE'){
-								InvalidStore::invalid($row,'Inactive Store');
-							}else{
+							// if(strtoupper($row[23]) == 'INACTIVE'){
+							// 	InvalidStore::invalid($row,'Inactive Store');
+							// }else{
 								$area = Area::firstOrCreate(['area' => strtoupper($row[0])]);
 								$enrollment = Enrollment::firstOrCreate(['enrollment' => strtoupper($row[1])]);
 								$distributor = Distributor::firstOrCreate(['distributor_code' => strtoupper($row[2]), 'distributor' => strtoupper($row[3])]);
@@ -106,15 +108,33 @@ class UploadStoresTableSeeder extends Seeder
 										'channel_id' => $channel->id,
 										'customer_id' => $customer->id,
 										'region_id' => $region->id,
-										'agency_id' => $agency->id
+										'agency_id' => $agency->id,
+										'active' => 1
 										]);
 									if(!empty($row[22])){
 										StoreUser::insert(['store_id' => $store->id, 'user_id' => $user->id]);
 									}
 								}else{
-									InvalidStore::invalid($row,'Duplicate Store Code');
+									// InvalidStore::invalid($row,'Duplicate Store Code');
+									$storeExist->storeid = strtoupper($row[4]);
+		                            $storeExist->store_code = strtoupper($row[5]);
+		                            $storeExist->store_code_psup = strtoupper($row[6]);
+		                            $storeExist->store_name = strtoupper($row[7]);
+		                            $storeExist->area_id = $area->id;
+		                            $storeExist->enrollment_id = $enrollment->id;
+		                            $storeExist->distributor_id = $distributor->id;
+		                            $storeExist->client_id = $client->id;
+		                            $storeExist->channel_id = $channel->id;
+		                            $storeExist->customer_id = $customer->id;
+		                            $storeExist->region_id = $region->id;
+		                            $storeExist->agency_id = $agency->id;
+		                            $storeExist->active = 1;
+		                            $storeExist->save();
+
+		                            StoreUser::where('store_id',$storeExist->id)->delete();
+		                            StoreUser::insert(['store_id' => $storeExist->id, 'user_id' => $user->id]);
 								}
-							}
+							// }
 
 							
 						}

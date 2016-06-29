@@ -21,6 +21,18 @@
           {!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'Keywords']) !!}
         </div>
 
+        <div class="form-group">
+            <label class="radio-inline">
+                {!! Form::radio('status', 1, true) !!} Active
+            </label>
+            <label class="radio-inline">
+                {!!  Form::radio('status', 2) !!} In-active         
+            </label>
+            <label class="radio-inline">
+                {!! Form::radio('status', 3) !!} All    
+            </label>
+        </div>
+
 
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Search</button>
@@ -33,6 +45,7 @@
 
 {!! Paginate::show($items) !!}
 {!! $items->render() !!}
+
 <!-- <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid"> -->
 <table class="table table-striped table-hover">
     <thead>
@@ -44,8 +57,9 @@
             <th>Sub Category</th>
             <th>Brand</th>
             <th>Conversion</th>
-            <th>LPBT</th>            
-            <th colspan="2"></th>
+            <th>LPBT</th>  
+            <th>Status</th>          
+            <th></th>
         </tr>
     </thead>
   <tbody>    
@@ -59,14 +73,10 @@
                     <td>{{ $item->subcategory->sub_category }}</td>
                     <td>{{ $item->brand->brand }}</td>
                     <td>{{ $item->conversion }}</td>
-                    <td>{{ $item->lpbt }}</td>                    
+                    <td>{{ $item->lpbt }}</td>  
+                    <td>{{ $item->status() }}</td>                  
                     <td>
                         {!! link_to_action('ItemController@othercode', 'Other Barcode', $item->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
-                    </td>
-                    <td>
-                        {!! Form::open(array('method' => 'DELETE', 'action' => array('ItemController@destroy', $item->id), 'class' => 'disable-button')) !!}                       
-                        {!! Form::submit('Remove', array('class'=> 'btn btn-danger btn-xs','onclick' => "if(!confirm('Are you sure to delete this item?')){return false;};")) !!}
-                        {!! Form::close() !!}
                     </td>
                 </tr>                
             @endforeach

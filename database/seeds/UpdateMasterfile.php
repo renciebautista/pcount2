@@ -20,8 +20,6 @@ class UpdateMasterfile extends Seeder
         $this->call(UploadStoreItemsTableSeeder::class);
         $this->call(UploadAssortmentTableSeeder::class);
         
-        // $this->call(UpdateStoreItemIgTableSeeder::class);
-
         $hash = UpdateHash::find(1);
         if(empty($hash)){
             UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
