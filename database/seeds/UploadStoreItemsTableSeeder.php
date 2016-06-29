@@ -77,6 +77,7 @@ class UploadStoreItemsTableSeeder extends Seeder
 									$store = Store::where('store_code', trim($row[2]))->first();
 								}
 
+								// dd($customer);
 								$stores = Store::where(function($query) use ($channel){
 									if(!empty($channel)){
 											$channel_id = [];
@@ -101,7 +102,7 @@ class UploadStoreItemsTableSeeder extends Seeder
 										}
 									})
 									->get();
-
+								// dd($stores);
 								$item = Item::where('sku_code', trim($row[3]))->first();
 								if(!empty($item)){
 									$item_type = ItemType::where('type',"MKL")->first();							
