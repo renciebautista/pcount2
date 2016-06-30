@@ -103,6 +103,8 @@ class UploadAssortmentController extends Controller
                 $reader->setFieldDelimiter(';');
                 $reader->open($filePath);
 
+                $areas = ['MDC', 'ROSE PHARMACY', '360 PHARMACY', '360 DRUG', 'ST. JOSEPH DRUG', 'SOUTH STAR DRUG'];
+
                 foreach ($reader->getSheetIterator() as $sheet) {
                     foreach ($sheet->getRowIterator() as $row) {
                         $item = Item::with('division')
@@ -119,7 +121,10 @@ class UploadAssortmentController extends Controller
                             $osa = 0;
                             $oos = 0;
 
-                            $min_stock = 0;
+                            $min_stock = 2;
+                            if(in_array($store->area->area,  $areas)){
+                                $min_stock = 3;
+                            }
 
                             if(!isset($row[11])){
                                 if(!empty($store_item)){
