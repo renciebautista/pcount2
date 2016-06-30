@@ -65,7 +65,14 @@ class Store extends Model
     }
    
     public static function search($request){
-        return self::where('store_name', 'LIKE', "%$request->search%")
+        return self::select('stores.id', 'store_name', 'active', 'area_id', 'enrollment_id', 'distributor_id', 'storeid', 'client_id', 'channel_id', 'customer_id', 'region_id', 'agency_id')
+            ->where(function($query) use ($request){
+            if(!empty($request->search)){
+                $query->where('store_name', 'LIKE', "%$request->search%");
+                $query->orWhere('channels.channel_desc', 'LIKE', "%$request->search%");
+            }
+            })
+            ->join('channels', 'channels.id', '=', 'stores.channel_id')
             ->where(function($query) use ($request){
             if(!empty($request->status)){
                     if($request->status == 1){
