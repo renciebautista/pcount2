@@ -27,5 +27,12 @@ class UpdateMasterfile extends Seeder
             $hash->hash = md5(date('Y-m-d H:i:s'));
             $hash->update();
         }
+
+        $data = [];
+        $message = [];
+
+        Mail::send('emails.masterfile', $data, function($message) use ($data){
+            $message->to('rbautista@chasetech.com')->subject('Masterfile successfully updated.');
+        });
     }
 }
