@@ -20,8 +20,6 @@ class UpdateMasterfile extends Seeder
         $this->call(UploadStoreItemsTableSeeder::class);
         $this->call(UploadAssortmentTableSeeder::class);
         
-        // $this->call(UpdateStoreItemIgTableSeeder::class);
-
         $hash = UpdateHash::find(1);
         if(empty($hash)){
             UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
@@ -29,5 +27,12 @@ class UpdateMasterfile extends Seeder
             $hash->hash = md5(date('Y-m-d H:i:s'));
             $hash->update();
         }
+
+        $data = [];
+        $message = [];
+
+        Mail::send('emails.masterfile', $data, function($message) use ($data){
+            $message->to('rbautista@chasetech.com')->subject('Masterfile successfully updated.');
+        });
     }
 }

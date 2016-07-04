@@ -36,7 +36,7 @@ class UploadOtherBarcodesTableSeeder extends Seeder
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
 
-		DB::table('other_barcodes')->truncate();
+		// DB::table('other_barcodes')->truncate();
 
 
 		foreach ($reader->getSheetIterator() as $sheet) {
@@ -46,14 +46,25 @@ class UploadOtherBarcodesTableSeeder extends Seeder
 					if((!is_null($row[0])) && (trim($row[0]) != '')){
 						if($cnt > 0){
 							$item = Item::where('sku_code', trim($row[0]))->first();
-							$area = Area::where('area', strtoupper($row[1]))->first();
-							if((!empty($item)) && (!empty($area))){
-								OtherBarcode::firstOrCreate([
-									'item_id' => $item->id,
-									'area_id' => $area->id,
-									'other_barcode' => trim($row[2])
-								]);
+							if(!empty($item)){
+								if($item->cleared == 0){
+									OtherBarcode::where('item_id', $item->id)->delete();
+									$item->cleared = 1;
+									$item->save();
+								}
+								$area = Area::where('area', strtoupper($row[1]))->first();
+
+								if((!empty($item)) && (!empty($area))){
+									OtherBarcode::firstOrCreate([
+										'item_id' => $item->id,
+										'area_id' => $area->id,
+										'other_barcode' => trim($row[2])
+									]);
+								}
+							}else{
+								// dd($row);
 							}
+							
 							
 						}
 						$cnt++;	

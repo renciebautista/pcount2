@@ -103,6 +103,8 @@ class UploadAssortmentController extends Controller
                 $reader->setFieldDelimiter(';');
                 $reader->open($filePath);
 
+                $areas = ['MDC', 'ROSE PHARMACY', '360 PHARMACY', '360 DRUG', 'ST. JOSEPH DRUG', 'SOUTH STAR DRUG'];
+
                 foreach ($reader->getSheetIterator() as $sheet) {
                     foreach ($sheet->getRowIterator() as $row) {
                         $item = Item::with('division')
@@ -118,19 +120,21 @@ class UploadAssortmentController extends Controller
 
                             $osa = 0;
                             $oos = 0;
-                            $total_stockcs = $row[1]+$row[2]+$row[3];
 
-                            $min_stock = 0;
-                            if(!empty($store_item)){
-                                $min_stock = $store_item->min_stock;
+                            $min_stock = 2;
+                            if(in_array($store->area->area,  $areas)){
+                                $min_stock = 3;
                             }
-                            // if($total_stockcs > 0){
-                            //     $osa = 1;
-                            // }else{
-                            //     $oos = 1;
-                            // }
 
-                            if($total_stockcs > $min_stock){
+                            if(!isset($row[11])){
+                                if(!empty($store_item)){
+                                    $min_stock = $store_item->min_stock;
+                                }
+                            }else{
+                                $min_stock = $row[11];
+                            }
+
+                            if($row[1] > $min_stock){
                                 $osa = 1;
                             }else{
                                 $oos = 1;
@@ -150,6 +154,7 @@ class UploadAssortmentController extends Controller
                                 'lpbt' => $item->lpbt,
                                 'conversion' => $row[10],
                                 'ig' => $row[9],
+                                'min_stock' => $min_stock,
                                 'fso_multiplier' => $row[8],
                                 'sapc' => $row[1],
                                 'whpc' => $row[2],

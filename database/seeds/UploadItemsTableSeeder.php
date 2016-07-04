@@ -39,36 +39,55 @@ class UploadItemsTableSeeder extends Seeder
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
 
-		DB::table('divisions')->truncate();
-		DB::table('categories')->truncate();
-		DB::table('sub_categories')->truncate();
-		DB::table('brands')->truncate();
-		DB::table('items')->truncate();
+		// DB::table('divisions')->truncate();
+		// DB::table('categories')->truncate();
+		// DB::table('sub_categories')->truncate();
+		// DB::table('brands')->truncate();
+		// DB::table('items')->truncate();
 
 
 		foreach ($reader->getSheetIterator() as $sheet) {
 			if($sheet->getName() == 'Items'){
 				$cnt = 0;
+				Item::where('active',1)->update(['active' => 0, 'cleared' => 0]);
 				foreach ($sheet->getRowIterator() as $row) {
-
 					if($row[0] != ''){
 						if($cnt > 0){
 							$division = Division::firstOrCreate(['division' => strtoupper($row[9])]);
 							$category = Category::firstOrCreate(['category' => strtoupper($row[1]), 'category_long' => strtoupper($row[0])]);
 							$sub_category = SubCategory::firstOrCreate(['category_id' => $category->id, 'sub_category' => strtoupper($row[7])]);
 							$brand = Brand::firstOrCreate(['brand' => strtoupper($row[8])]);
-							$item = Item::firstOrCreate([
-								'sku_code' => trim($row[2]),
-								'barcode' =>$row[3],
-								'description' => strtoupper($row[4]),
-								'description_long' => strtoupper($row[5]),
-								'conversion' => trim($row[6]),
-								'lpbt' => trim($row[10]),
-								'division_id' => $division->id,
-								'category_id' => $category->id,
-								'sub_category_id' => $sub_category->id,
-								'brand_id' => $brand->id
-								]);
+
+							$itemExist = Item::where('sku_code',strtoupper($row[2]))->first();
+							if(empty($itemExist)){
+								$item = Item::firstOrCreate([
+									'sku_code' => trim($row[2]),
+									'barcode' =>$row[3],
+									'description' => strtoupper($row[4]),
+									'description_long' => strtoupper($row[5]),
+									'conversion' => trim($row[6]),
+									'lpbt' => trim($row[10]),
+									'division_id' => $division->id,
+									'category_id' => $category->id,
+									'sub_category_id' => $sub_category->id,
+									'brand_id' => $brand->id,
+									'active' => 1
+									]);
+							}else{
+								$itemExist->sku_code = trim($row[2]);
+								$itemExist->barcode = $row[3];
+								$itemExist->description = strtoupper($row[4]);
+								$itemExist->description_long = strtoupper($row[5]);
+								$itemExist->conversion = trim($row[6]);
+								$itemExist->lpbt = trim($row[10]);
+								$itemExist->division_id = $division->id;
+								$itemExist->category_id = $category->id;
+								$itemExist->sub_category_id = $sub_category->id;
+								$itemExist->brand_id = $brand->id;
+								$itemExist->active = 1;
+								$itemExist->save();
+							}
+							
 						}
 						$cnt++;	
 						

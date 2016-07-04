@@ -31,7 +31,7 @@ class ExportController extends Controller
                 'AGENCY NAME', 'LEAD REFILLERS (FIRST NAME LAST NAME)', 'USER NAME', 'STATUS'));
 
         $stores = StoreUser::select(\DB::raw('area,enrollment,distributor,distributor_code,storeid,store_code,store_code_psup,store_name,
-            client_code,client_name,channel_code,channel_desc,customer_code,customer_name,region_short,region,region_code,agency_code,agency_name,username'))
+            client_code,client_name,channel_code,channel_desc,customer_code,customer_name,region_short,region,region_code,agency_code,agency_name,username,stores.active'))
             ->join('stores', 'stores.id', '=', 'store_users.store_id')
             ->join('areas', 'areas.id', '=', 'stores.area_id')
             ->join('enrollments', 'enrollments.id', '=', 'stores.enrollment_id')
@@ -68,7 +68,12 @@ class ExportController extends Controller
             $data[20] = $store->agency_name;
             $data[21] = '';
             $data[22] = $store->username;
-            $data[23] = 'Active';
+            if($store->active == '1'){
+                $data[23] = 'Active';
+            }else{
+                $data[23] = 'In-active';
+            }
+            
             $pluckdata[] = $data;
         }
         $writer->addRows($pluckdata); // add multiple rows at a time
@@ -81,10 +86,10 @@ class ExportController extends Controller
         $writer->openToBrowser($fileName); // stream data directly to the browser
 
         $writer->addRow(array('Category Long Description', 'Category Short Description', 'SKU Code', 'Barcode', 'Item Short Description', 
-                'Item Long Description', 'Conversion', 'Sub Category', 'Brand', 'Division', 'LPBT/Cond Value (PC)'));
+                'Item Long Description', 'Conversion', 'Sub Category', 'Brand', 'Division', 'LPBT/Cond Value (PC)', 'Status'));
 
         $items = Item::select(\DB::raw('category_long, category, sku_code, barcode, description, 
-            description_long, conversion, sub_category, brand, division, lpbt'))
+            description_long, conversion, sub_category, brand, division, lpbt, items.active'))
             ->join('categories', 'categories.id', '=', 'items.category_id')
             ->join('sub_categories', 'sub_categories.id', '=', 'items.sub_category_id')
             ->join('brands', 'brands.id', '=', 'items.brand_id')
@@ -103,6 +108,11 @@ class ExportController extends Controller
             $data[8] = $item->brand;
             $data[9] = $item->division;
             $data[10] = $item->lpbt;
+            if($item->active == '1'){
+                $data[11] = 'Active';
+            }else{
+                $data[11] = 'In-active';
+            }
             $pluckdata[] = $data;
         }
         $writer->addRows($pluckdata); // add multiple rows at a time

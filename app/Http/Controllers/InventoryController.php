@@ -248,7 +248,7 @@ class InventoryController extends Controller
             $writer->addRow(array('AREA', 'REGION', 'DISTRIBUTOR', 'DISTRIBUTOR CODE', 'STORE ID', 
                 'STORE CODE', 'STORE NAME', 'OTHER CODE', 'SKU CODE', 'DIVISION', 'BRAND', 'CATEGORY', 'SUB CATEGORY',
                 'ITEM DESCRIPTION', 'IG', 'FSO MULTIPLIER', 'SAPC',
-                'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OSS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
+                'WHPC', 'WHCS', 'SO', 'FSO', 'FSO VAL', 'OSA', 'OOS', 'TRANSACTION DATE', 'POSTING DATE AND TIME', 'SIGNATURE LINK'));
 
             if($report_type == 2){
                 while($rows = ItemInventories::getPartial($data,$take,$skip))
