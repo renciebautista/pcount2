@@ -61,7 +61,7 @@
                     <td>{{ $item->conversion }}</td>
                     <td>{{ $item->lpbt }}</td>                    
                     <td>
-                        {!! link_to_action('ItemController@othercode', 'Other Barcode', $item->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
+                        {!! link_to_action('ItemController@othercode', 'Other Barcode', $item->id, ['class' => 'btn btn-xs btn btn-primary']) !!} &nbsp;{!! link_to_action('ItemController@edit', 'Edit', $item->id, ['class' => 'btn btn-xs btn btn-primary']) !!}
                     </td>
                     <td>
                         {!! Form::open(array('method' => 'DELETE', 'action' => array('ItemController@destroy', $item->id), 'class' => 'disable-button')) !!}                       

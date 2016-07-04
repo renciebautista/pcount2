@@ -27,6 +27,7 @@ class CreateItemsTable extends Migration
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
             $table->integer('brand_id')->unsigned();
             $table->foreign('brand_id')->references('id')->on('brands');
+     
         });
     }
 

@@ -72,7 +72,14 @@
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->roles[0]->name }}</td>
-                                <td></td>
+                                <td><input id="<?= $user->id ?>"
+                                       class="userStatus"
+                                       data-switch-get="<?= $user->active ?>"
+                                       data-switch-value="0"
+                                       data-on-text="Active"
+                                       data-off-text="Inactive"
+                                       type="checkbox" <?= ($user->active == '1') ? 'checked' : '' ?>
+                                       data-size="mini"></td>
                                 @if($user->roles[0]->name == 'field')
                                 <td>{!! link_to_action('StoreUserController@storelist', 'Store Mapping', $user->id, ['class' => 'btn btn-xs btn btn-success']) !!}</td>                    
                                 @else
@@ -95,4 +102,5 @@
 
 @stop
 @section('page-script')
+
 @stop

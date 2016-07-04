@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('export/storeitems', ['as' => 'export.storeitems', 'uses' => 'ExportController@storeitems']);
 		Route::get('export/storeosa', ['as' => 'export.storeosa', 'uses' => 'ExportController@storeosa']);
 		Route::get('export/storeassortment', ['as' => 'export.storeassortment', 'uses' => 'ExportController@storeassortment']);
-
+	  Route::post('store_user/changestatus', ['as' => 'changestatus','uses' => 'StoreUserController@changestatus']);
 		Route::get('store/invalid', array('as' => 'store.invalid', 'uses' => 'StoreController@invalid'));
 		Route::get('store/{id}/mkl', 'StoreController@mkl');
 		Route::get('store/{id}/assortment', 'StoreController@assortment');
@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('store_user/{id}/store', 'StoreUserController@storelist');
 		Route::get('store_user/{id}/changepassword', array('as' => 'store_user.changepassword', 'uses' => 'StoreUserController@changepassword'));
 		Route::put('store_user/{id}/postupdate', array('as' => 'store_user.postupdate', 'uses' => 'StoreUserController@postupdate'));
-		Route::resource('store_user', 'StoreUserController');
+		Route::resource('store_user', 'StoreUserController',[]);
 		
 		Route::get('device_user/{id}', 'DeviceUserController@logOut');
 		Route::resource('device_users', 'DeviceUserController');
@@ -81,6 +81,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	    Route::get('history/posting', array('as' => 'history.posting', 'uses' => 'HistoryController@posting'));
 	    Route::post('history/posting', array('as' => 'history.postposting', 'uses' => 'HistoryController@postposting'));
+
+
+
 
 	});
 
@@ -165,5 +168,23 @@ Route::group(array('prefix' => 'api'), function()
 
 	Route::post('uploadtrace', 'Api\UploadController@uploadtrace');
 	Route::get('checkhash', 'Api\AuthUserController@checkhash');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });

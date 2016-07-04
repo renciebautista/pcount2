@@ -19,12 +19,16 @@ class StoreUserController extends Controller
     public function index(Request $request)
     {
         $request->flash();
+
+       
         $users = User::search($request);
         // $roles = Role::where('id', '>', 2)->first();
 
         // if(!empty($roles)){
         //     $users = $roles->users()->get();
         // }
+
+       
         $roles = Role::orderBy('name')->lists('name', 'id');
 
 
@@ -136,6 +140,19 @@ class StoreUserController extends Controller
         Session::flash('flash_class', 'alert-success');
 
         return redirect()->route("store_user.index");
+    }
+
+     public function changestatus(Request $request)
+    {   
+
+
+        $stats = $request->get('id'); 
+       $value = $request->get('active');
+ 
+   $user = User::findOrFail($stats);
+   $user->active = $request->get('active') ;
+   $user->update();
+           
     }
 
     /**

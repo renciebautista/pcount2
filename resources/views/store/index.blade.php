@@ -39,13 +39,14 @@
 			<th>Area</th>
 			<th>Enrollment</th>
 			<th>Distributor</th>
-			<th>Store ID</th>
+			<th >Store ID</th>
 			<th>Store Name</th>
 			<th>Client</th>
 			<th>Channel</th>
 			<th>Customer</th>
 			<th>Region</th>
 			<th>Agency</th>
+			<th>Action</th>
 			<th colspan="2"></th>
 		</tr>
 	</thead>
@@ -63,6 +64,9 @@
 			<td>{{ $store->customer->customer_name }}</td>
 			<td>{{ $store->region->region_short }}</td>
 			<td>{{ $store->agency->agency_name }}</td>
+
+
+			<td>{!! link_to_action('StoreController@edit', 'Edit', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}</td>
 			<td>
 				
 				{!! link_to_action('StoreController@mkl', 'MKL', $store->id, ['class' => 'btn btn-xs btn btn-primary']) !!}

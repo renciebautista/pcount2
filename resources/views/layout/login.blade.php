@@ -15,6 +15,7 @@
 		{!! HTML::style('css/datepicker/datepicker.css') !!}
 
 		{!! HTML::style('css/pcount.css') !!}
+		{!! HTML::style('css/bootstrap-switch.css') !!}
 		
 	</head>
 

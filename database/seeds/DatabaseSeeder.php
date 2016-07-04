@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(AddAdminTableSeeder::class);
         $this->call(ItemTypeTableSeeder::class);
+        $this->call(UpdateMasterfile::class);
+
 
         Model::reguard();
     }

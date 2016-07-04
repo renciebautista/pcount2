@@ -14,12 +14,13 @@
 		{!! Html::style('css/bootstrap-multiselect.css') !!}
 		{!! HTML::style('css/datepicker/datepicker.css') !!}
         {!! HTML::style('dataTables/dataTables.bootstrap.css') !!}
+        {!! HTML::style('css/bootstrap-switch.css') !!}
 		{!! HTML::style('css/pcount.css') !!}
 		
 	</head>
 
 	<body>
-		
+		 <input type="hidden" name="_token" value="{{{ csrf_token() }}}"/>
 	<!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -131,16 +132,25 @@
 	</div>
 
 	</div>
+     
 		<br/>
 
 		<!-- script -->
 		{!! Html::script('js/jquery-1.11.3.min.js') !!}
 		{!! Html::script('js/bootstrap.js') !!}
+        {!! Html::script('js/bootstrap-switch.js') !!}
+        {!! Html::script('js/user-switch.js') !!}
 		{!! Html::script('js/bootstrap-multiselect.js') !!}
 		{!! Html::script('js/bootstrap-multiselect-collapsible-groups.js') !!}
 		{!! HTML::script('js/datepicker/datepicker-ui.js') !!}
         
-        
+        <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-Token': $('input[name="_token"]').val()
+            }
+        });
+    </script>
     
 		<script type="text/javascript">
 		$(document).ready(function() {
@@ -159,6 +169,7 @@
 	</script>
 
 	</body>
+
 
 	
 </html>

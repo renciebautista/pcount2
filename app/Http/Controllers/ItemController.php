@@ -14,7 +14,11 @@ use App\Models\OtherBarcode;
 use App\Models\UpdatedIg;
 use App\Models\UpdateHash;
 use App\Models\Store;
-
+use App\Models\ItemInventories;
+use App\Models\Brand;
+use App\Models\Division;
+use App\Models\Category;
+use App\Models\SubCategory;
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
@@ -77,6 +81,30 @@ class ItemController extends Controller
     public function edit($id)
     {
         //
+ $divisions = ItemInventories::getDivisionList();
+ $brand = Brand::all()->lists('brand', 'id');
+            $data = array();
+            $sel_dv = [];
+             $sel_cat = [];
+            $sel_scat = [];
+            $sel_br = [];
+             if(!empty($sel_cat)){
+            $data['categories'] = $sel_cat;
+                                                 }
+           
+            if(!empty($sel_dv)){
+            $data['divisions'] = $sel_dv;
+                                                  }
+            if(!empty($sel_scat)){
+            $data['sub_categories'] = $sel_scat;
+                                                 }           
+            if(!empty($sel_br)){
+            $data['brands'] = $sel_br;
+                                                 }
+
+        $item= Item::findOrFail($id);
+        return view('item.edit',['item' => $item , 'brand'=>$brand],compact('sel_dv','divisions','sel_cat','sel_scat','sel_br'));
+
     }
 
     /**
@@ -89,6 +117,54 @@ class ItemController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+
+        $this->validate($request, [
+            'sku_code' => 'required',
+            'description' => 'required',
+            'conversion' => 'required|numeric',
+            'lpbt' => 'required|numeric',
+            'division' => 'required',
+            'category' => 'required',
+            'sub_category' => 'required',
+            'brand_id' => 'required',
+            
+        ]);
+        $item= Item::findOrFail($id);
+        
+        $divname = $request->division;
+        $divid = Division::where('division','=',$divname)->first();
+        $divname = $divid->id;
+        
+        $catname = $request->category;
+        $catid = Category::where('category','=',$catname)->first();
+        $catname = $catid->id;
+        
+
+        $scatname = $request->sub_category;
+        $scatid = SubCategory::where('sub_category','=',$scatname)->first();
+        $scatname = $scatid->id;
+   
+
+        $item->sku_code = $request->sku_code;
+        $item->description =$request->description;
+        $item->conversion = $request->conversion;
+        $item->lpbt =$request->lpbt;
+        $item->division_id = $divname;
+        $item->category_id =$catname;
+        $item->sub_category_id =$scatname;
+        $item->brand_id = $request->brand_id;
+    
+        $item->update();
+
+        Session::flash('flash_class', 'alert-success');
+        Session::flash('flash_message', 'Item successfully updated.');
+        return redirect()->route("item.index");
+  
+
+
+
+
     }
 
     /**

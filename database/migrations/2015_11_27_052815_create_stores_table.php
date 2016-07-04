@@ -34,6 +34,7 @@ class CreateStoresTable extends Migration
             $table->foreign('region_id')->references('id')->on('regions');
             $table->integer('agency_id')->unsigned();
             $table->foreign('agency_id')->references('id')->on('agencies');
+         
         });
     }
 
