@@ -15,6 +15,8 @@ use DB;
 
 use App\Models\StoreInventories;
 use App\Models\AssortmentInventories;
+use App\backup_list;
+use App\device_backup;
 use App\Setting;
 
 class DownloadController extends Controller
@@ -48,7 +50,7 @@ class DownloadController extends Controller
                     ->where('store_users.user_id', $user)
                     ->where('stores.active', 1)
                     ->get();
-        // dd($storelist);
+    
 
          if($type == 1){
             $settings = Setting::find(1);
@@ -87,7 +89,7 @@ class DownloadController extends Controller
                 return response()->json($json_data);
             }else{
                 $writer = WriterFactory::create(Type::CSV); 
-                $writer->openToBrowser('stores.txt');
+                $writer->openToBrowser('stores.txt'); 
                 // $writer->addRow(array('ID', 'Store Code', 'Store Name' , 'Channel Id', 'Channel', 'Area'));  
                 $writer->addRow(array(count($storelist)));  
                 foreach ($storelist as $store) {
@@ -369,6 +371,8 @@ class DownloadController extends Controller
     }
 
     public function prnlist(){
+
+
         $prns = [];
         $filesInFolder = \File::files(base_path().'/storage/prn');
 
@@ -397,4 +401,74 @@ class DownloadController extends Controller
         }
 
     }
+
+    public function backuplist($id , $user){
+        $device_id=$id;
+        $username=$user;
+        $id = device_backup::where('username', $username)->where('device_id',$device_id)->first();
+        $filename= backup_list::where('device_backup_id', $id->id)->get();
+
+// foreach ($filename as $value) {
+// $fname[]= $value->filename;
+
+// }
+ 
+//         $backups = [];
+
+// foreach ($fname as $f) {
+//         $filesInFolder[]  = storage_path().'/uploads/backups/' . $f;
+// }
+
+     
+        //   foreach($filesInFolder as $path)
+        // {
+        //     $backups[] = pathinfo($path)['basename'];
+        // }
+
+        // foreach ($backups as $b) {
+           
+        //         $time = backup_list::where('filename',$b)->get();
+
+        // }
+   
+    
+        //     foreach ($time as $t) {
+              
+        //     }
+
+        // if(count($backups)>0){
+        //     return response()->json(array('msg' => 'Backup files lists.', 'files' => $backups));
+        // }
+  
+    if(count($filename) > 0){
+        return response()->json(array('msg' =>'Backup files lists.' , 'files'=>$filename) );
+    }
+    else{
+        # code...
+         return response()->json(array('msg' => 'No files found'));
+    }
+    }
+
+
+    public function downloadbackup($id){
+
+        $file = backup_list::where('id',$id)->first();
+
+        $filename = $file->filename;
+
+        $myfile = storage_path().'/uploads/backups/'.$filename;
+
+        if (!\File::exists($myfile))
+        {
+            echo "File not exists.";
+        }else{
+             $writer = WriterFactory::create(Type::CSV); 
+                $writer->openToBrowser('backup.txt');
+                $writer->openToFile($myfile);
+                $writer->close();
+        }
+
+    }
+
+
 }

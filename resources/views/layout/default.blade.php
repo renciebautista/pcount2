@@ -96,6 +96,8 @@
                     <li role="separator" class="divider"></li>
                     <li>{!! Html::linkRoute('store.invalid', 'Invalid Store List', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('mapping.invalid', 'Invalid Mapping List', array(), array()) !!}</li>
+                     <li>{!! Html::linkRoute('backup.list', 'Backup List', array(), array()) !!}</li>
+
                 </ul>
             </li>
             @endif
@@ -138,8 +140,7 @@
 		<!-- script -->
 		{!! Html::script('js/jquery-1.11.3.min.js') !!}
 		{!! Html::script('js/bootstrap.js') !!}
-        {!! Html::script('js/bootstrap-switch.js') !!}
-        {!! Html::script('js/user-switch.js') !!}
+
 		{!! Html::script('js/bootstrap-multiselect.js') !!}
 		{!! Html::script('js/bootstrap-multiselect-collapsible-groups.js') !!}
 		{!! HTML::script('js/datepicker/datepicker-ui.js') !!}

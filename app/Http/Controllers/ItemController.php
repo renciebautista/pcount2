@@ -107,6 +107,7 @@ class ItemController extends Controller
     public function edit($id)
     {
         //
+$status = ['0' => 'In-active', '1' => 'Active'];
  $divisions = ItemInventories::getDivisionList();
  $brand = Brand::all()->lists('brand', 'id');
             $data = array();
@@ -129,7 +130,7 @@ class ItemController extends Controller
                                                  }
 
         $item= Item::findOrFail($id);
-        return view('item.edit',['item' => $item , 'brand'=>$brand],compact('sel_dv','divisions','sel_cat','sel_scat','sel_br'));
+        return view('item.edit',['item' => $item , 'brand'=>$brand],compact('sel_dv','divisions','sel_cat','sel_scat','sel_br','status'));
 
     }
 
@@ -180,7 +181,9 @@ class ItemController extends Controller
         $item->category_id =$catname;
         $item->sub_category_id =$scatname;
         $item->brand_id = $request->brand_id;
-    
+        $item->description_long =$request->description_long;
+        $item->barcode = $request->barcode;
+        $item->active = $request->status;
         $item->update();
 
         Session::flash('flash_class', 'alert-success');

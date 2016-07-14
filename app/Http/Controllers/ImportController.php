@@ -20,6 +20,7 @@ class ImportController extends Controller
 
     public function masterfileuplaod(Request $request){
         // dd($request->all());
+        
         if ($request->hasFile('file'))
 		{
             $folderpath = base_path().'/database/seeds/seed_files/'.date('mdY');

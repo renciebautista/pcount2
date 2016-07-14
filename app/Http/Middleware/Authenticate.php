@@ -38,7 +38,7 @@ class Authenticate
       
        // if ($request->user()->log_status != 1)
        //  {
-       //      return redirect('/auth/login');
+       //      return redirect('/auth/login'); 
        //  } 
         if ($this->auth->guest()) {
             if ($request->ajax()) {

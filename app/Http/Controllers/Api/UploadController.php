@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 
 use DB;
 use App\User;
+
 use App\Models\Store;
 use App\Models\StoreInventories;
 use App\Models\ItemInventories;
@@ -21,8 +22,11 @@ use App\Models\Item;
 use App\Models\StoreItem;
 use App\Models\UpdatedIg;
 use App\Models\OtherBarcode;
+
 use App\DeviceError;
 use App\Setting;
+use App\backup_list;
+use App\device_backup;
 
 class UploadController extends Controller
 {
@@ -30,6 +34,7 @@ class UploadController extends Controller
     {
 
         $destinationPath = storage_path().'/uploads/pcount/';
+        
         $fileName = $request->file('data')->getClientOriginalName();
         $request->file('data')->move($destinationPath, $fileName);
 
@@ -37,8 +42,8 @@ class UploadController extends Controller
 
         $filename_data = explode("-", $fileName);
 
-        // dd($filename_data);
-        if((count($filename_data) == 6) && ($filename_data[5] == '5.csv')){
+      
+          if((count($filename_data) == 6) && ($filename_data[5] == '5.csv')){
             $storeid = $filename_data[0];
             $userid = $filename_data[1];
             $year = explode(".", $filename_data[4]);
@@ -75,6 +80,7 @@ class UploadController extends Controller
 
 
                 $store_inventory = StoreInventories::create([
+                    
                     'area' => $store->area->area,
                     'enrollment_type' => $store->enrollment->enrollment,
                     'distributor_code' => $store->distributor->distributor_code,
@@ -279,14 +285,52 @@ class UploadController extends Controller
             if(!empty($error)){
                 $error->updated_at = date('Y-m-d H:i:s');
                 $error->update();
-            }else{
+            }
+            else{
                 DeviceError::create(['filename' => $filename]);
             }
 
             return response()->json(array('msg' => 'Error trace successfully submitted.', 'status' => 0));
         }
+
         return response()->json(array('msg' => 'Failed in submitting error trace.', 'status' => 1));
     }
+
+
+
+     public function uploadbackup(Request $request){
+        if ($request->hasFile('data'))
+        {
+            $destinationPath = storage_path().'/uploads/backups/';
+            $filename = $request->file('data')->getClientOriginalName();
+            $request->file('data')->move($destinationPath, $filename);
+
+            $device_id=$request->device_id;
+            $username=$request->username;
+
+            $ifexists = device_backup::where('username',$username)->first();
+
+            if(empty($ifexists)){
+            device_backup::create(['device_id'=>$device_id,'username'=>$username]);
+            }
+            $list = backup_list::where('filename',$filename)->where('device_backup_id',$ifexists->id)->first();
+            if(!empty($list)){
+                $list->updated_at = date('Y-m-d H:i:s');
+                $list->update();
+            }else{
+                $device_id=$request->device_id;
+              $username=$request->username;
+             $ifexists = device_backup::where('username',$username)->first();  
+            backup_list::create(['filename' => $filename,'device_backup_id'=>$ifexists->id]);
+
+
+            }
+
+            return response()->json(array('msg' => 'Backup successfully submitted.', 'status' => 0));
+        }
+        return response()->json(array('msg' => 'Failed in submitting backup.', 'status' => 1));
+    }
+
 
    
 }

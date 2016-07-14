@@ -118,9 +118,9 @@ class StoreController extends Controller
           $customer = Customer::all()->lists('customer_name', 'id');
           $region = Region::all()->lists('region_short','id');
            $agency = Agency::all()->lists('agency_name','id');
+ $status = ['0' => 'In-active', '1' => 'Active'];
 
-
-        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency]);
+        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status]);
     }
 
     /**
@@ -160,7 +160,9 @@ class StoreController extends Controller
         $store->agency_id = $request->agency_id;
         $store->store_name = $request->store_name;
          $store->storeid = $request->store_id;
-
+   $store->store_code = $request->store_code;
+   $store->store_code_psup = $request->store_code_psup;
+   $store->active = $request->status;
        $store->update();
 
         Session::flash('flash_class', 'alert-success');

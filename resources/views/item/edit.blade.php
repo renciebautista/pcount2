@@ -26,10 +26,31 @@
 <div class="row">
  <div class="col-lg-4">
         <div class="form-group">
+                {!! Form::label('bacrode','Barcode',array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+               {!! Form::text('barcode', $item->barcode,array('placeholder'=>'Barode', 'class' => 'form-control'))!!}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+ <div class="col-lg-4">
+        <div class="form-group">
                 {!! Form::label('description','Description',array('class' => 'col-lg-4 control-label')) !!}
 
             <div class="col-lg-8">
-               {!! Form::textarea('description', $item->description,array('placeholder'=>'Description', 'class' => 'form-control','rows'=> 3))!!}
+               {!! Form::textarea('description', $item->description,array('placeholder'=>'Description', 'class' => 'form-control','rows'=> 2))!!}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+ <div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('description_long','Description Long',array('class' => 'col-lg-4 control-label')) !!}
+
+            <div class="col-lg-8">
+               {!! Form::textarea('description_long', $item->description_long,array('placeholder'=>'Description Long', 'class' => 'form-control','rows'=> 2))!!}
             </div>
         </div>
     </div>
@@ -95,6 +116,16 @@
         </div>
     </div>
 </div>
+<div class="row">
+<div class="col-lg-4">
+        <div class="form-group">
+                {!! Form::label('status','Status',array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+            {!! Form::select('status', $status, $item->active, ['class' => 'form-control'])!!}
+            </div>
+        </div>
+        </div>
+        </div>
 <div class="row">
     
     <div class="col-lg-4">

@@ -25,6 +25,9 @@ class AssortmentController extends Controller
         $areas = AssortmentInventories::getAreaList();
         $sel_ar = [];
         $sel_st = [];
+
+  $sel_av = [];
+         $availability =['1'=>'oos','2'=>'osa'];
         // $sel_ar = AssortmentInventories::getStoreCodes('area');
         // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         
@@ -41,10 +44,13 @@ class AssortmentController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
+         if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
 
         $inventories = AssortmentItemInventories::getAssortmentCompliance($data);
         
-        return view('assortment.index', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+        return view('assortment.index', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','availability','sel_av'));
     }
 
     /**
@@ -58,7 +64,8 @@ class AssortmentController extends Controller
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
-
+$sel_av = $request->availability;
+ $availability =['1'=>'oos','2'=>'osa'];
         $areas = AssortmentInventories::getAreaList();
         // $sel_ar = AssortmentInventories::getStoreCodes('area');
         // $sel_st = AssortmentInventories::getStoreCodes('store_id');
@@ -76,11 +83,13 @@ class AssortmentController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-
+if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
         $inventories = AssortmentItemInventories::getAssortmentCompliance($data);
 
         if ($request->has('submit')) {
-            return view('assortment.index', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st'));
+            return view('assortment.index', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','sel_av','availability'));
         }
 
         if ($request->has('download')) {

@@ -16,4 +16,12 @@ class StoreUser extends Model
     {
         return $this->belongsTo('App\Models\Store','store_id', 'id');        
     }   
+     public function status()
+    {
+        if($this->active){
+            return 'Active';
+        }else{
+            return 'In-active';
+        }
+    }
 }

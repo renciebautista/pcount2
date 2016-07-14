@@ -104,6 +104,26 @@ class ItemInventories extends Model
 					}
 				}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
+
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->orderBy('created_at','desc')
 			->paginate(1000);
@@ -181,6 +201,26 @@ class ItemInventories extends Model
 					$query->whereIn('brand', $filters['brands']);
 				}
 			})
+					->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
+
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->skip($skip*$take)
 			->take($take)
@@ -215,7 +255,26 @@ class ItemInventories extends Model
 					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
 				}
 			})
+				->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
 
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
 			->orderBy(\DB::raw('yr, yr_week, area'))
@@ -248,7 +307,26 @@ class ItemInventories extends Model
 					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
 				}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
 
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -290,6 +368,25 @@ class ItemInventories extends Model
 					$date = explode("-", $filters['to']);
 					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
 				}
+			})	->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
+
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
 			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
@@ -338,6 +435,25 @@ class ItemInventories extends Model
 					$date = explode("-", $filters['to']);
 					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
 				}
+			})->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
+
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
 			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
@@ -371,6 +487,25 @@ class ItemInventories extends Model
 					$date = explode("-", $filters['to']);
 					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
 				}
+			})->where(function($query) use ($filters){
+			if(!empty($filters['availability'])){
+				if(count($filters['availability']) ==1){
+					if(in_array(1, $filters['availability'])){
+						$query->where('oos', 1);
+					}
+
+					if(in_array(2, $filters['availability'])){
+						$query->where('osa', 1);
+					}
+				}
+
+				elseif (count($filters['availability'])>1) {
+
+					# code...
+					$query->where('osa',1)
+							->orWhere('oos',1);
+				}
+			}
 			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')

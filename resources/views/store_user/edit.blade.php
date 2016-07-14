@@ -28,7 +28,10 @@
           	<label>User Name</label>
           	{!! Form::text('username',$user->username,['class' => 'form-control']) !!}
         </div>
-
+      <div class="form-group">
+            <label>Status</label>
+           {!! Form::select('status',$status, $user->active, ['class' => 'form-control'])!!}
+        </div>
         <div class="form-group">
           	<label>Email</label>
           	{!! Form::text('email',$user->email,['class' => 'form-control']) !!}

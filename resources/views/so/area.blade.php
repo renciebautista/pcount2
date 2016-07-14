@@ -33,7 +33,7 @@
     </div>
 
     <div class="col-lg-4">
-        
+       
     </div>
 </div>
 
@@ -43,6 +43,15 @@
                 {!! Form::label('area', 'Area', array('class' => 'col-lg-4 control-label')) !!}
             <div class="col-lg-8">
                 {!! Form::select('ar[]', $areas, $sel_ar, array('class' => 'form-control select_form', 'id' => 'ar', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
+
+    </div>
+     <div class="col-lg-4">
+         <div class="form-group">
+                {!! Form::label('availability', 'Availability', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('availability[]', $availability, $sel_av, array('class' => 'form-control select_form', 'id' => 'av', 'multiple' => 'multiple')) !!}
             </div>
         </div>
     </div>
@@ -134,6 +143,15 @@ $("#from").datepicker({
             $("#from").datepicker("option","maxDate", selected)
         }
     });
+     $('#av').multiselect({
+        maxHeight: 200,
+        includeSelectAllOption: true,
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'form-control',
+    });
+
 
 $('#ar').multiselect({
         maxHeight: 200,

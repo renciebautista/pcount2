@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\ItemInventories;
+
 use App\Models\StoreInventories;
 use App\Models\AssortmentInventories;
 use App\Models\AssortmentItemInventories;
@@ -49,7 +50,9 @@ class InventoryController extends Controller
         $sel_scat = [];
         $sel_br = [];
         $sel_tag = [];
+          $sel_av = [];
         $tags = ['1' => 'OSA', '2' => 'NPI'];
+        $availability =['1'=>'oos','2'=>'osa'];
         if($report_type == 2){
             $agencies = StoreInventories::getAgencyList();
             // $sel_ag = StoreInventories::getStoreCodes('agency_code'); 
@@ -136,7 +139,7 @@ class InventoryController extends Controller
 
         return view('inventory.index',compact('frm', 'to', 'agencies','sel_ag',
             'sel_cl', 'sel_ch', 'sel_ds', 'sel_en', 'sel_rg', 'sel_st',
-            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type', 'sel_tag', 'tags'));
+            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type', 'sel_tag', 'tags','availability','sel_av'));
     }
 
     /**
@@ -155,8 +158,9 @@ class InventoryController extends Controller
         $sel_rg = $request->rg;
         $sel_st = $request->st;
         $sel_tag = $request->tags;
+        $sel_av = $request->availability;
         $tags = ['1' => 'OSA', '2' => 'NPI'];
-
+  $availability =['1'=>'oos','2'=>'osa'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -222,7 +226,9 @@ class InventoryController extends Controller
         if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
-
+    if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
         if($report_type == 2){
             $items = ItemInventories::filter($data);
             $header = "MKL Posted Transaction Report";
@@ -232,9 +238,10 @@ class InventoryController extends Controller
         }
 
         if ($request->has('submit')) {
+       
             return view('inventory.index',compact('frm', 'to', 'agencies','sel_ag',
             'sel_cl', 'sel_ch', 'sel_ds', 'sel_en', 'sel_rg', 'sel_st',
-            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type', 'sel_tag', 'tags'));
+            'divisions', 'sel_dv', 'sel_cat', 'sel_scat', 'sel_br' ,'items', 'header','type', 'sel_tag', 'tags','sel_av','availability'));
         }
 
         set_time_limit(0);

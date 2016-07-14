@@ -121,6 +121,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('deviceerror', ['as' => 'deviceerror.index', 'uses' => 'DeviceErrorController@index']);
     Route::get('deviceerror/getfile/{filename}', ['as' => 'deviceerror.getfile', 'uses' => 'DeviceErrorController@getfile']);
+     Route::get('backup', ['as' => 'backup.list', 'uses' => 'BackupController@index']);
+     Route::get('backup/list/{id}',['as'=>'backup/lists','uses'=>'BackupController@show']);
+      Route::get('backup/getfile/{filename}', ['as' => 'backup.getfile', 'uses' => 'BackupController@getfile']);
 });
 
 
@@ -158,6 +161,9 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('prnlist', 'Api\DownloadController@prnlist');
 	Route::get('downloadprn/{filename}', 'Api\DownloadController@downloadprn');
 
+	Route::get('backuplist/{id}/{user}', 'Api\DownloadController@backuplist');
+	Route::get('downloadbackup/{id}', 'Api\DownloadController@downloadbackup');
+
 	Route::get('protected/{token}/{file_name}', 'Api\UpdateapkController@download');
 	Route::post('check', 'Api\CheckupdateController@check');
 	Route::post('verify', 'Api\CheckupdateController@verify');
@@ -167,6 +173,8 @@ Route::group(array('prefix' => 'api'), function()
 	Route::post('betaverify', 'Api\CheckupdateController@betaverify');
 
 	Route::post('uploadtrace', 'Api\UploadController@uploadtrace');
+	Route::post('uploadbackup', 'Api\UploadController@uploadbackup');
+
 	Route::get('checkhash', 'Api\AuthUserController@checkhash');
 
 });

@@ -18,6 +18,8 @@ class OutofstockController extends Controller
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
         $report_type = 1;
+        $sel_av = [];
+$availability =['1'=>'oos','2'=>'osa'];
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
@@ -43,7 +45,9 @@ class OutofstockController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-
+ if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
         if($report_type == 2){
             $header = 'MKL OOS SKU Report';
             $inventories = ItemInventories::getOosPerStore($data);
@@ -52,7 +56,7 @@ class OutofstockController extends Controller
             $inventories = AssortmentItemInventories::getOosPerStore($data);
         }
 
-        return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type'));
+        return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av'));
     }
 
     public function postsku(Request $request,$type = null){
@@ -60,7 +64,8 @@ class OutofstockController extends Controller
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
-
+$sel_av = $request->availability;
+  $availability =['1'=>'oos','2'=>'osa'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -86,7 +91,9 @@ class OutofstockController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-        
+        if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
         if($report_type == 2){
             $header = 'MKL OOS SKU Report';
             $inventories = ItemInventories::getOosPerStore($data);
@@ -97,7 +104,7 @@ class OutofstockController extends Controller
 
 
         if ($request->has('submit')) {
-            return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type'));
+            return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type' , 'type','sel_av','availability'));
         }
 
         if ($request->has('download')) {

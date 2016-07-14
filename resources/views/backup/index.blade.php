@@ -7,27 +7,34 @@
 <div id="banner">
     <div class="row">
         <div class="col-lg-12">
-            <h3>Device Error Report</h3>
+            <h3>List of Device with Backup</h3>
         </div>
     </div>
 </div>
 <hr/>
-<label class="pull-right">{{ $devices->count() }} records found.</label>
+
+
+
+<label class="pull-right">{{ $backups->count() }} records found.</label>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
-            <th>Device Id</th>
-            <th>Last Reported</th>
+            <th>Username</th>
+            <th>Device ID</th>
+            <th>Action</th>
+      
         </tr>
     </thead>
-  <tbody>  
-        @if(count($devices) > 0)
-            @foreach($devices as $device)                   
+  <tbody>    
+        @if(count($backups) > 0)
+            @foreach($backups as $backup)                   
                 <tr>
-                    <td>
-                        {!! link_to_route('deviceerror.getfile', $device->filename, $device->filename) !!}
+                    <td>{{ $backup->username }}</td>
+                    <td>{{ $backup->device_id }}</td>
+                    
+                     <td>
+                        {!! link_to_action('BackupController@show', 'Show Backup', $backup->id, ['class' => 'btn btn-xs btn btn-primary']) !!} 
                     </td>
-                    <td>{{ $device->updated_at}}</td>
                 </tr>                
             @endforeach
         @else
@@ -38,8 +45,12 @@
     </tbody>
 </table> 
 </div>
+
 @stop
+
+
 @section('page-script')
+
 $('#item_type').multiselect({
         maxHeight: 200,
         includeSelectAllOption: true,

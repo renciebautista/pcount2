@@ -34,7 +34,12 @@
     </div>
 
     <div class="col-lg-4">
-        
+         <div class="form-group">
+                {!! Form::label('availability', 'Availability', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('availability[]', $availability, $sel_av, array('class' => 'form-control select_form', 'id' => 'av', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
     </div>
 </div>
 
@@ -118,7 +123,7 @@
            
         </tr>
         @endforeach
-        @else
+        @else 
         <tr>
             <td colspan="9">No record found.</td>
         </tr>
@@ -163,7 +168,14 @@ $('#ar').multiselect({
             updatestore(); 
         }
     });
-
+  $('#av').multiselect({
+        maxHeight: 200,
+        includeSelectAllOption: true,
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'form-control',
+    });
     $('#stores').multiselect({
         maxHeight: 200,
         includeSelectAllOption: true,

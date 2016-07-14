@@ -105,7 +105,8 @@ class StoreUserController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::orderBy('name')->lists('name', 'id');
         // dd($roles);
-        return view('store_user.edit',compact('roles', 'user'));
+         $status = ['0' => 'In-active', '1' => 'Active'];
+        return view('store_user.edit',compact('roles', 'user','status'));
     }
 
     /**
@@ -130,8 +131,9 @@ class StoreUserController extends Controller
         $user->name = strtoupper($request->name);
         $user->username = $request->username;
         $user->email = $request->email;
-        $user->update();
-
+         $user->active = $request->status;
+              $user->update();
+     
         $user->detachRoles($user->roles);
 
         $user->roles()->attach($role);

@@ -18,7 +18,8 @@ class SalesOrderController extends Controller
     public function area($type = null){
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
-
+        $sel_av = [];
+$availability =['1'=>'oos','2'=>'osa'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -40,6 +41,9 @@ class SalesOrderController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
+        if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
 
         if($report_type == 2){
             $header = 'MKL SO Per Area Report';
@@ -50,15 +54,17 @@ class SalesOrderController extends Controller
         }
 
         
-        return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type'));
+        return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av'));
     }
 
     public function postArea(Request $request,$type = null){
+
         $sel_ar = $request->ar;
 
         $frm = $request->fr;
         $to = $request->to;
-
+ $sel_av = $request->availability;
+  $availability =['1'=>'oos','2'=>'osa'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -79,7 +85,9 @@ class SalesOrderController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-
+if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
         if($report_type == 2){
             $header = 'MKL SO Per Area Report';
             $inventories = ItemInventories::getSoPerArea($data);
@@ -89,7 +97,7 @@ class SalesOrderController extends Controller
         }
 
         if ($request->has('submit')) {
-            return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar','header' , 'type'));
+            return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar','header' , 'type','sel_av','availability'));
         }
         
         if ($request->has('download')) {
@@ -168,6 +176,8 @@ class SalesOrderController extends Controller
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
         $report_type = 1;
+        $sel_av = [];
+$availability =['1'=>'oos','2'=>'osa'];
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
@@ -193,6 +203,9 @@ class SalesOrderController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
+         if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
 
         if($report_type == 2){
             $header = 'MKL SO Per Store Report';
@@ -203,7 +216,7 @@ class SalesOrderController extends Controller
         }
 
         
-        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type'));
+        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av'));
     }
 
     public function postStore(Request $request,$type = null){
@@ -212,7 +225,8 @@ class SalesOrderController extends Controller
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
-
+ $sel_av = $request->availability;
+  $availability =['1'=>'oos','2'=>'osa'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -237,7 +251,9 @@ class SalesOrderController extends Controller
         if(!empty($to)){
             $data['to'] = $to;
         }
-
+if(!empty($sel_av)){
+            $data['availability'] = $sel_av;
+        }
         if($report_type == 2){
             $header = 'MKL SO Per Store Report';
             $inventories = ItemInventories::getSoPerStores($data);
@@ -247,7 +263,7 @@ class SalesOrderController extends Controller
         }
 
         if ($request->has('submit')) {
-            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header', 'type'));
+            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header', 'type','availability','sel_av'));
         }
         
         if ($request->has('download')) {

@@ -49,6 +49,14 @@ class User extends Model implements AuthenticatableContract,
     public function isActive(){
         return $this->attributes['active'];
     }
+     public function status()
+    {
+        if($this->active){
+            return 'Active';
+        }else{
+            return 'In-active';
+        }
+    }
 
     public static function search($request){
         return self::join('role_user', 'role_user.user_id', '=', 'users.id')
