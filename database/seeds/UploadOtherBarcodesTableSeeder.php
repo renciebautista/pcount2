@@ -36,8 +36,11 @@ class UploadOtherBarcodesTableSeeder extends Seeder
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
 
+		echo 'Seeding '. $filePath. PHP_EOL;
+		
 		// DB::table('other_barcodes')->truncate();
 
+		Item::where('active',1)->update(['cleared' => 0]);
 
 		foreach ($reader->getSheetIterator() as $sheet) {
 			if($sheet->getName() == 'Other Codes'){
