@@ -25,8 +25,8 @@ use App\Models\OtherBarcode;
 
 use App\DeviceError;
 use App\Setting;
-use App\backup_list;
-use App\device_backup;
+use App\BackupList;
+use App\DeviceBackup;
 
 class UploadController extends Controller
 {
@@ -301,35 +301,28 @@ class UploadController extends Controller
      public function uploadbackup(Request $request){
         if ($request->hasFile('data'))
         {
-            $destinationPath = storage_path().'/uploads/backups/';
-            $filename = $request->file('data')->getClientOriginalName();
-            $request->file('data')->move($destinationPath, $filename);
+                $destinationPath = storage_path().'/uploads/backups/';
+                $filename = $request->file('data')->getClientOriginalName();
+                $request->file('data')->move($destinationPath, $filename);
 
-            $device_id=$request->device_id;
-            $username=$request->username;
+                $device_id=$request->device_id;
+                $username=$request->username;
 
-            $ifexists = device_backup::where('username',$username)->first();
+                $dbackup = DeviceBackup::firstOrCreate(['device_id' => $device_id, 'username' => $username]);
+                $list = BackupList::where('filename',$filename)->where('device_backup_id',$dbackup->id)->first();
 
-            if(empty($ifexists)){
-            device_backup::create(['device_id'=>$device_id,'username'=>$username]);
-            }
-            $list = backup_list::where('filename',$filename)->where('device_backup_id',$ifexists->id)->first();
-            if(!empty($list)){
+                if(!empty($list)){
                 $list->updated_at = date('Y-m-d H:i:s');
                 $list->update();
-            }else{
-                $device_id=$request->device_id;
-              $username=$request->username;
-             $ifexists = device_backup::where('username',$username)->first();  
-            backup_list::create(['filename' => $filename,'device_backup_id'=>$ifexists->id]);
-
-
-            }
-
-            return response()->json(array('msg' => 'Backup successfully submitted.', 'status' => 0));
+                }else{
+                
+                BackupList::create(['filename' => $filename,'device_backup_id'=>$dbackup->id]);
         }
-        return response()->json(array('msg' => 'Failed in submitting backup.', 'status' => 1));
-    }
+
+                return response()->json(array('msg' => 'Backup successfully submitted.', 'status' => 0));
+        }
+                return response()->json(array('msg' => 'Failed in submitting backup.', 'status' => 1));
+        }
 
 
    

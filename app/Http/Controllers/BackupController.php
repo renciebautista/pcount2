@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Device;
-use App\device_backup;
-use App\backup_list;
+use App\DeviceBackup;
+use App\BackupList;
 class BackupController extends Controller
 {
     /**
@@ -19,7 +19,7 @@ class BackupController extends Controller
     public function index()
     {
         //
-         $backups = device_backup::orderBy('updated_at','desc')->get();
+         $backups = DeviceBackup::orderBy('updated_at','desc')->get();
         return view('backup.index',compact('backups'));
     }
 
@@ -53,7 +53,7 @@ class BackupController extends Controller
     public function show($id)
     {
         //
-     $backups = backup_list::where('device_backup_id',$id)->orderBy('updated_at', 'desc')->get(); 
+     $backups = BackupList::where('device_backup_id',$id)->orderBy('updated_at', 'desc')->get(); 
     return view('backup.show',compact('backups'));
 
 
