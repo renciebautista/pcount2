@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class device_backup extends Model
+class DeviceBackup extends Model
 {
     //
     protected $tables = 'device_backup';

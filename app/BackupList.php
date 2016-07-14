@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class backup_list extends Model
+class BackupList extends Model
 {
     //
 

@@ -15,8 +15,8 @@ use DB;
 
 use App\Models\StoreInventories;
 use App\Models\AssortmentInventories;
-use App\backup_list;
-use App\device_backup;
+use App\BackupList;
+use App\DeviceBackup;
 use App\Setting;
 
 class DownloadController extends Controller
@@ -405,8 +405,8 @@ class DownloadController extends Controller
     public function backuplist($id , $user){
         $device_id=$id;
         $username=$user;
-        $id = device_backup::where('username', $username)->where('device_id',$device_id)->first();
-        $filename= backup_list::where('device_backup_id', $id->id)->get();
+        $id = DeviceBackup::where('username', $username)->where('device_id',$device_id)->first();
+        $filename= BackupList::where('device_backup_id', $id->id)->get();
 
 // foreach ($filename as $value) {
 // $fname[]= $value->filename;
@@ -452,7 +452,7 @@ class DownloadController extends Controller
 
     public function downloadbackup($id){
 
-        $file = backup_list::where('id',$id)->first();
+        $file = BackupList::where('id',$id)->first();
 
         $filename = $file->filename;
 
@@ -462,10 +462,7 @@ class DownloadController extends Controller
         {
             echo "File not exists.";
         }else{
-             $writer = WriterFactory::create(Type::CSV); 
-                $writer->openToBrowser('backup.txt');
-                $writer->openToFile($myfile);
-                $writer->close();
+              return \Response::download($myfile, $filename);
         }
 
     }
