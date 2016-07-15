@@ -402,10 +402,10 @@ class DownloadController extends Controller
 
     }
 
-    public function backuplist($id , $user){
-        $device_id=$id;
+    public function backuplist($user){
+        
         $username=$user;
-        $id = DeviceBackup::where('username', $username)->where('device_id',$device_id)->first();
+        $id = DeviceBackup::where('username', $username)->first();
         $filename= BackupList::where('device_backup_id', $id->id)->get();
 
 // foreach ($filename as $value) {

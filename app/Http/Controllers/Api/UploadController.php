@@ -308,13 +308,26 @@ class UploadController extends Controller
                 $device_id=$request->device_id;
                 $username=$request->username;
 
-                $dbackup = DeviceBackup::firstOrCreate(['device_id' => $device_id, 'username' => $username]);
+                $dbackup = DeviceBackup::firstOrCreate(['username' => $username]);
+              if($dbackup->device_id==""){
+
+                $dbackup->device_id= $device_id;
+                $dbackup->update();
+              }
+              else{
+                
+                 $dbackup->device_id= $device_id;
+                $dbackup->update();
+
+              }
                 $list = BackupList::where('filename',$filename)->where('device_backup_id',$dbackup->id)->first();
+
 
                 if(!empty($list)){
                 $list->updated_at = date('Y-m-d H:i:s');
                 $list->update();
-                }else{
+                }
+        else{
                 
                 BackupList::create(['filename' => $filename,'device_backup_id'=>$dbackup->id]);
         }

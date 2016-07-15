@@ -161,7 +161,7 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('prnlist', 'Api\DownloadController@prnlist');
 	Route::get('downloadprn/{filename}', 'Api\DownloadController@downloadprn');
 
-	Route::get('backuplist/{id}/{user}', 'Api\DownloadController@backuplist');
+	Route::get('backuplist/{user}', 'Api\DownloadController@backuplist');
 	Route::get('downloadbackup/{id}', 'Api\DownloadController@downloadbackup');
 
 	Route::get('protected/{token}/{file_name}', 'Api\UpdateapkController@download');

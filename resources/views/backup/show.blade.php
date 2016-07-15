@@ -19,7 +19,7 @@
 <table class="table table-striped table-hover">
     <thead>
         <tr>
-            <th>Filename</th>
+          
             <th>Last Uploaded</th>
         </tr>
     </thead>
@@ -28,9 +28,9 @@
             @foreach($backups as $backup)                   
                 <tr>
                     <td>
-                        {!! link_to_route('backup.getfile', $backup->filename, $backup->filename) !!}
+                        {!! link_to_route('backup.getfile', $backup->updated_at, $backup->filename) !!}
                     </td>
-                    <td>{{ $backup->updated_at}}</td>
+                   
                 </tr>                
             @endforeach
         @else
