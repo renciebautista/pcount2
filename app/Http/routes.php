@@ -28,7 +28,7 @@ Route::get('auth/logout', ['as' => 'auth.logout', 'uses' =>  'Auth\AuthControlle
 Route::get('latest', 'ApkController@latest');
 Route::get('testspeed', function(){
 	return view('testspeed');
-});
+});  
 
 Route::group(['middleware' => 'auth'], function () {
 

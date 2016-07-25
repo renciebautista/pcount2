@@ -343,7 +343,8 @@ class DownloadController extends Controller
     }
 
 
-    public function image($name){
+    public function image($name)
+    {
         $file = StoreInventories::where('signature',$name)->first();
         
         $myfile = storage_path().'/uploads/image/pcount/'.$name;
