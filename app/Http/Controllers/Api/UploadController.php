@@ -307,6 +307,7 @@ class UploadController extends Controller
 
                 $device_id=$request->device_id;
                 $username=$request->username;
+                $database_version=$request->database_version;
 
                 $dbackup = DeviceBackup::firstOrCreate(['username' => $username]);
               if($dbackup->device_id==""){
@@ -325,11 +326,15 @@ class UploadController extends Controller
 
                 if(!empty($list)){
                 $list->updated_at = date('Y-m-d H:i:s');
+                 $list->database_version=$database_version;
                 $list->update();
+
                 }
         else{
                 
-                BackupList::create(['filename' => $filename,'device_backup_id'=>$dbackup->id]);
+                BackupList::create(['filename' => $filename,
+                    'device_backup_id'=>$dbackup->id,
+                    'database_version'=>$database_version]);
         }
 
                 return response()->json(array('msg' => 'Backup successfully submitted.', 'status' => 0));

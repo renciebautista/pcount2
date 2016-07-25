@@ -18,10 +18,10 @@ class StoreUserController extends Controller
      */
     public function index(Request $request)
     {
-        $request->flash();
+            $request->flash();
 
        
-        $users = User::search($request);
+            $users = User::search($request);
         // $roles = Role::where('id', '>', 2)->first();
 
         // if(!empty($roles)){
@@ -29,10 +29,10 @@ class StoreUserController extends Controller
         // }
 
        
-        $roles = Role::orderBy('name')->lists('name', 'id');
+            $roles = Role::orderBy('name')->lists('name', 'id');
 
 
-        return view('store_user.index',compact('users','roles'));
+            return view('store_user.index',compact('users','roles'));
     }
 
     /**
@@ -42,8 +42,8 @@ class StoreUserController extends Controller
      */
     public function create()
     {
-        $roles = Role::orderBy('name')->lists('name', 'id');
-        return view('store_user.create',compact('roles'));
+            $roles = Role::orderBy('name')->lists('name', 'id');
+            return view('store_user.create',compact('roles'));
     }
 
     /**
@@ -63,23 +63,23 @@ class StoreUserController extends Controller
             'role' => 'required|integer|min:1'
         ]);
 
-        $role = Role::findOrFail($request->role);
+            $role = Role::findOrFail($request->role);
 
-        $user = new User();
-        $user->name = strtoupper($request->name);
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = \Hash::make($request->password);
-        $user->save();
+            $user = new User();
+            $user->name = strtoupper($request->name);
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = \Hash::make($request->password);
+            $user->save();
 
 
 
-        $user->roles()->attach($role);
+            $user->roles()->attach($role);
 
-        Session::flash('flash_message', 'User successfully added.');
-        Session::flash('flash_class', 'alert-success');
+            Session::flash('flash_message', 'User successfully added.');
+            Session::flash('flash_class', 'alert-success');
 
-        return redirect()->route("store_user.index");
+            return redirect()->route("store_user.index");
 
     }
 
@@ -102,11 +102,11 @@ class StoreUserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $roles = Role::orderBy('name')->lists('name', 'id');
+            $user = User::findOrFail($id);
+            $roles = Role::orderBy('name')->lists('name', 'id');
         // dd($roles);
-         $status = ['0' => 'In-active', '1' => 'Active'];
-        return view('store_user.edit',compact('roles', 'user','status'));
+            $status = ['0' => 'In-active', '1' => 'Active'];
+            return view('store_user.edit',compact('roles', 'user','status'));
     }
 
     /**
@@ -118,8 +118,8 @@ class StoreUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $this->validate($request, [
+            $user = User::findOrFail($id);
+            $this->validate($request, [
             'name' => 'required',
             'username' => 'required|unique:users,username,'.$id,
             'email' => 'required|email|unique:users,email,'.$id,
@@ -128,32 +128,32 @@ class StoreUserController extends Controller
 
         $role = Role::findOrFail($request->role);
         
-        $user->name = strtoupper($request->name);
-        $user->username = $request->username;
-        $user->email = $request->email;
-         $user->active = $request->status;
-              $user->update();
+            $user->name = strtoupper($request->name);
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->active = $request->status;
+            $user->update();
      
-        $user->detachRoles($user->roles);
+            $user->detachRoles($user->roles);
 
-        $user->roles()->attach($role);
+            $user->roles()->attach($role);
 
-        Session::flash('flash_message', 'User successfully updated.');
-        Session::flash('flash_class', 'alert-success');
+            Session::flash('flash_message', 'User successfully updated.');
+            Session::flash('flash_class', 'alert-success');
 
-        return redirect()->route("store_user.index");
+            return redirect()->route("store_user.index");
     }
 
      public function changestatus(Request $request)
     {   
 
 
-        $stats = $request->get('id'); 
-       $value = $request->get('active');
+            $stats = $request->get('id'); 
+            $value = $request->get('active');
  
-   $user = User::findOrFail($stats);
-   $user->active = $request->get('active') ;
-   $user->update();
+            $user = User::findOrFail($stats);
+            $user->active = $request->get('active') ;
+            $user->update();
            
     }
 
@@ -168,18 +168,18 @@ class StoreUserController extends Controller
         //
     }
     public function storelist($id){
-        $stores = StoreUser::where('user_id',$id)->get();
-        return view('store_user.store', compact('stores'));
+            $stores = StoreUser::where('user_id',$id)->get();
+            return view('store_user.store', compact('stores'));
     }
 
     public function changepassword($id){
-        $user = User::findOrFail($id);
-        return view('store_user.changepassword',compact('user'));
+            $user = User::findOrFail($id);
+            return view('store_user.changepassword',compact('user'));
     }
 
     public function postupdate(Request $request, $id){
 
-        $user = User::findOrFail($id);
+            $user = User::findOrFail($id);
         $this->validate($request, [
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'same:password'

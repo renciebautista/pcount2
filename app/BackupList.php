@@ -12,6 +12,7 @@ class BackupList extends Model
     protected $fillable = [
     	'filename',
     	'device_backup_id',
+        'database_version'
         
     	];
 
