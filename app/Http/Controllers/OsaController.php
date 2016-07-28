@@ -20,9 +20,10 @@ class OsaController extends Controller
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
         $report_type = 1;
-
-          $sel_av = [];
-$availability =['1'=>'oos','2'=>'osa'];
+        $sel_tag = [];
+        $sel_av = [];
+        $availability =['1'=>'oos','2'=>'osa'];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
@@ -44,8 +45,11 @@ $availability =['1'=>'oos','2'=>'osa'];
         if(!empty($to)){
             $data['to'] = $to;
         }
- if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
+        }
+         if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
         }
         if($report_type == 2){
             $header = 'MKL OSA Per Area Report';
@@ -56,7 +60,7 @@ $availability =['1'=>'oos','2'=>'osa'];
         }
 
         
-        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av'));
+        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av','sel_tag','tags'));
     }
 
     public function postArea(Request $request, $type = null){
@@ -64,8 +68,10 @@ $availability =['1'=>'oos','2'=>'osa'];
 
         $frm = $request->fr;
         $to = $request->to;
-$sel_av = $request->availability;
-  $availability =['1'=>'oos','2'=>'osa'];
+        $sel_av = $request->availability;
+        $sel_tag = $request->tags;
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
+        $availability =['1'=>'oos','2'=>'osa'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -88,6 +94,9 @@ $sel_av = $request->availability;
         if(!empty($sel_av)){
             $data['availability'] = $sel_av;
         }
+        if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
+        }
         if($report_type == 2){
             $header = 'MKL OSA Per Area Report';
             $inventories = ItemInventories::getOsaPerArea($data);
@@ -97,7 +106,8 @@ $sel_av = $request->availability;
         }
 
         if ($request->has('submit')) {
-            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','sel_av','availability'));
+            
+            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','sel_av','availability','sel_tag','tags'));
         }
         
         if ($request->has('download')) {
@@ -173,8 +183,10 @@ $sel_av = $request->availability;
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
         $report_type = 1;
-          $sel_av = [];
-$availability =['1'=>'oos','2'=>'osa'];
+        $sel_av = [];
+        $sel_tag =[];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
+        $availability =['1'=>'oos','2'=>'osa'];
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
@@ -202,8 +214,11 @@ $availability =['1'=>'oos','2'=>'osa'];
         if(!empty($to)){
             $data['to'] = $to;
         }
- if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
+        }
+        if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
         }
         if($report_type == 2){
             $header = 'MKL OSA Per Store Report';
@@ -213,16 +228,18 @@ $availability =['1'=>'oos','2'=>'osa'];
             $inventories = AssortmentItemInventories::getOsaPerStore($data);
         }
 
-        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av'));
+        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av','sel_tag','tags'));
     }
 
     public function postStore(Request $request,$type = null){
         $sel_ar = $request->ar;
         $sel_st = $request->st;
+        $sel_tag = $request->tags;
         $frm = $request->fr;
         $to = $request->to;
-$sel_av = $request->availability;
-  $availability =['1'=>'oos','2'=>'osa'];
+        $sel_av = $request->availability;
+        $availability =['1'=>'oos','2'=>'osa'];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -248,8 +265,11 @@ $sel_av = $request->availability;
         if(!empty($to)){
             $data['to'] = $to;
         }
-  if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
+        }
+        if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
         }
         if($report_type == 2){
             $header = 'MKL OSA Per Store Report';

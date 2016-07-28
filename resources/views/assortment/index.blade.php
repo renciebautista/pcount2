@@ -61,8 +61,9 @@
         </div>
     </div>
 
+    
     <div class="col-lg-4">
-
+       
     </div>
 </div>
 
@@ -208,5 +209,6 @@ $('#ar').multiselect({
     if(divag !== null) {
         updatestore();
     }
+
 
 @stop

@@ -19,7 +19,9 @@ class SalesOrderController extends Controller
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
         $sel_av = [];
-$availability =['1'=>'oos','2'=>'osa'];
+        $sel_tag = [];
+        $availability =['1'=>'oos','2'=>'osa'];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -44,6 +46,10 @@ $availability =['1'=>'oos','2'=>'osa'];
         if(!empty($sel_av)){
             $data['availability'] = $sel_av;
         }
+          if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
+        }
+
 
         if($report_type == 2){
             $header = 'MKL SO Per Area Report';
@@ -54,17 +60,19 @@ $availability =['1'=>'oos','2'=>'osa'];
         }
 
         
-        return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av'));
+        return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av','sel_tag','tags'));
     }
 
     public function postArea(Request $request,$type = null){
 
         $sel_ar = $request->ar;
-
+        $sel_tag = $request->tags;
         $frm = $request->fr;
         $to = $request->to;
- $sel_av = $request->availability;
-  $availability =['1'=>'oos','2'=>'osa'];
+
+        $sel_av = $request->availability;
+        $availability =['1'=>'oos','2'=>'osa'];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -85,8 +93,11 @@ $availability =['1'=>'oos','2'=>'osa'];
         if(!empty($to)){
             $data['to'] = $to;
         }
-if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
+        }
+        if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
         }
         if($report_type == 2){
             $header = 'MKL SO Per Area Report';
@@ -97,7 +108,8 @@ if(!empty($sel_av)){
         }
 
         if ($request->has('submit')) {
-            return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar','header' , 'type','sel_av','availability'));
+
+            return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar','header' , 'type','sel_av','availability','tags','sel_tag'));
         }
         
         if ($request->has('download')) {
@@ -177,7 +189,9 @@ if(!empty($sel_av)){
         $to = date("m-d-Y");
         $report_type = 1;
         $sel_av = [];
-$availability =['1'=>'oos','2'=>'osa'];
+        $sel_tag = [];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
+        $availability =['1'=>'oos','2'=>'osa'];
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
@@ -206,6 +220,9 @@ $availability =['1'=>'oos','2'=>'osa'];
          if(!empty($sel_av)){
             $data['availability'] = $sel_av;
         }
+         if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
+        }
 
         if($report_type == 2){
             $header = 'MKL SO Per Store Report';
@@ -216,7 +233,7 @@ $availability =['1'=>'oos','2'=>'osa'];
         }
 
         
-        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av'));
+        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av','sel_tag','tags'));
     }
 
     public function postStore(Request $request,$type = null){
@@ -225,8 +242,13 @@ $availability =['1'=>'oos','2'=>'osa'];
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
- $sel_av = $request->availability;
-  $availability =['1'=>'oos','2'=>'osa'];
+        $sel_av = $request->availability;
+        $sel_tag =$request->tags;
+
+        $availability =['1'=>'oos','2'=>'osa'];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
+
+
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -251,8 +273,11 @@ $availability =['1'=>'oos','2'=>'osa'];
         if(!empty($to)){
             $data['to'] = $to;
         }
-if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
+        }
+         if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
         }
         if($report_type == 2){
             $header = 'MKL SO Per Store Report';
@@ -263,7 +288,8 @@ if(!empty($sel_av)){
         }
 
         if ($request->has('submit')) {
-            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header', 'type','availability','sel_av'));
+            
+            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header', 'type','availability','sel_av','sel_tag','tags'));
         }
         
         if ($request->has('download')) {

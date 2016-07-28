@@ -95,6 +95,7 @@ class ItemInventories extends Model
 			})
 			->where(function($query) use ($filters){
 			if(!empty($filters['tags'])){
+				if(count($filters['tags'])==1){
 					if(in_array(1, $filters['tags'])){
 						$query->where('osa_tagged', 1);
 					}
@@ -102,6 +103,11 @@ class ItemInventories extends Model
 					if(in_array(2, $filters['tags'])){
 						$query->where('npi_tagged', 1);
 					}
+				}
+				else{
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
 				}
 			})
 			->where(function($query) use ($filters){
@@ -221,6 +227,23 @@ class ItemInventories extends Model
 				}
 			}
 			})
+					->where(function($query) use ($filters){
+			if(!empty($filters['tags'])){
+				if(count($filters['tags'])==1){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+				else{
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
+				}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->skip($skip*$take)
 			->take($take)
@@ -255,7 +278,7 @@ class ItemInventories extends Model
 					$query->where('transaction_date', '<=',  $date[2].'-'.$date[0].'-'.$date[1]);
 				}
 			})
-				->where(function($query) use ($filters){
+			->where(function($query) use ($filters){
 			if(!empty($filters['availability'])){
 				if(count($filters['availability']) ==1){
 					if(in_array(1, $filters['availability'])){
@@ -274,6 +297,23 @@ class ItemInventories extends Model
 							->orWhere('oos',1);
 				}
 			}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['tags'])){
+				if(count($filters['tags'])==1){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+				else{
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
+				}
 			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
@@ -326,6 +366,23 @@ class ItemInventories extends Model
 							->orWhere('oos',1);
 				}
 			}
+			})
+			->where(function($query) use ($filters){
+				if(!empty($filters['tags'])){
+					if(count($filters['tags'])==1){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+				elseif(count($filters['tags'])>0){
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
+				}
 			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -387,6 +444,23 @@ class ItemInventories extends Model
 							->orWhere('oos',1);
 				}
 			}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['tags'])){
+				if(count($filters['tags'])==1){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+				else{
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
+				}
 			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
@@ -455,6 +529,23 @@ class ItemInventories extends Model
 				}
 			}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['tags'])){
+				if(count($filters['tags'])==1){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+				else{
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
+				}
+			})
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -507,6 +598,25 @@ class ItemInventories extends Model
 				}
 			}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['tags'])){
+				if(count($filters['tags'])==1){
+					if(in_array(1, $filters['tags'])){
+						$query->where('osa_tagged', 1);
+					}
+
+					if(in_array(2, $filters['tags'])){
+						$query->where('npi_tagged', 1);
+					}
+				}
+				else{
+					$query->where('osa_tagged',1)
+							->orWhere('npi_tagged',1);
+				}
+				}
+			})
+			
+
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
