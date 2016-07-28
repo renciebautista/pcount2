@@ -19,7 +19,9 @@ class OutofstockController extends Controller
         $to = date("m-d-Y");
         $report_type = 1;
         $sel_av = [];
-$availability =['1'=>'oos','2'=>'osa'];
+         $sel_tag = [];
+        $availability =['1'=>'oos','2'=>'osa'];
+         $tags = ['1' => 'OSA', '2' => 'NPI'];
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
         }
@@ -45,8 +47,11 @@ $availability =['1'=>'oos','2'=>'osa'];
         if(!empty($to)){
             $data['to'] = $to;
         }
- if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
+        }
+        if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
         }
         if($report_type == 2){
             $header = 'MKL OOS SKU Report';
@@ -56,7 +61,7 @@ $availability =['1'=>'oos','2'=>'osa'];
             $inventories = AssortmentItemInventories::getOosPerStore($data);
         }
 
-        return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av'));
+        return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av','sel_tag','tags'));
     }
 
     public function postsku(Request $request,$type = null){
@@ -64,8 +69,10 @@ $availability =['1'=>'oos','2'=>'osa'];
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
-$sel_av = $request->availability;
-  $availability =['1'=>'oos','2'=>'osa'];
+        $sel_av = $request->availability;
+        $sel_tag = $request->tags;
+        $availability =['1'=>'oos','2'=>'osa'];
+        $tags = ['1' => 'OSA', '2' => 'NPI'];
         $report_type = 1;
         if((is_null($type)) || ($type != 'assortment')){
             $report_type = 2;
@@ -94,6 +101,9 @@ $sel_av = $request->availability;
         if(!empty($sel_av)){
             $data['availability'] = $sel_av;
         }
+         if(!empty($sel_tag)){
+            $data['tags'] = $sel_tag;
+        }
         if($report_type == 2){
             $header = 'MKL OOS SKU Report';
             $inventories = ItemInventories::getOosPerStore($data);
@@ -104,7 +114,7 @@ $sel_av = $request->availability;
 
 
         if ($request->has('submit')) {
-            return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type' , 'type','sel_av','availability'));
+            return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type' , 'type','sel_av','availability','sel_tag','tags'));
         }
 
         if ($request->has('download')) {

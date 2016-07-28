@@ -107,9 +107,9 @@ class ItemController extends Controller
     public function edit($id)
     {
         //
-$status = ['0' => 'In-active', '1' => 'Active'];
- $divisions = ItemInventories::getDivisionList();
- $brand = Brand::all()->lists('brand', 'id');
+    $status = ['0' => 'In-active', '1' => 'Active'];
+    $divisions = ItemInventories::getDivisionList();
+    $brand = Brand::all()->lists('brand', 'id');
             $data = array();
             $sel_dv = [];
              $sel_cat = [];

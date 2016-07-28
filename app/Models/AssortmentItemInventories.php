@@ -114,6 +114,8 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+				
+
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->orderBy('created_at', 'desc')
 			->paginate(1000);
@@ -213,6 +215,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+				
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->skip($skip*$take)
 			->take($take)
@@ -259,6 +262,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+			
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
 			->orderBy(\DB::raw('yr, yr_week, area'))
@@ -311,6 +315,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+			
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -373,6 +378,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+			
 
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
@@ -441,6 +447,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+			
 
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -493,6 +500,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+			
 
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
@@ -575,6 +583,7 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+
 
 
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')

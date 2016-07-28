@@ -25,9 +25,10 @@ class AssortmentController extends Controller
         $areas = AssortmentInventories::getAreaList();
         $sel_ar = [];
         $sel_st = [];
-
-  $sel_av = [];
-         $availability =['1'=>'oos','2'=>'osa'];
+        $sel_tag = [];
+        $sel_av = [];
+        $availability =['1'=>'oos','2'=>'osa'];
+       
         // $sel_ar = AssortmentInventories::getStoreCodes('area');
         // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         
@@ -47,6 +48,7 @@ class AssortmentController extends Controller
          if(!empty($sel_av)){
             $data['availability'] = $sel_av;
         }
+        
 
         $inventories = AssortmentItemInventories::getAssortmentCompliance($data);
         
@@ -64,8 +66,11 @@ class AssortmentController extends Controller
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
-$sel_av = $request->availability;
- $availability =['1'=>'oos','2'=>'osa'];
+       
+        $sel_av = $request->availability;
+        $availability =['1'=>'oos','2'=>'osa'];
+       
+
         $areas = AssortmentInventories::getAreaList();
         // $sel_ar = AssortmentInventories::getStoreCodes('area');
         // $sel_st = AssortmentInventories::getStoreCodes('store_id');
@@ -83,9 +88,10 @@ $sel_av = $request->availability;
         if(!empty($to)){
             $data['to'] = $to;
         }
-if(!empty($sel_av)){
+        if(!empty($sel_av)){
             $data['availability'] = $sel_av;
         }
+        
         $inventories = AssortmentItemInventories::getAssortmentCompliance($data);
 
         if ($request->has('submit')) {

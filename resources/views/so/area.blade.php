@@ -32,9 +32,19 @@
         </div>
     </div>
 
+    @if($header=='MKL SO Per Area Report')
     <div class="col-lg-4">
-       
+        <div class="form-group">
+                {!! Form::label('tag', 'Item Tag', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('tags[]', $tags, $sel_tag, array('class' => 'form-control select_form', 'id' => 'tag', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
     </div>
+    @else
+    <div class="col-lg-4">
+    </div>
+    @endif
 </div>
 
 <div class="row">
@@ -154,6 +164,14 @@ $("#from").datepicker({
 
 
 $('#ar').multiselect({
+        maxHeight: 200,
+        includeSelectAllOption: true,
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'form-control',
+    });
+     $('#tag').multiselect({
         maxHeight: 200,
         includeSelectAllOption: true,
         enableCaseInsensitiveFiltering: true,
