@@ -280,7 +280,7 @@ class OsaController extends Controller
         }
 
         if ($request->has('submit')) {
-            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av'));
+            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av','tags','sel_tag'));
         }
 
         // dd($inventories);
