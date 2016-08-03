@@ -16,9 +16,11 @@
 <div class="row">
  <div class="col-lg-4">
         <div class="form-group">
-						{!!Form::label('area_id', 'Area',array('class' => 'col-lg-4 control-label'))!!}
+						{!!Form::label('user_id', 'User',array('class' => 'col-lg-4 control-label'))!!}
 						<div class="col-lg-8">
-	                	{!! Form::select('area_id',$area, $store->area_id, ['class' => 'form-control'])!!}
+	                	{!! Form::select('user_id',$alluser, $user->username, ['class' => 'form-control'])!!}
+                        {!!Form::hidden('username',$user->username)!!}
+                        {!!Form::hidden('userid',$user->id)!!}
    			</div>
         </div>
     </div>
@@ -124,7 +126,14 @@
         </div>
     </div>
 
-
+<div class="col-lg-4">
+        <div class="form-group">
+                        {!!Form::label('area_id', 'Area',array('class' => 'col-lg-4 control-label'))!!}
+                        <div class="col-lg-8">
+                        {!! Form::select('area_id',$area, $store->area_id, ['class' => 'form-control'])!!}
+            </div>
+        </div>
+    </div>
 
     </div>
     <div class="row">

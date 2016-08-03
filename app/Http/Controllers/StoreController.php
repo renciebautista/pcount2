@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\StoreItem;
 use App\Models\InvalidStore;
-
+use App\Models\StoreUser;
 use App\Models\Area;
 use App\Models\Enrollment;
 use App\Models\Distributor;
@@ -19,6 +19,7 @@ use App\Models\Channel;
 use App\Models\Customer;
 use App\Models\Region;
 use App\Models\Agency;
+use App\User;
 use Session;
 use App\Models\UpdateHash;
 
@@ -109,18 +110,21 @@ class StoreController extends Controller
 
 
          $store= Store::findOrFail($id);
-
          $area = Area::all()->lists('area', 'id');
          $enrollment = Enrollment::all()->lists('enrollment', 'id');
          $distributor = Distributor::all()->lists('distributor', 'id');
          $client = Client::all()->lists('client_name', 'id');
          $channel = channel::all()->lists('channel_desc', 'id');
-          $customer = Customer::all()->lists('customer_name', 'id');
-          $region = Region::all()->lists('region_short','id');
-           $agency = Agency::all()->lists('agency_name','id');
- $status = ['0' => 'In-active', '1' => 'Active'];
+         $customer = Customer::all()->lists('customer_name', 'id');
+         $region = Region::all()->lists('region_short','id');
+         $agency = Agency::all()->lists('agency_name','id');
+         $status = ['0' => 'In-active', '1' => 'Active'];
 
-        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status]);
+         $user_id = StoreUser::where('store_id',$id)->first();
+         $user = User::where('id',$user_id->user_id)->first();
+         $alluser= User::all()->lists('username', 'id');
+        
+        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status,'user'=>$user,'alluser'=>$alluser]);
     }
 
     /**
@@ -159,15 +163,21 @@ class StoreController extends Controller
         $store->region_id = $request->region_id;
         $store->agency_id = $request->agency_id;
         $store->store_name = $request->store_name;
-         $store->storeid = $request->store_id;
-   $store->store_code = $request->store_code;
-   $store->store_code_psup = $request->store_code_psup;
-   $store->active = $request->status;
-       $store->update();
+        $store->storeid = $request->store_id;
+        $store->store_code = $request->store_code;
+        $store->store_code_psup = $request->store_code_psup;
+        $store->active = $request->status;
+        $store->update();
+
+        $storeuser = StoreUser::where('store_id' , $id)->where('user_id',$request->userid)->update(['user_id' => $request->user_id]);
+
+
 
         Session::flash('flash_class', 'alert-success');
         Session::flash('flash_message', 'Item successfully updated.');
         return redirect()->route("store.index");
+
+
 
     }
 
