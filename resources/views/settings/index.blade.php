@@ -63,6 +63,22 @@
                   </label>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('validate_reposting_ass', '1', $settings->validate_reposting_ass) !!} Validate Reposting SO/OSA.
+                  </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('validate_reposting_mkl', '1', $settings->validate_reposting_mkl) !!} Validate Reposting Assortment .
+                  </label>
+                </div>
+            </div>
           <div class="form-group">
                   <label>Device Default Password</label>
                   {!! Form::text('device_password',$settings->device_password,['class' => 'form-control']) !!}

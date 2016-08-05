@@ -183,14 +183,6 @@
         
     </div>
 {!! Form::close() !!}
-
-
-
-
-
-
-
-
 @stop
 @section('page-script')
 @stop
