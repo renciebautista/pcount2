@@ -152,8 +152,8 @@ class StoreController extends Controller
             'store_id' => 'required',
             
         ]);
-         $store= Store::findOrFail($id);
 
+        $store= Store::findOrFail($id);
         $store->area_id = $request->area_id;
         $store->enrollment_id = $request->enrollment_id;
         $store->distributor_id = $request->distributor_id;
@@ -170,7 +170,6 @@ class StoreController extends Controller
         $store->update();
 
         $storeuser = StoreUser::where('store_id' , $id)->where('user_id',$request->userid)->update(['user_id' => $request->user_id]);
-
 
 
         Session::flash('flash_class', 'alert-success');
