@@ -120,8 +120,7 @@ class StoreController extends Controller
          $agency = Agency::all()->lists('agency_name','id');
          $status = ['0' => 'In-active', '1' => 'Active'];
 
-         $user_id = StoreUser::where('store_id',$id)->first();
-         $user = User::where('id',$user_id->user_id)->first();
+         $user = StoreUser::where('store_id',$id)->first();
          $alluser= User::all()->lists('username', 'id');
         
         return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status,'user'=>$user,'alluser'=>$alluser]);
@@ -169,12 +168,30 @@ class StoreController extends Controller
         $store->active = $request->status;
         $store->update();
 
-        $storeuser = StoreUser::where('store_id' , $id)->where('user_id',$request->userid)->update(['user_id' => $request->user_id]);
+        
 
+        \DB::table('store_users')
+            ->where('user_id',$request->userid)
+            ->where('store_id',$id)
+            ->update(['user_id' => $request->user_id]);
 
         Session::flash('flash_class', 'alert-success');
         Session::flash('flash_message', 'Item successfully updated.');
-        return redirect()->route("store.index");
+         $store= Store::findOrFail($id);
+         $area = Area::all()->lists('area', 'id');
+         $enrollment = Enrollment::all()->lists('enrollment', 'id');
+         $distributor = Distributor::all()->lists('distributor', 'id');
+         $client = Client::all()->lists('client_name', 'id');
+         $channel = channel::all()->lists('channel_desc', 'id');
+         $customer = Customer::all()->lists('customer_name', 'id');
+         $region = Region::all()->lists('region_short','id');
+         $agency = Agency::all()->lists('agency_name','id');
+         $status = ['0' => 'In-active', '1' => 'Active'];
+
+         $user = StoreUser::where('store_id',$id)->first();
+         $alluser= User::all()->lists('username', 'id');
+        
+        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status,'user'=>$user,'alluser'=>$alluser]);
 
 
 
