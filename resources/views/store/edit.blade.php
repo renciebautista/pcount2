@@ -18,9 +18,9 @@
         <div class="form-group">
 						{!!Form::label('user_id', 'User',array('class' => 'col-lg-4 control-label'))!!}
 						<div class="col-lg-8">
-	                	{!! Form::select('user_id',$alluser, $user->username, ['class' => 'form-control'])!!}
+	                	{!! Form::select('user_id',$alluser, $user->user_id, ['class' => 'form-control'])!!}
                         {!!Form::hidden('username',$user->username)!!}
-                        {!!Form::hidden('userid',$user->id)!!}
+                        {!!Form::hidden('userid',$user->user_id)!!}
    			</div>
         </div>
     </div>

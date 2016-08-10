@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StoreUser extends Model
 {
+    public  $fillable = ['user_id', 'store_id'];
     public $timestamps = false;
 
     public function user()
