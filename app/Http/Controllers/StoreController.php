@@ -110,18 +110,18 @@ class StoreController extends Controller
 
 
          $store= Store::findOrFail($id);
-         $area = Area::all()->lists('area', 'id');
-         $enrollment = Enrollment::all()->lists('enrollment', 'id');
-         $distributor = Distributor::all()->lists('distributor', 'id');
-         $client = Client::all()->lists('client_name', 'id');
-         $channel = channel::all()->lists('channel_desc', 'id');
-         $customer = Customer::all()->lists('customer_name', 'id');
-         $region = Region::all()->lists('region_short','id');
-         $agency = Agency::all()->lists('agency_name','id');
+         $area = Area::orderBy('area','ASC')->lists('area', 'id');
+         $enrollment = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
+         $distributor = Distributor::orderBy('distributor','ASC')->lists('distributor', 'id');
+         $client = Client::orderBy('client_name','ASC')->lists('client_name', 'id');
+         $channel = channel::orderBY('channel_desc','ASC')->lists('channel_desc', 'id');
+         $customer = Customer::orderBy('customer_name','ASC')->lists('customer_name', 'id');
+         $region = Region::orderBy('region_short','ASC')->lists('region_short','id');
+         $agency = Agency::orderBy('agency_name','ASC')->lists('agency_name','id');
          $status = ['0' => 'In-active', '1' => 'Active'];
 
          $user = StoreUser::where('store_id',$id)->first();
-         $alluser= User::all()->lists('username', 'id');
+         $alluser= User::orderBy('username','asc')->lists('username', 'id');
         
         return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status,'user'=>$user,'alluser'=>$alluser]);
     }
@@ -178,14 +178,14 @@ class StoreController extends Controller
         Session::flash('flash_class', 'alert-success');
         Session::flash('flash_message', 'Item successfully updated.');
          $store= Store::findOrFail($id);
-         $area = Area::all()->lists('area', 'id');
-         $enrollment = Enrollment::all()->lists('enrollment', 'id');
-         $distributor = Distributor::all()->lists('distributor', 'id');
-         $client = Client::all()->lists('client_name', 'id');
-         $channel = channel::all()->lists('channel_desc', 'id');
-         $customer = Customer::all()->lists('customer_name', 'id');
-         $region = Region::all()->lists('region_short','id');
-         $agency = Agency::all()->lists('agency_name','id');
+          $area = Area::orderBy('area','ASC')->lists('area', 'id');
+         $enrollment = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
+         $distributor = Distributor::orderBy('distributor','ASC')->lists('distributor', 'id');
+         $client = Client::orderBy('client_name','ASC')->lists('client_name', 'id');
+         $channel = channel::orderBY('channel_desc','ASC')->lists('channel_desc', 'id');
+         $customer = Customer::orderBy('customer_name','ASC')->lists('customer_name', 'id');
+         $region = Region::orderBy('region_short','ASC')->lists('region_short','id');
+         $agency = Agency::orderBy('agency_name','ASC')->lists('agency_name','id');
          $status = ['0' => 'In-active', '1' => 'Active'];
 
          $user = StoreUser::where('store_id',$id)->first();
