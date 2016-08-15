@@ -29,7 +29,7 @@
         <div class="form-group">
 						{!!Form::label('client_id', 'Client',array('class' => 'col-lg-4 control-label'))!!}
 						<div class="col-lg-8">
-	                	{!! Form::select('client_id',$client, $store->client_name, ['class' => 'form-control'])!!}
+	                	{!! Form::select('client_id',$client, $store->client_id, ['class' => 'form-control'])!!}
    			</div>
         </div>
     </div>
@@ -60,7 +60,7 @@
         <div class="form-group">
 						{!!Form::label('channel_id', 'Channel',array('class' => 'col-lg-4 control-label'))!!}
 						<div class="col-lg-8">
-	                	{!! Form::select('channel_id',$channel, $store->channel, ['class' => 'form-control'])!!}
+	                	{!! Form::select('channel_id',$channel, $store->channel_id, ['class' => 'form-control'])!!}
    			</div>
         </div>
     </div>
@@ -89,7 +89,7 @@
         <div class="form-group">
                 {!! Form::label('customer_id','Customer',array('class' => 'col-lg-4 control-label')) !!}
             <div class="col-lg-8">
-              {!! Form::select('customer_id',$customer, $store->customer_name, ['class' => 'form-control'])!!}
+              {!! Form::select('customer_id',$customer, $store->customer_id, ['class' => 'form-control'])!!}
             </div>
         </div>
         </div>
@@ -121,7 +121,7 @@
         <div class="form-group">
                 {!! Form::label('region_id','Region',array('class' => 'col-lg-4 control-label')) !!}
             <div class="col-lg-8">
-              {!! Form::select('region_id',$region, $store->region_short, ['class' => 'form-control'])!!}
+              {!! Form::select('region_id',$region, $store->region_id, ['class' => 'form-control'])!!}
             </div>
         </div>
     </div>
@@ -153,7 +153,7 @@
            <div class="form-group">
                 {!! Form::label('agency_id','Agency',array('class' => 'col-lg-4 control-label')) !!}
             <div class="col-lg-8">
-              {!! Form::select('agency_id',$agency, $store->agency_name, ['class' => 'form-control'])!!}
+              {!! Form::select('agency_id',$agency, $store->agency_id, ['class' => 'form-control'])!!}
             </div>
         </div>
         </div>
