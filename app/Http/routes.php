@@ -35,7 +35,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => ['role:admin']], function () {
 
 		Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
+		Route::get('import/remapping', ['as' => 'import.remapping', 'uses' => 'ImportController@remapping']);
 		Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
+
+		Route::post('import/remappinguplaod', ['as' => 'import.remappinguplaod', 'uses' => 'ImportController@remappinguplaod']);
 
 		Route::get('export/stores', ['as' => 'export.stores', 'uses' => 'ExportController@stores']);
 		Route::get('export/items', ['as' => 'export.items', 'uses' => 'ExportController@items']);
