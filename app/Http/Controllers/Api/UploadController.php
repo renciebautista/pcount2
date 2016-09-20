@@ -28,6 +28,9 @@ use App\Setting;
 use App\BackupList;
 use App\DeviceBackup;
 
+
+use Carbon\Carbon;
+
 class UploadController extends Controller
 {
     public function uploadpcount(Request $request)
@@ -301,9 +304,17 @@ class UploadController extends Controller
      public function uploadbackup(Request $request){
         if ($request->hasFile('data'))
         {
+
+                
+                $time  = date('His', strtotime(Carbon::now()));
+                $date = date('mdY');
                 $destinationPath = storage_path().'/uploads/backups/';
-                $filename = $request->file('data')->getClientOriginalName();
-                $request->file('data')->move($destinationPath, $filename);
+               
+                $filename = "pcountDB_".$date."_".$time;
+               
+
+              $file_path = $request->file('data')->move($destinationPath, $filename);
+               
 
                 $device_id=$request->device_id;
                 $username=$request->username;
