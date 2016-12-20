@@ -14,7 +14,7 @@ use App\Models\ItemType;
 use App\Models\StoreItem;
 use App\Models\InvalidMapping;
 use App\Models\ChannelItem;
-
+use App\Models\UpdateHash;
 class UploadAssortmentTableSeeder extends Seeder
 {
     public function run()
@@ -143,7 +143,13 @@ class UploadAssortmentTableSeeder extends Seeder
 		}
 
 		$reader->close();
-
+		$hash = UpdateHash::find(1);
+        if(empty($hash)){
+            UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+        }else{
+            $hash->hash = md5(date('Y-m-d H:i:s'));
+            $hash->update();
+        }
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 		Model::reguard();
     }

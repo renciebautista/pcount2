@@ -25,6 +25,7 @@ use Session;
 use App\Models\UpdateHash;
 
 
+
 class StoreController extends Controller
 {
     /**
@@ -219,8 +220,7 @@ class StoreController extends Controller
             ->where('store_id',$id)
             ->update(['user_id' => $request->user_id]);
 
-        Session::flash('flash_class', 'alert-success');
-        Session::flash('flash_message', 'Item successfully updated.');
+
         $store       = Store::findOrFail($id);
         $area        = Area::orderBy('area','ASC')->lists('area', 'id');
         $enrollment  = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
@@ -233,6 +233,17 @@ class StoreController extends Controller
         $status      = ['0' => 'In-active', '1' => 'Active'];
         $user        = StoreUser::where('store_id',$id)->first();
         $alluser     = User::all()->lists('username', 'id');
+
+        $hash = UpdateHash::find(1);
+        if(empty($hash)){
+            UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+        }else{
+            $hash->hash = md5(date('Y-m-d H:i:s'));
+            $hash->update();
+        }
+
+        Session::flash('flash_class', 'alert-success');
+        Session::flash('flash_message', 'Store successfully updated.');
 
         return view('store.edit',[
             'store'       => $store,
