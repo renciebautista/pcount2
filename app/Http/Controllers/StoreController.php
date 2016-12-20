@@ -259,8 +259,6 @@ class StoreController extends Controller
             'user'        => $user,
             'alluser'     => $alluser ] );
 
-
-
     }
 
     /**
