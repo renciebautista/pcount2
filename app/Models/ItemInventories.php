@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Paginator;
 
 class ItemInventories extends Model
 {
@@ -388,7 +389,6 @@ class ItemInventories extends Model
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
 			->get();
-
 	}
 
 	public static function getOsaPerArea($filters = null){
@@ -546,7 +546,6 @@ class ItemInventories extends Model
 				}
 				}
 			})
-
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -615,13 +614,15 @@ class ItemInventories extends Model
 				}
 				}
 			})
-			
+
 
 
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
 			->orderBy(\DB::raw('area, area, store_name, description, transaction_date'))
-			->get();
+			->paginate(100)
+      ->appends(['fr'=>$filters['from'],'to'=>$filters['to'],'ar'=>$filters['areas'],'st'=>$filters['stores']]);
+
 
 	}
 
@@ -629,7 +630,7 @@ class ItemInventories extends Model
 	public static function getDays($from,$to){
 		$fromdate = explode("-", $from);
 		$todate = explode("-", $to);
-		$query = sprintf("select * from 
+		$query = sprintf("select * from
                 (select adddate('1970-01-01',t4*10000 + t3*1000 + t2*100 + t1*10 + t0) date from
                  (select 0 t0 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,
                  (select 0 t1 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,

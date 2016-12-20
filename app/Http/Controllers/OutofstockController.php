@@ -15,6 +15,10 @@ use App\Models\AssortmentItemInventories;
 class OutofstockController extends Controller
 {
     public function sku($type = null){
+
+        ini_set('max_input_vars', 3000);
+        set_time_limit(0);
+
         $frm = date("m-d-Y");
         $to = date("m-d-Y");
         $report_type = 1;
@@ -34,7 +38,7 @@ class OutofstockController extends Controller
             $sel_ar = AssortmentInventories::getStoreCodes('area');
             $sel_st = AssortmentInventories::getStoreCodes('store_id');
         }
-        
+
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -65,6 +69,9 @@ class OutofstockController extends Controller
     }
 
     public function postsku(Request $request,$type = null){
+
+        ini_set('max_input_vars', 3000);
+        set_time_limit(0);
         $sel_ar = $request->ar;
         $sel_st = $request->st;
         $frm = $request->fr;
@@ -83,7 +90,7 @@ class OutofstockController extends Controller
             $areas = AssortmentInventories::getAreaList();
         }
 
-        
+
         if(!empty($sel_ar)){
             $data['areas'] = $sel_ar;
         }
@@ -104,9 +111,11 @@ class OutofstockController extends Controller
          if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+        
         if($report_type == 2){
             $header = 'MKL OOS SKU Report';
             $inventories = ItemInventories::getOosPerStore($data);
+
         }else{
             $header = 'Assortment OOS SKU Report';
             $inventories = AssortmentItemInventories::getOosPerStore($data);
@@ -114,10 +123,12 @@ class OutofstockController extends Controller
 
 
         if ($request->has('submit')) {
+
             return view('oos.sku', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type' , 'type','sel_av','availability','sel_tag','tags'));
         }
 
         if ($request->has('download')) {
+
             \Excel::create($header, function($excel)  use ($data,$inventories){
 
                 $items = [];

@@ -107,30 +107,31 @@ class ItemController extends Controller
     public function edit($id)
     {
         //
-    $status = ['0' => 'In-active', '1' => 'Active'];
-    $divisions = ItemInventories::getDivisionList();
-    $brand = Brand::all()->lists('brand', 'id');
-            $data = array();
-            $sel_dv = [];
-             $sel_cat = [];
-            $sel_scat = [];
-            $sel_br = [];
-             if(!empty($sel_cat)){
-            $data['categories'] = $sel_cat;
-                                                 }
-           
-            if(!empty($sel_dv)){
-            $data['divisions'] = $sel_dv;
-                                                  }
-            if(!empty($sel_scat)){
-            $data['sub_categories'] = $sel_scat;
-                                                 }           
-            if(!empty($sel_br)){
-            $data['brands'] = $sel_br;
-                                                 }
+        $status    = ['0' => 'In-active', '1' => 'Active'];
+        $divisions = ItemInventories::getDivisionList();
+        $brand     = Brand::all()->lists('brand', 'id');
+        $data      = array();
+        $sel_dv    = [];
+        $sel_cat   = [];
+        $sel_scat  = [];
+        $sel_br    = [];
 
-        $item= Item::findOrFail($id);
-        return view('item.edit',['item' => $item , 'brand'=>$brand],compact('sel_dv','divisions','sel_cat','sel_scat','sel_br','status'));
+        if(!empty($sel_cat)) {
+            $data['categories'] = $sel_cat;
+        }
+       
+        if(!empty($sel_dv)) {
+            $data['divisions'] = $sel_dv;
+        }
+        if(!empty($sel_scat)) {
+            $data['sub_categories'] = $sel_scat;
+        }           
+        if(!empty($sel_br)) {
+            $data['brands'] = $sel_br;
+        }
+
+        $item = Item::findOrFail($id);
+        return view('item.edit',['item' => $item , 'brand' => $brand],compact('sel_dv','divisions','sel_cat','sel_scat','sel_br','status'));
 
     }
 
@@ -143,47 +144,39 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-
-
+        
         $this->validate($request, [
-            'sku_code' => 'required',
-            'description' => 'required',
-            'conversion' => 'required|numeric',
-            'lpbt' => 'required|numeric',
-            'division' => 'required',
-            'category' => 'required',
+            'sku_code'     => 'required',
+            'description'  => 'required',
+            'conversion'   => 'required|numeric',
+            'lpbt'         => 'required|numeric',
+            'division'     => 'required',
+            'category'     => 'required',
             'sub_category' => 'required',
-            'brand_id' => 'required',
+            'brand_id'     => 'required',
             
         ]);
-        $item= Item::findOrFail($id);
-        
-        $divname = $request->division;
-        $divid = Division::where('division','=',$divname)->first();
-        $divname = $divid->id;
-        
-        $catname = $request->category;
-        $catid = Category::where('category','=',$catname)->first();
-        $catname = $catid->id;
-        
-
-        $scatname = $request->sub_category;
-        $scatid = SubCategory::where('sub_category','=',$scatname)->first();
-        $scatname = $scatid->id;
-   
-
-        $item->sku_code = $request->sku_code;
-        $item->description =$request->description;
-        $item->conversion = $request->conversion;
-        $item->lpbt =$request->lpbt;
-        $item->division_id = $divname;
-        $item->category_id =$catname;
-        $item->sub_category_id =$scatname;
-        $item->brand_id = $request->brand_id;
-        $item->description_long =$request->description_long;
-        $item->barcode = $request->barcode;
-        $item->active = $request->status;
+        $item                   = Item::findOrFail($id);
+        $divname                = $request->division;
+        $divid                  = Division::where('division','=',$divname)->first();
+        $divname                = $divid->id;
+        $catname                = $request->category;
+        $catid                  = Category::where('category','=',$catname)->first();
+        $catname                = $catid->id;
+        $scatname               = $request->sub_category;
+        $scatid                 = SubCategory::where('sub_category','=',$scatname)->first();
+        $scatname               = $scatid->id;
+        $item->sku_code         = $request->sku_code;
+        $item->description      = $request->description;
+        $item->conversion       = $request->conversion;
+        $item->lpbt             = $request->lpbt;
+        $item->division_id      = $divname;
+        $item->category_id      = $catname;
+        $item->sub_category_id  = $scatname;
+        $item->brand_id         = $request->brand_id;
+        $item->description_long = $request->description_long;
+        $item->barcode          = $request->barcode;
+        $item->active           = $request->status;
         $item->update();
 
         Session::flash('flash_class', 'alert-success');
@@ -250,16 +243,16 @@ class ItemController extends Controller
             'SKU Code', 'Description' , 'Division', 'Category', 'Sub Category', 'Brand', 'Conversion', 'Min Stock', 'FSO Multiplier', 'LPBT', 'IG', 'Created At', 'Date Updated'));  
 
         foreach ($items as $row) {
-            $data[0] = $row->area;
-            $data[1] = $row->region_code;
-            $data[2] = $row->region;
-            $data[3] = $row->distributor_code;
-            $data[4] = $row->distributor;
-            $data[5] = $row->agency_code;
-            $data[6] = $row->agency;
-            $data[7] = $row->storeid;
-            $data[8] = $row->store_code;
-            $data[9] = $row->store_name;
+            $data[0]  = $row->area;
+            $data[1]  = $row->region_code;
+            $data[2]  = $row->region;
+            $data[3]  = $row->distributor_code;
+            $data[4]  = $row->distributor;
+            $data[5]  = $row->agency_code;
+            $data[6]  = $row->agency;
+            $data[7]  = $row->storeid;
+            $data[8]  = $row->store_code;
+            $data[9]  = $row->store_name;
             $data[10] = $row->channel_code;
             $data[11] = $row->channel;
             $data[12] = $row->other_code;

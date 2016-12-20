@@ -369,9 +369,7 @@ class AssortmentItemInventories extends Model
 						$query->where('osa', 1);
 					}
 				}
-
 				elseif (count($filters['availability'])>1) {
-
 					# code...
 					$query->where('osa',1)
 							->orWhere('oos',1);
@@ -505,6 +503,7 @@ class AssortmentItemInventories extends Model
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
 			->orderBy(\DB::raw('area, area, store_name, description, transaction_date'))
+			->paginate(100)
 			->get();
 
 	}

@@ -35,12 +35,12 @@ class HistoryController extends Controller
 
         $users = ComplianceRepository::getAllUser();
         $sel_us = [];
-        
+
         $types = ['1' => 'OSA', '2' => 'Assoertment'];
         $sel_ty = [];
-        
-        
-        
+
+
+
         if(!empty($frm)){
             $data['from'] = $frm;
         }
@@ -67,8 +67,8 @@ class HistoryController extends Controller
         }
 
         $postings = HistoryRepositiry::getHistory($data);
-        return view('history.posting',compact('postings', 'frm', 'to', 'agencies', 'sel_ag',    
-            'regions', 'sel_rg', 
+        return view('history.posting',compact('postings', 'frm', 'to', 'agencies', 'sel_ag',
+            'regions', 'sel_rg',
             'channels', 'sel_ch',
             'stores', 'sel_st',
             'users', 'sel_us',
@@ -83,7 +83,6 @@ class HistoryController extends Controller
         $sel_st = $request->st;
         $sel_us = $request->us;
         $sel_ty = $request->ty;
-
         $frm = $request->fr;
         $to = $request->to;
 
@@ -93,6 +92,7 @@ class HistoryController extends Controller
         $stores = ComplianceRepository::getAllStore();
         $users = ComplianceRepository::getAllUser();
         $types = ['1' => 'OSA', '2' => 'Assoertment'];
+
 
         if(!empty($frm)){
             $data['from'] = $frm;
@@ -122,8 +122,8 @@ class HistoryController extends Controller
 
         $postings = HistoryRepositiry::getHistory($data);
         if ($request->has('submit')) {
-            return view('history.posting',compact('postings', 'frm', 'to', 'agencies', 'sel_ag',    
-                'regions', 'sel_rg', 
+            return view('history.posting',compact('postings', 'frm', 'to', 'agencies', 'sel_ag',
+                'regions', 'sel_rg',
                 'channels', 'sel_ch',
                 'stores', 'sel_st',
                 'users', 'sel_us',
@@ -133,10 +133,12 @@ class HistoryController extends Controller
         if ($request->has('download')) {
             $fileName = "Posting History Report.csv";
             $writer = WriterFactory::create(Type::CSV); // for CSV files
+
             $writer->openToBrowser($fileName); // stream data directly to the browser
 
             $writer->addRow(array('Agency Code', 'Agency Name', 'Region Code', 'Region Name', 'Channel Code', 'Channel Name',
                 'Distributor', 'Store Name', 'Store Code', 'Username', 'Transaction Date', 'Posting Date', 'Posting Type'));
+
             foreach ($postings as $row) {
                 $_data[0] = $row->agency_code;
                 $_data[1] = $row->agency;
@@ -154,7 +156,7 @@ class HistoryController extends Controller
 
                 $writer->addRow($_data); // add multiple rows at a time
             }
-            
+
             $writer->close();
         }
 

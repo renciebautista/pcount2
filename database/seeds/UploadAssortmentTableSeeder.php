@@ -13,9 +13,10 @@ use App\Models\Item;
 use App\Models\ItemType;
 use App\Models\StoreItem;
 use App\Models\InvalidMapping;
+use App\Models\ChannelItem;
 
 class UploadAssortmentTableSeeder extends Seeder
-{    
+{
     public function run()
     {
         Model::unguard();
@@ -29,8 +30,8 @@ class UploadAssortmentTableSeeder extends Seeder
 			$_dir = explode("/", str_replace('\\', '/', $value));
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
-			$latest_date = DateTime::createFromFormat('mdY', $latest);					
-			$now = DateTime::createFromFormat('mdY', $name);	
+			$latest_date = DateTime::createFromFormat('mdY', $latest);
+			$now = DateTime::createFromFormat('mdY', $name);
 			if($now > $latest_date){
 				$latest = $name;
 			}
@@ -101,7 +102,7 @@ class UploadAssortmentTableSeeder extends Seeder
 									->get();
 								// dd($stores);
 								$item = Item::where('sku_code', trim($row[3]))->first();
-								
+
 								if(!empty($item)){
 									$item_type = ItemType::where('type',"ASSORTMENT")->first();
 									foreach ($stores as $store) {
@@ -117,14 +118,25 @@ class UploadAssortmentTableSeeder extends Seeder
 												'osa_tagged' => 0,
 												'npi_tagged' => 0
 											]);
+
+                      				ChannelItem::firstOrCreate([
+                      				  		 'channel_id' => $store->channel_id,
+                       						 'item_id' => $item->id,
+                        					 'item_type_id' => $item_type->id,
+                        					 'ig' => trim($row[4]),
+                        					 'fso_multiplier' => trim($row[5]),
+                        					 'min_stock' => trim($row[6]),
+                        					 'osa_tagged' => 0,
+                        					 'npi_tagged' => 0
+                      						]);
 										}
-										
+
 									}
 								}
 							}
 						}
-						$cnt++;	
-						
+						$cnt++;
+
 					}
 				}
 			}

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class StoreItem extends Model
 {
     // public $timestamps = false;
+     protected $fillable = ['store_id', 'item_id', 'item_type_id','ig','fso_multiplier','min_stock','ig_updated','osa_tagged','npi_tagged','created_at','updated_at'];
 
     public function item(){
     	return $this->belongsTo('App\Models\Item');

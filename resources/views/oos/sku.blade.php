@@ -56,7 +56,7 @@
         <div class="form-group">
                 {!! Form::label('store', 'Store', array('class' => 'col-lg-4 control-label')) !!}
             <div class="col-lg-8">
-                <select class="form-control"  id="stores" name="st[]" multiple="multiple" ></select>                
+                <select class="form-control"  id="stores" name="st[]" multiple="multiple" ></select>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
 </div>
 
 <div class="row">
-    
+
     <div class="col-lg-4">
         <div class="form-group">
             <div class="row">
@@ -94,13 +94,18 @@
     </div>
 
     <div class="col-lg-4">
-        
+
     </div>
 </div>
 {!! Form::close() !!}
 
 <!-- <hr> -->
-<label class="pull-right">{{count($inventories)  }} records found.</label>
+
+{!! Paginate::show($inventories) !!}
+{!! $inventories->render() !!}
+
+
+
 <table class="table table-striped table-hover ">
     <thead>
         <tr>
@@ -132,7 +137,7 @@
         </tr>
         @endif
     </tbody>
-</table> 
+</table>
 
 
 @stop
@@ -169,7 +174,7 @@ $('#ar').multiselect({
         buttonWidth: '100%',
         buttonClass: 'form-control',
         onChange: function(option, checked, select) {
-            updatestore(); 
+            updatestore();
         }
     });
 
@@ -202,7 +207,7 @@ $('#ar').multiselect({
                     if($.inArray( i,st ) > -1){
                       sel_class = 'selected="selected"';
                     }
-                    $('<option '+sel_class+' value="'+i+'">'+text+'</option>').appendTo($('select#stores')); 
+                    $('<option '+sel_class+' value="'+i+'">'+text+'</option>').appendTo($('select#stores'));
                 });
                 $('select#stores').multiselect('rebuild');
            }

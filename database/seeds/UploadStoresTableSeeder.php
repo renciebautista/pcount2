@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
 use Box\Spout\Reader\ReaderFactory;
-use Box\Spout\Common\Type;	
+use Box\Spout\Common\Type;
 
 use App\Models\Area;
 use App\Models\Enrollment;
@@ -36,14 +36,14 @@ class UploadStoresTableSeeder extends Seeder
 			$_dir = explode("/", str_replace('\\', '/', $value));
 			$cnt = count($_dir);
 			$name = $_dir[$cnt - 1];
-			$latest_date = DateTime::createFromFormat('mdY', $latest);					
-			$now = DateTime::createFromFormat('mdY', $name);	
-			if($now > $latest_date){				
+			$latest_date = DateTime::createFromFormat('mdY', $latest);
+			$now = DateTime::createFromFormat('mdY', $name);
+			if($now > $latest_date){
 				$latest = $name;
-				
-			}		
+
+			}
 		}
-		
+			echo $latest;
 		$filePath = $folderpath.$latest.'/Masterfile.xlsx';
 		$reader = ReaderFactory::create(Type::XLSX); // for XLSX files
 		$reader->open($filePath);
@@ -69,7 +69,7 @@ class UploadStoresTableSeeder extends Seeder
 				$cnt = 0;
 				Store::where('active',1)->update(['active' => 0]);
 				foreach ($sheet->getRowIterator() as $row) {
-					
+
 					if($row[0] != ''){
 						if($cnt > 0){
 							// if(strtoupper($row[23]) == 'INACTIVE'){
@@ -99,7 +99,7 @@ class UploadStoresTableSeeder extends Seeder
 									$store = Store::create([
 										'storeid' => strtoupper($row[4]),
 										'store_code' => strtoupper($row[5]),
-										'store_code_psup' => strtoupper($row[6	]),
+										'store_code_psup' => strtoupper($row[6]),
 										'store_name' => strtoupper($row[7]),
 										'area_id' => $area->id,
 										'enrollment_id' => $enrollment->id,
@@ -136,10 +136,10 @@ class UploadStoresTableSeeder extends Seeder
 								}
 							// }
 
-							
+
 						}
-						$cnt++;	
-						
+						$cnt++;
+
 					}
 				}
 			}

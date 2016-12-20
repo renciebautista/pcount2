@@ -309,49 +309,47 @@ class UploadController extends Controller
                 $time  = date('His', strtotime(Carbon::now()));
                 $date = date('mdY');
                 $destinationPath = storage_path().'/uploads/backups/';
-               
                 $filename = "pcountDB_".$date."_".$time;
-               
-
-              $file_path = $request->file('data')->move($destinationPath, $filename);
-               
-
-                $device_id=$request->device_id;
-                $username=$request->username;
-                $database_version=$request->database_version;
-
+                $file_path = $request->file('data')->move($destinationPath, $filename);
+                $device_id = $request->device_id;
+                $username = $request->username;
+                $database_version= $request->database_version;
                 $dbackup = DeviceBackup::firstOrCreate(['username' => $username]);
-              if($dbackup->device_id==""){
+                if($dbackup->device_id=="")
+                {
 
                 $dbackup->device_id= $device_id;
                 $dbackup->update();
-              }
-              else{
+                }
+                else
+                {
                 
-                 $dbackup->device_id= $device_id;
+                $dbackup->device_id= $device_id;
                 $dbackup->update();
 
-              }
+                }
                 $list = BackupList::where('filename',$filename)->where('device_backup_id',$dbackup->id)->first();
 
 
-                if(!empty($list)){
+                if(!empty($list))
+                {
                 $list->updated_at = date('Y-m-d H:i:s');
                  $list->database_version=$database_version;
                 $list->update();
 
                 }
-        else{
+            else
+            {
                 
-                BackupList::create(['filename' => $filename,
+                    BackupList::create(['filename' => $filename,
                     'device_backup_id'=>$dbackup->id,
                     'database_version'=>$database_version]);
-        }
+            }
 
                 return response()->json(array('msg' => 'Backup successfully submitted.', 'status' => 0));
         }
                 return response()->json(array('msg' => 'Failed in submitting backup.', 'status' => 1));
-        }
+    }
 
 
    

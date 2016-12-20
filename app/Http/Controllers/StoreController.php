@@ -19,6 +19,7 @@ use App\Models\Channel;
 use App\Models\Customer;
 use App\Models\Region;
 use App\Models\Agency;
+use App\Models\ChannelItem;
 use App\User;
 use Session;
 use App\Models\UpdateHash;
@@ -35,7 +36,7 @@ class StoreController extends Controller
     {
         $request->flash();
         $stores = Store::search($request);
-        
+
         return view('store.index', compact('stores'));
     }
 
@@ -61,7 +62,7 @@ class StoreController extends Controller
         // if ($request->hasFile('file'))
         // {
         //     $file_path = $request->file('file')->move(storage_path().'/uploads/temp/',$request->file('file')->getClientOriginalName());
-            
+
         //     Store::upload($file_path);
 
         //     if (\File::exists($file_path))
@@ -82,7 +83,7 @@ class StoreController extends Controller
         // }else{
         //     Session::flash('flash_message', 'Error uploading masterfile.');
         //     Session::flash('flash_class', 'alert-danger');
-            
+
         // }
         // return redirect()->route("store.create");
     }
@@ -109,21 +110,32 @@ class StoreController extends Controller
         //
 
 
-         $store= Store::findOrFail($id);
-         $area = Area::orderBy('area','ASC')->lists('area', 'id');
-         $enrollment = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
+         $store       = Store::findOrFail($id);
+         $area        = Area::orderBy('area','ASC')->lists('area', 'id');
+         $enrollment  = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
          $distributor = Distributor::orderBy('distributor','ASC')->lists('distributor', 'id');
-         $client = Client::orderBy('client_name','ASC')->lists('client_name', 'id');
-         $channel = channel::orderBY('channel_desc','ASC')->lists('channel_desc', 'id');
-         $customer = Customer::orderBy('customer_name','ASC')->lists('customer_name', 'id');
-         $region = Region::orderBy('region_short','ASC')->lists('region_short','id');
-         $agency = Agency::orderBy('agency_name','ASC')->lists('agency_name','id');
-         $status = ['0' => 'In-active', '1' => 'Active'];
+         $client      = Client::orderBy('client_name','ASC')->lists('client_name', 'id');
+         $channel     = channel::orderBY('channel_desc','ASC')->lists('channel_desc', 'id');
+         $customer    = Customer::orderBy('customer_name','ASC')->lists('customer_name', 'id');
+         $region      = Region::orderBy('region_short','ASC')->lists('region_short','id');
+         $agency      = Agency::orderBy('agency_name','ASC')->lists('agency_name','id');
+         $status      = ['0' => 'In-active', '1' => 'Active'];
+         $user        = StoreUser::where('store_id',$id)->first();
+         $alluser     = User::orderBy('username','asc')->lists('username', 'id');
 
-         $user = StoreUser::where('store_id',$id)->first();
-         $alluser= User::orderBy('username','asc')->lists('username', 'id');
-        
-        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status,'user'=>$user,'alluser'=>$alluser]);
+        return view('store.edit',[
+            'store'       => $store,
+            'area'        => $area ,
+            'enrollment'  => $enrollment,
+            'distributor' => $distributor,
+            'client'      => $client,
+            'channel'     => $channel,
+            'customer'    => $customer,
+            'region'      => $region,
+            'agency'      => $agency,
+            'status'      => $status,
+            'user'        => $user,
+            'alluser'     => $alluser ] );
     }
 
     /**
@@ -137,38 +149,70 @@ class StoreController extends Controller
     {
         //
 
-
         $this->validate($request, [
-            'area_id' => 'required',
-            'enrollment_id' => 'required',
+            'area_id'        => 'required',
+            'enrollment_id'  => 'required',
             'distributor_id' => 'required',
-            'client_id' => 'required',
-            'channel_id' => 'required',
-            'customer_id' => 'required',
-            'region_id' => 'required',
-            'agency_id' => 'required',
-            'store_name' => 'required',
-            'store_id' => 'required',
-            
+            'client_id'      => 'required',
+            'channel_id'     => 'required',
+            'customer_id'    => 'required',
+            'region_id'      => 'required',
+            'agency_id'      => 'required',
+            'store_name'     => 'required',
+            'store_id'       => 'required',
+
         ]);
 
-        $store= Store::findOrFail($id);
-        $store->area_id = $request->area_id;
-        $store->enrollment_id = $request->enrollment_id;
-        $store->distributor_id = $request->distributor_id;
-        $store->client_id = $request->client_id;
-        $store->channel_id = $request->channel_id;
-        $store->customer_id = $request->customer_id;
-        $store->region_id = $request->region_id;
-        $store->agency_id = $request->agency_id;
-        $store->store_name = $request->store_name;
-        $store->storeid = $request->store_id;
-        $store->store_code = $request->store_code;
-        $store->store_code_psup = $request->store_code_psup;
-        $store->active = $request->status;
+
+        $store           = Store::findOrFail($id);
+        $store_items     = StoreItem::where('store_id',$id)->get()->pluck('item_id')->toArray();//get all the item from store
+        $channel_items   = ChannelItem::where('channel_id',$request->channel_id)->get()->pluck('item_id')->toArray();
+        $diff_items      = array_diff( $channel_items, $store_items );
+        $same_items      = array_intersect( $channel_items, $store_items );
+        $add_store_items = ChannelItem::select('item_id',
+                                               'item_type_id',
+                                               'ig',
+                                               'fso_multiplier',
+                                               'min_stock',
+                                               'ig_updated',
+                                               'osa_tagged',
+                                               'npi_tagged' )
+                                                ->whereIn('item_id',$diff_items)
+                                                ->where('channel_id',$request->channel_id)
+                                                ->get();
+                                                
+       
+        foreach ($add_store_items as &$data) {
+           $data->store_id = $id; 
+        }
+        $delete      = StoreItem::where('store_id',$id)->whereNotIn('item_id',$same_items)->delete();
+        foreach ($add_store_items as $data) {
+            $check[] = StoreItem::firstOrCreate([
+                                    'store_id'       => $data->store_id,
+                                    'item_id'        => $data->item_id,
+                                    'item_type_id'   => $data->item_type_id,
+                                    'ig'             => $data->ig,
+                                    'fso_multiplier' => $data->fso_multiplier,
+                                    'min_stock'      => $data->min_stock,
+                                    'ig_updated'     => $data->ig_updated,
+                                    'osa_tagged'     => $data->npi_tagged ]);
+        }
+       
+        $store->area_id          = $request->area_id;
+        $store->enrollment_id    = $request->enrollment_id;
+        $store->distributor_id   = $request->distributor_id;
+        $store->client_id        = $request->client_id;
+        $store->channel_id       = $request->channel_id;
+        $store->customer_id      = $request->customer_id;
+        $store->region_id        = $request->region_id;
+        $store->agency_id        = $request->agency_id;
+        $store->store_name       = $request->store_name;
+        $store->storeid          = $request->store_id;
+        $store->store_code       = $request->store_code;
+        $store->store_code_psup  = $request->store_code_psup;
+        $store->active           = $request->status;
         $store->update();
 
-        
 
         \DB::table('store_users')
             ->where('user_id',$request->userid)
@@ -177,21 +221,32 @@ class StoreController extends Controller
 
         Session::flash('flash_class', 'alert-success');
         Session::flash('flash_message', 'Item successfully updated.');
-         $store= Store::findOrFail($id);
-          $area = Area::orderBy('area','ASC')->lists('area', 'id');
-         $enrollment = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
-         $distributor = Distributor::orderBy('distributor','ASC')->lists('distributor', 'id');
-         $client = Client::orderBy('client_name','ASC')->lists('client_name', 'id');
-         $channel = channel::orderBY('channel_desc','ASC')->lists('channel_desc', 'id');
-         $customer = Customer::orderBy('customer_name','ASC')->lists('customer_name', 'id');
-         $region = Region::orderBy('region_short','ASC')->lists('region_short','id');
-         $agency = Agency::orderBy('agency_name','ASC')->lists('agency_name','id');
-         $status = ['0' => 'In-active', '1' => 'Active'];
+        $store       = Store::findOrFail($id);
+        $area        = Area::orderBy('area','ASC')->lists('area', 'id');
+        $enrollment  = Enrollment::orderBy('enrollment','ASC')->lists('enrollment', 'id');
+        $distributor = Distributor::orderBy('distributor','ASC')->lists('distributor', 'id');
+        $client      = Client::orderBy('client_name','ASC')->lists('client_name', 'id');
+        $channel     = channel::orderBY('channel_desc','ASC')->lists('channel_desc', 'id');
+        $customer    = Customer::orderBy('customer_name','ASC')->lists('customer_name', 'id');
+        $region      = Region::orderBy('region_short','ASC')->lists('region_short','id');
+        $agency      = Agency::orderBy('agency_name','ASC')->lists('agency_name','id');
+        $status      = ['0' => 'In-active', '1' => 'Active'];
+        $user        = StoreUser::where('store_id',$id)->first();
+        $alluser     = User::all()->lists('username', 'id');
 
-         $user = StoreUser::where('store_id',$id)->first();
-         $alluser= User::all()->lists('username', 'id');
-        
-        return view('store.edit',['store'=>$store,'area'=>$area ,'enrollment'=>$enrollment,'distributor'=>$distributor,'client'=>$client,'channel'=>$channel,'customer'=>$customer,'region'=>$region,'agency'=>$agency,'status'=>$status,'user'=>$user,'alluser'=>$alluser]);
+        return view('store.edit',[
+            'store'       => $store,
+            'area'        => $area ,
+            'enrollment'  => $enrollment,
+            'distributor' => $distributor,
+            'client'      => $client,
+            'channel'     => $channel,
+            'customer'    => $customer,
+            'region'      => $region,
+            'agency'      => $agency,
+            'status'      => $status,
+            'user'        => $user,
+            'alluser'     => $alluser ] );
 
 
 

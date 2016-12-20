@@ -47,6 +47,36 @@ class ImportController extends Controller
             // $setting = Setting::find(1);
             // $this->dispatch(new UpdateMasterfile($setting));
 
+ //            $reader = ReaderFactory::create(Type::XLSX); // for XLSX files
+ //             $reader->open($file_path);
+           
+
+ //             foreach ($reader->getSheetIterator() as $sheet) {
+ //                if($sheet->getName() == 'Stores'){
+ //                    foreach ($sheet->getRowIterator() as $row) {
+ //                    $stores[] = strtoupper($row[5]);
+
+
+
+ //                }
+
+ //                }
+
+
+ //             }
+
+
+
+            
+
+
+ //                $reader->close();
+
+
+
+ // $stores_active = Store::whereNotIn('store_code',$stores)->where('active',1)->get();
+ // dd($stores_active); die;
+
 		    $hash = UpdateHash::find(1);
             if(empty($hash)){
                 UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
@@ -88,43 +118,44 @@ class ImportController extends Controller
             $filePath = storage_path().'/uploads/remapping/' . $fileName;
 
             $data = Excel::load($filePath ,function($reader){})->get();
-            if(!empty($data) && $data->count())
-            {
-                foreach ($data as $key => $value) 
-                {
-                    $old = $value->old;
-                    $new = $value->new;
-                    $storecode = $value->storecode;
+            if(!empty($data) && $data->count()) {
+
+                foreach ($data as $key => $value) {
+
+                            $old = $value->old;
+                            $new = $value->new;
+                            $storecode = $value->storecode;
                 # code...
-                if(!empty($old) && !empty($new) && !empty($storecode)){  
+                        if(!empty($old) && !empty($new) && !empty($storecode)) {  
 
-                        $old_id = User::where('username',$old)->first();
-                        $new_id = User::where('username', $new)->first();
-                        $store_id = Store::where('store_code' , $storecode)->first(); 
+                                $old_id = User::where('username',$old)->first();
+                                $new_id = User::where('username', $new)->first();
+                                $store_id = Store::where('store_code' , $storecode)->first(); 
 
-                        if(!empty($old_id) && !empty($new_id) && !empty($store_id)){
+                                if(!empty($old_id) && !empty($new_id) && !empty($store_id)){
 
 
-                        \DB::table('store_users')   
-                        ->where('user_id',$old_id->id)
-                        ->where('store_id',$store_id->id)
-                        ->update(['user_id' => $new_id->id]);
+                                    \DB::table('store_users')   
+                                    ->where('user_id',$old_id->id)
+                                    ->where('store_id',$store_id->id)
+                                    ->update(['user_id' => $new_id->id]);
 
-                        Session::flash('flash_message', 'Store User successfully update.');
-                        Session::flash('flash_class', 'alert-success');
+                                    Session::flash('flash_message', 'Store User successfully update.');
+                                    Session::flash('flash_class', 'alert-success');
+                                }
+                                else {
+
+                                    Session::flash('flash_message', 'Error updating remapping.');
+                                    Session::flash('flash_class', 'alert-danger');
+
+                                }
+
                         }
-                        else{
-                     Session::flash('flash_message', 'Error updating remapping.');
-                        Session::flash('flash_class', 'alert-danger');
+                        else {
 
+                                    Session::flash('flash_message', 'Error updating remapping.');
+                                    Session::flash('flash_class', 'alert-danger');
                         }
-
-                }
-                else{
-
-                        Session::flash('flash_message', 'Error updating remapping.');
-                        Session::flash('flash_class', 'alert-danger');
-                }
 
                 }
              }
@@ -138,6 +169,54 @@ class ImportController extends Controller
                         return redirect()->route("import.remapping");
         }   
 
+
+
+    public function template() 
+    {
+
+
+        return view('import.template');
+    }
+
+    public function templateupload(Request $request) 
+    {
+
+
+        if ($request->hasFile('file')) {
+
+
+            $folderpath = base_path().'/database/seeds/templates/'.date('mdY');
+
+            if (!\File::exists($folderpath)) {
+                \File::makeDirectory($folderpath);
+            }
+
+
+            $file_path = $request->file('file')->move($folderpath,'Masterfile.xlsx');
+
+
+            $hash = UpdateHash::find(1);
+            if(empty($hash)) {
+                UpdateHash::create(['hash' => \Hash::make(date('Y-m-d H:i:s'))]);
+            }
+            else {
+                $hash->hash = md5(date('Y-m-d H:i:s'));
+                $hash->update();
+            }
+            Session::flash('flash_message', 'Masterfile successfully added.');
+            Session::flash('flash_class', 'alert-success');
+            
+        }
+        else {
+            
+            Session::flash('flash_message', 'Error updating masterfile.');
+            Session::flash('flash_class', 'alert-danger');
+        }
+              return redirect()->route("import.template");
+
+
+
+    }
 
 
 

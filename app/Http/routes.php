@@ -28,17 +28,20 @@ Route::get('auth/logout', ['as' => 'auth.logout', 'uses' =>  'Auth\AuthControlle
 Route::get('latest', 'ApkController@latest');
 Route::get('testspeed', function(){
 	return view('testspeed');
-});  
+});
 
 Route::group(['middleware' => 'auth'], function () {
 
 	Route::group(['middleware' => ['role:admin']], function () {
 
 		Route::get('import/masterfile', ['as' => 'import.masterfile', 'uses' => 'ImportController@masterfile']);
-		Route::get('import/remapping', ['as' => 'import.remapping', 'uses' => 'ImportController@remapping']);
 		Route::post('import/masterfileuplaod', ['as' => 'import.masterfileuplaod', 'uses' => 'ImportController@masterfileuplaod']);
 
+		Route::get('import/remapping', ['as' => 'import.remapping', 'uses' => 'ImportController@remapping']);
 		Route::post('import/remappinguplaod', ['as' => 'import.remappinguplaod', 'uses' => 'ImportController@remappinguplaod']);
+
+		Route::get('import/template',['as'=>'import.template','uses'=>'ImportController@template']);
+		Route::post('import/templateupload',['as'=>'import.templateupload','uses'=>'ImportController@templateupload']);
 
 		Route::get('export/stores', ['as' => 'export.stores', 'uses' => 'ExportController@stores']);
 		Route::get('export/items', ['as' => 'export.items', 'uses' => 'ExportController@items']);
@@ -66,7 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('store_user/{id}/changepassword', array('as' => 'store_user.changepassword', 'uses' => 'StoreUserController@changepassword'));
 		Route::put('store_user/{id}/postupdate', array('as' => 'store_user.postupdate', 'uses' => 'StoreUserController@postupdate'));
 		Route::resource('store_user', 'StoreUserController',[]);
-		
+
 		Route::get('device_user/{id}', 'DeviceUserController@logOut');
 		Route::resource('device_users', 'DeviceUserController');
 
@@ -96,7 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Route::resource('agency', 'AgencyController');
 
-	
+
 
 	Route::get('inventory', array('as' => 'inventory.index', 'uses' => 'InventoryController@index'));
 	Route::post('inventory', array('as' => 'inventory.show', 'uses' => 'InventoryController@store'));
@@ -139,11 +142,11 @@ Route::group(array('prefix' => 'api'), function()
 	Route::get('download', 'Api\DownloadController@index');
 
 	Route::post('uploadpcount', 'Api\UploadController@uploadpcount');
-	Route::post('uploadimage', 'Api\UploadController@uploadimage'); 
-	Route::get('pcountimage/{name}', 'Api\DownloadController@image'); 
+	Route::post('uploadimage', 'Api\UploadController@uploadimage');
+	Route::get('pcountimage/{name}', 'Api\DownloadController@image');
 
 	Route::post('uploadassortment', 'Api\UploadAssortmentController@uploadassortment');
-	Route::post('uploadassortmentimage', 'Api\UploadAssortmentController@uploadimage');   
+	Route::post('uploadassortmentimage', 'Api\UploadAssortmentController@uploadimage');
 	Route::get('assortmentimage/{name}', 'Api\DownloadController@assortmentimage');
 
 
