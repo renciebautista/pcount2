@@ -8,5 +8,6 @@ Homestead.json
 /storage/uploads
 /storage/prn
 /database/seeds/seed_files
+/database/seeds/template
 *.pem
 *.csv
