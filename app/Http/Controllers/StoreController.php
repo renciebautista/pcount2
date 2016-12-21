@@ -168,37 +168,70 @@ class StoreController extends Controller
         $store           = Store::findOrFail($id);
         $store_items     = StoreItem::where('store_id',$id)->get()->pluck('item_id')->toArray();//get all the item from store
         $channel_items   = ChannelItem::where('channel_id',$request->channel_id)->get()->pluck('item_id')->toArray();
-        $diff_items      = array_diff( $channel_items, $store_items );
-        $same_items      = array_intersect( $channel_items, $store_items );
-        $add_store_items = ChannelItem::select('item_id',
-                                               'item_type_id',
-                                               'ig',
-                                               'fso_multiplier',
-                                               'min_stock',
-                                               'ig_updated',
-                                               'osa_tagged',
-                                               'npi_tagged' )
-                                                ->whereIn('item_id',$diff_items)
-                                                ->where('channel_id',$request->channel_id)
-                                                ->get();
+
+
+        // $diff_items      = array_diff( $channel_items, $store_items );
+        // $same_items      = array_intersect( $channel_items, $store_items );
+        // $add_store_items = ChannelItem::select('item_id',
+        //                                        'item_type_id',
+        //                                        'ig',
+        //                                        'fso_multiplier',
+        //                                        'min_stock',
+        //                                        'ig_updated',
+        //                                        'osa_tagged',
+        //                                        'npi_tagged' )
+        //                                         ->whereIn('item_id',$diff_items)
+        //                                         ->where('channel_id',$request->channel_id)
+        //                                         ->get();
                                                 
        
-        foreach ($add_store_items as &$data) {
-           $data->store_id = $id; 
+        // foreach ($add_store_items as &$data) {
+        //    $data->store_id = $id; 
+        // }
+        // $delete      = StoreItem::where('store_id',$id)->whereNotIn('item_id',$same_items)->delete();
+        // foreach ($add_store_items as $data) {
+        //     $check[] = StoreItem::firstOrCreate([
+        //                             'store_id'       => $data->store_id,
+        //                             'item_id'        => $data->item_id,
+        //                             'item_type_id'   => $data->item_type_id,
+        //                             'ig'             => $data->ig,
+        //                             'fso_multiplier' => $data->fso_multiplier,
+        //                             'min_stock'      => $data->min_stock,
+        //                             'ig_updated'     => $data->ig_updated,
+        //                             'osa_tagged'     => $data->npi_tagged ]);
+        // }
+
+        foreach ($store_items as  $value) {
+            if(!in_array($value,$channel_items)) {
+            $delete  = StoreItem::where('store_id',$id)->where('item_id',$value)->delete();
+            }
         }
-        $delete      = StoreItem::where('store_id',$id)->whereNotIn('item_id',$same_items)->delete();
-        foreach ($add_store_items as $data) {
-            $check[] = StoreItem::firstOrCreate([
-                                    'store_id'       => $data->store_id,
-                                    'item_id'        => $data->item_id,
-                                    'item_type_id'   => $data->item_type_id,
-                                    'ig'             => $data->ig,
-                                    'fso_multiplier' => $data->fso_multiplier,
-                                    'min_stock'      => $data->min_stock,
-                                    'ig_updated'     => $data->ig_updated,
-                                    'osa_tagged'     => $data->npi_tagged ]);
+
+        $remaining_items = StoreItem::where('store_id',$id)->get()->pluck('item_id')->toArray();
+
+        foreach ($channel_items as $value) {
+
+            if(!in_array($value,$remaining_items)) {
+
+            $data = ChannelItem::where('item_id',$value)->first();
+            StoreItem::firstOrCreate([
+                                'store_id'       => $id,
+                                'item_id'        => $data->item_id,
+                                'item_type_id'   => $data->item_type_id,
+                                'ig'             => $data->ig,
+                                'fso_multiplier' => $data->fso_multiplier,
+                                'min_stock'      => $data->min_stock,
+                                'ig_updated'     => $data->ig_updated,
+                                'osa_tagged'     => $data->npi_tagged ]);
+
+            }
         }
-       
+        
+
+
+
+
+
         $store->area_id          = $request->area_id;
         $store->enrollment_id    = $request->enrollment_id;
         $store->distributor_id   = $request->distributor_id;
