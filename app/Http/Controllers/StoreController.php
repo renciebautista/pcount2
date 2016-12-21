@@ -275,7 +275,7 @@ class StoreController extends Controller
         }
 
         $assortment_remaining_items = StoreItem::where('store_id',$id)
-                                    ->where('item_type_id',1)
+                                    ->where('item_type_id',2)
                                     ->get()
                                     ->pluck('item_id')
                                     ->toArray();
@@ -287,7 +287,7 @@ class StoreController extends Controller
 
                     $data = ChannelItem::where('item_id',$value)
                                     ->where('channel_id',$request->channel_id)
-                                    ->where('item_type_id',1)
+                                    ->where('item_type_id',2)
                                     ->first();
 
                     $w_mkl = StoreItem::where('store_id',$id)->where('item_id',$value)->get();                
