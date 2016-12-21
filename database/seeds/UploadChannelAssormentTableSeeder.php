@@ -79,21 +79,21 @@ class UploadChannelAssormentTableSeeder extends Seeder
 								if(!empty($item)) {
 
 										$item_type = ItemType::where('type',"ASSORTMENT")->first();
-									
+										$cw_mkl = ChannelItem::where('channel_id',$channel->id)->where('item_id',$item->id)->get();
+											
+										if(count($cw_mkl) == 0){
 										
-
-										
-		                   				 ChannelItem::firstOrCreate([
-		                      				'channel_id' => $channel->id,
-		                      				'item_id' => $item->id,
-		                      				'item_type_id' => $item_type->id,
-		                      				'ig' => trim($row[4]),
-		                      				'fso_multiplier' => trim($row[5]),
-		                      				'min_stock' => trim($row[6]),
-		                      				'osa_tagged' => 0,
-		                      				'npi_tagged' => 0
-		                    			]);
-
+			                   				 ChannelItem::firstOrCreate([
+			                      				'channel_id' => $channel->id,
+			                      				'item_id' => $item->id,
+			                      				'item_type_id' => $item_type->id,
+			                      				'ig' => trim($row[4]),
+			                      				'fso_multiplier' => trim($row[5]),
+			                      				'min_stock' => trim($row[6]),
+			                      				'osa_tagged' => 0,
+			                      				'npi_tagged' => 0
+			                    			]);
+		                   				}
 
 								}
 							}
