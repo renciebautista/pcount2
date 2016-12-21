@@ -213,7 +213,7 @@ class StoreController extends Controller
 
             if(!in_array($value,$remaining_items)) {
 
-            $data = ChannelItem::where('item_id',$value)->where('channel_id',$request->id)->first();
+            $data = ChannelItem::where('item_id',$value)->where('channel_id',$request->channel_id)->first();
             StoreItem::firstOrCreate([
                                 'store_id'       => $id,
                                 'item_id'        => $data->item_id,
