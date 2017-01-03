@@ -107,6 +107,8 @@ class UploadAssortmentTableSeeder extends Seeder
 									$item_type = ItemType::where('type',"ASSORTMENT")->first();
 									foreach ($stores as $store) {
 										$w_mkl = StoreItem::where('store_id',$store->id)->where('item_id',$item->id)->get();
+
+										$cw_mkl = ChannelItem::where('channel_id',$store->channel_id)->where('item_id',$item->id)->get();
 										if(count($w_mkl) == 0){
 											StoreItem::firstOrCreate([
 												'store_id' => $store->id,
@@ -119,7 +121,10 @@ class UploadAssortmentTableSeeder extends Seeder
 												'npi_tagged' => 0
 											]);
 
-                      				ChannelItem::firstOrCreate([
+                      				
+										}
+										if(count($cw_mkl) == 0){
+										ChannelItem::firstOrCreate([
                       				  		 'channel_id' => $store->channel_id,
                        						 'item_id' => $item->id,
                         					 'item_type_id' => $item_type->id,
@@ -130,7 +135,6 @@ class UploadAssortmentTableSeeder extends Seeder
                         					 'npi_tagged' => 0
                       						]);
 										}
-
 									}
 								}
 							}

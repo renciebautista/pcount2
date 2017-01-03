@@ -43,7 +43,7 @@ class UploadStoreItemsTableSeeder extends Seeder
 		$reader->open($filePath);
 		DB::table('invalid_mappings')->truncate();
 		DB::table('store_items')->truncate();
-
+		DB::table('channel_items')->truncate();
 		foreach ($reader->getSheetIterator() as $sheet) {
 			if($sheet->getName() == 'MKL Mapping'){
 				$cnt = 0;

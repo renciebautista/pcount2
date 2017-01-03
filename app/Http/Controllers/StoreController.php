@@ -164,12 +164,6 @@ class StoreController extends Controller
 
         ]);
 
-
-        $store           = Store::findOrFail($id);
-        $store_items     = StoreItem::where('store_id',$id)->get()->pluck('item_id')->toArray();//get all the item from store
-        $channel_items   = ChannelItem::where('channel_id',$request->channel_id)->get()->pluck('item_id')->toArray();
-
-
         // $diff_items      = array_diff( $channel_items, $store_items );
         // $same_items      = array_intersect( $channel_items, $store_items );
         // $add_store_items = ChannelItem::select('item_id',
@@ -201,20 +195,64 @@ class StoreController extends Controller
         //                             'osa_tagged'     => $data->npi_tagged ]);
         // }
 
-        foreach ($store_items as  $value) {
-            if(!in_array($value,$channel_items)) {
-            $delete  = StoreItem::where('store_id',$id)->where('item_id',$value)->delete();
+
+
+
+        $store               = Store::findOrFail($id);
+        //for mkl
+        $mkl_store_items     = StoreItem::where('store_id',$id)
+                            ->where('item_type_id',1)
+                            ->get()
+                            ->pluck('item_id')
+                            ->toArray();//get all the item from store mkl
+
+        $mkl_channel_items   = ChannelItem::where('channel_id',$request->channel_id)
+                            ->where('item_type_id',1)
+                            ->get()
+                            ->pluck('item_id')
+                            ->toArray();
+        //for assortment
+        $assortment_store_items = StoreItem::where('store_id',$id)
+                                ->where('item_type_id',2)
+                                ->get()
+                                ->pluck('item_id')
+                                ->toArray();//get all the item from store assortment
+
+        $assortment_channel_items   = ChannelItem::where('channel_id',$request->channel_id)
+                            ->where('item_type_id',2)
+                            ->get()
+                            ->pluck('item_id')
+                            ->toArray();                    
+
+
+
+
+        //for mkl
+        foreach ($mkl_store_items as  $value) {
+            if(!in_array($value,$mkl_channel_items)) {
+            $delete = StoreItem::where('store_id',$id)
+                                ->where('item_type_id',1)
+                                ->where('item_id',$value)
+                                ->delete();
             }
         }
 
-        $remaining_items = StoreItem::where('store_id',$id)->get()->pluck('item_id')->toArray();
+            $mkl_remaining_items = StoreItem::where('store_id',$id)
+                                ->where('item_type_id',1)
+                                ->get()
+                                ->pluck('item_id')
+                                ->toArray();
 
-        foreach ($channel_items as $value) {
+        foreach ($mkl_channel_items as $value) {
 
-            if(!in_array($value,$remaining_items)) {
+            if(!in_array($value,$mkl_remaining_items)) {
 
-            $data = ChannelItem::where('item_id',$value)->where('channel_id',$request->channel_id)->first();
-            StoreItem::firstOrCreate([
+                    $data = ChannelItem::where('item_id',$value)
+                                    ->where('channel_id',$request->channel_id)
+                                    ->where('item_type_id',1)
+                                    ->first();
+
+                    StoreItem::firstOrCreate([
                                 'store_id'       => $id,
                                 'item_id'        => $data->item_id,
                                 'item_type_id'   => $data->item_type_id,
@@ -226,7 +264,49 @@ class StoreController extends Controller
 
             }
         }
-        
+        //for assortment
+        foreach ($assortment_store_items as  $value) {
+            if(!in_array($value,$assortment_channel_items)) {
+            $delete = StoreItem::where('store_id',$id)
+                                ->where('item_type_id',2)
+                                ->where('item_id',$value)
+                                ->delete();
+            }
+        }
+
+        $assortment_remaining_items = StoreItem::where('store_id',$id)
+                                    ->where('item_type_id',2)
+                                    ->get()
+                                    ->pluck('item_id')
+                                    ->toArray();
+
+
+        foreach ($assortment_channel_items as $value) {
+
+            if(!in_array($value,$assortment_remaining_items)) {
+
+                    $data = ChannelItem::where('item_id',$value)
+                                    ->where('channel_id',$request->channel_id)
+                                    ->where('item_type_id',2)
+                                    ->first();
+
+                    $w_mkl = StoreItem::where('store_id',$id)->where('item_id',$value)->get();                
+                    if(count($w_mkl) == 0) {
+                        StoreItem::firstOrCreate([
+                                    'store_id'       => $id,
+                                    'item_id'        => $data->item_id,
+                                    'item_type_id'   => $data->item_type_id,
+                                    'ig'             => $data->ig,
+                                    'fso_multiplier' => $data->fso_multiplier,
+                                    'min_stock'      => $data->min_stock,
+                                    'ig_updated'     => $data->ig_updated,
+                                    'osa_tagged'     => $data->npi_tagged ]);
+                    }
+
+            }
+        }                            
+
+        //end
 
 
 
