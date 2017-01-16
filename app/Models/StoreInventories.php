@@ -37,6 +37,11 @@ class StoreInventories extends Model
             ->groupBy('area')
             ->lists('area', 'area');
     }
+    public static function getRegionList(){
+        return self::select('region_code', 'region_name')
+            ->groupBy('region_name')
+            ->lists('region_name', 'region_code');
+    }
 
     public static function getAgencyList(){
         return self::select('agency_code', 'agency')

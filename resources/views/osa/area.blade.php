@@ -66,7 +66,12 @@
     </div>
 
     <div class="col-lg-4">
-
+<div class="form-group">
+                {!! Form::label('Region', 'Region', array('class' => 'col-lg-4 control-label')) !!}
+            <div class="col-lg-8">
+                {!! Form::select('reg[]', $regions, $sel_reg, array('class' => 'form-control select_form', 'id' => 'rg', 'multiple' => 'multiple')) !!}
+            </div>
+        </div>
     </div>
 </div>
 
@@ -167,6 +172,14 @@ $('#ar').multiselect({
         buttonClass: 'form-control',
     });
      $('#tag').multiselect({
+        maxHeight: 200,
+        includeSelectAllOption: true,
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'form-control',
+    });
+     $('#rg').multiselect({
         maxHeight: 200,
         includeSelectAllOption: true,
         enableCaseInsensitiveFiltering: true,

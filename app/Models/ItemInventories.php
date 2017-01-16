@@ -316,6 +316,11 @@ class ItemInventories extends Model
 				}
 				}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
 			->orderBy(\DB::raw('yr, yr_week, area'))
@@ -383,6 +388,11 @@ class ItemInventories extends Model
 					$query->where('osa_tagged',1)
 							->orWhere('npi_tagged',1);
 				}
+				}
+			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
 				}
 			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
@@ -462,7 +472,11 @@ class ItemInventories extends Model
 				}
 				}
 			})
-
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
 			->orderBy(\DB::raw('yr, yr_week, area'))
@@ -546,6 +560,11 @@ class ItemInventories extends Model
 				}
 				}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -620,8 +639,7 @@ class ItemInventories extends Model
 			->join('store_inventories', 'store_inventories.id', '=', 'item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
 			->orderBy(\DB::raw('area, area, store_name, description, transaction_date'))
-			->paginate(100)
-      ->appends(['fr'=>$filters['from'],'to'=>$filters['to'],'ar'=>$filters['areas'],'st'=>$filters['stores']]);
+			->get();
 
 
 	}

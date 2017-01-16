@@ -44,6 +44,12 @@ class AssortmentInventories extends Model
             ->lists('agency', 'agency_code');
     }
 
+     public static function getRegionList(){
+        return self::select('region_code', 'region_name')
+            ->groupBy('region_name')
+            ->lists('region_name', 'region_code');
+    }
+
 
     public static function getStoreCodes($value){
         $list = array();

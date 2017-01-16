@@ -101,8 +101,7 @@
 
 <!-- <hr> -->
 
-{!! Paginate::show($inventories) !!}
-{!! $inventories->render() !!}
+
 
 
 

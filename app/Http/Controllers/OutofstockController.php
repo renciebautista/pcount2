@@ -57,6 +57,7 @@ class OutofstockController extends Controller
         if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+      
         if($report_type == 2){
             $header = 'MKL OOS SKU Report';
             $inventories = ItemInventories::getOosPerStore($data);

@@ -262,6 +262,11 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 			
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
@@ -315,7 +320,11 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
-			
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
 			->orderBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -376,7 +385,11 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
-			
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('yr, yr_week, area'))
@@ -445,7 +458,11 @@ class AssortmentItemInventories extends Model
 				}
 			}
 			})
-			
+			->where(function($query) use ($filters){
+			if(!empty($filters['regions'])){
+					$query->whereIn('region_code', $filters['regions']);
+				}
+			})
 
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, yr, yr_week'))
@@ -503,7 +520,7 @@ class AssortmentItemInventories extends Model
 			->join('assortment_inventories', 'assortment_inventories.id', '=', 'assortment_item_inventories.store_inventory_id')
 			->groupBy(\DB::raw('area, store_name, sku_code, transaction_date'))
 			->orderBy(\DB::raw('area, area, store_name, description, transaction_date'))
-			->paginate(100)
+			
 			->get();
 
 	}

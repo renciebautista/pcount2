@@ -22,6 +22,7 @@ class OsaController extends Controller
         $report_type = 1;
         $sel_tag = [];
         $sel_av = [];
+        $sel_reg = [];
         $availability =['1'=>'oos','2'=>'osa'];
         $tags = ['1' => 'OSA', '2' => 'NPI'];
         if((is_null($type)) || ($type != 'assortment')){
@@ -30,9 +31,11 @@ class OsaController extends Controller
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
             $sel_ar = StoreInventories::getStoreCodes('area');
+            $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
             $sel_ar = AssortmentInventories::getStoreCodes('area');
+             $regions = AssortmentInventories::getRegionList();
         }
 
         
@@ -51,6 +54,10 @@ class OsaController extends Controller
          if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+        if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
+
         if($report_type == 2){
             $header = 'MKL OSA Per Area Report';
             $inventories = ItemInventories::getOsaPerArea($data);
@@ -60,12 +67,14 @@ class OsaController extends Controller
         }
 
         
-        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av','sel_tag','tags'));
+        return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av','sel_tag','tags','sel_reg','regions'));
     }
 
     public function postArea(Request $request, $type = null){
-        $sel_ar = $request->ar;
+        
 
+        $sel_ar = $request->ar;
+        $sel_reg = $request->reg;
         $frm = $request->fr;
         $to = $request->to;
         $sel_av = $request->availability;
@@ -78,8 +87,10 @@ class OsaController extends Controller
         }
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
+             $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
+            $regions = AssortmentInventories::getRegionList();
         }
         
         if(!empty($sel_ar)){
@@ -97,6 +108,9 @@ class OsaController extends Controller
         if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+        if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
         if($report_type == 2){
             $header = 'MKL OSA Per Area Report';
             $inventories = ItemInventories::getOsaPerArea($data);
@@ -107,7 +121,7 @@ class OsaController extends Controller
 
         if ($request->has('submit')) {
             
-            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','sel_av','availability','sel_tag','tags'));
+            return view('osa.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','sel_av','availability','sel_tag','tags','sel_reg','regions'));
         }
         
         if ($request->has('download')) {
@@ -185,6 +199,7 @@ class OsaController extends Controller
         $report_type = 1;
         $sel_av = [];
         $sel_tag =[];
+        $sel_reg = [];
         $tags = ['1' => 'OSA', '2' => 'NPI'];
         $availability =['1'=>'oos','2'=>'osa'];
         if((is_null($type)) || ($type != 'assortment')){
@@ -194,10 +209,12 @@ class OsaController extends Controller
         $sel_st = [];
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
+            $regions = StoreInventories::getRegionList();
             // $sel_ar = StoreInventories::getStoreCodes('area');
             // $sel_st = StoreInventories::getStoreCodes('store_id');
         }else{
             $areas = AssortmentInventories::getAreaList();
+             $regions = AssortmentInventories::getRegionList();
             // $sel_ar = AssortmentInventories::getStoreCodes('area');
             // $sel_st = AssortmentInventories::getStoreCodes('store_id');
         }
@@ -220,6 +237,9 @@ class OsaController extends Controller
         if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+        if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
         if($report_type == 2){
             $header = 'MKL OSA Per Store Report';
             $inventories = ItemInventories::getOsaPerStore($data);
@@ -228,10 +248,11 @@ class OsaController extends Controller
             $inventories = AssortmentItemInventories::getOsaPerStore($data);
         }
 
-        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av','sel_tag','tags'));
+        return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av','sel_tag','tags','sel_reg','regions'));
     }
 
     public function postStore(Request $request,$type = null){
+        $sel_reg = $request->reg;
         $sel_ar = $request->ar;
         $sel_st = $request->st;
         $sel_tag = $request->tags;
@@ -246,8 +267,10 @@ class OsaController extends Controller
         }
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
+            $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
+            $regions = AssortmentInventories::getRegionList();
         }
 
         
@@ -271,6 +294,9 @@ class OsaController extends Controller
         if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+         if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
         if($report_type == 2){
             $header = 'MKL OSA Per Store Report';
             $inventories = ItemInventories::getOsaPerStore($data);
@@ -280,7 +306,7 @@ class OsaController extends Controller
         }
 
         if ($request->has('submit')) {
-            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av','tags','sel_tag'));
+            return view('osa.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header' , 'type','availability','sel_av','tags','sel_tag','sel_reg','regions'));
         }
 
         // dd($inventories);

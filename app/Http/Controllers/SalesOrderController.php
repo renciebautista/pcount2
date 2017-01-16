@@ -20,6 +20,7 @@ class SalesOrderController extends Controller
         $to = date("m-d-Y");
         $sel_av = [];
         $sel_tag = [];
+        $sel_reg = [];
         $availability =['1'=>'oos','2'=>'osa'];
         $tags = ['1' => 'OSA', '2' => 'NPI'];
         $report_type = 1;
@@ -29,9 +30,11 @@ class SalesOrderController extends Controller
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
             $sel_ar = StoreInventories::getStoreCodes('area');
+            $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
             $sel_ar = AssortmentInventories::getStoreCodes('area');
+            $regions = AssortmentInventories::getRegionList();
         }
         
         if(!empty($sel_br)){
@@ -49,6 +52,9 @@ class SalesOrderController extends Controller
           if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+        if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
 
 
         if($report_type == 2){
@@ -60,12 +66,13 @@ class SalesOrderController extends Controller
         }
 
         
-        return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av','sel_tag','tags'));
+        return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'header' , 'type','availability','sel_av','sel_tag','tags','sel_reg','regions'));
     }
 
     public function postArea(Request $request,$type = null){
 
         $sel_ar = $request->ar;
+        $sel_reg = $request->reg;
         $sel_tag = $request->tags;
         $frm = $request->fr;
         $to = $request->to;
@@ -80,8 +87,10 @@ class SalesOrderController extends Controller
 
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
+            $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
+             $regions = AssortmentInventories::getRegionList();
         }
 
         if(!empty($sel_ar)){
@@ -99,6 +108,9 @@ class SalesOrderController extends Controller
         if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+         if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
         if($report_type == 2){
             $header = 'MKL SO Per Area Report';
             $inventories = ItemInventories::getSoPerArea($data);
@@ -109,7 +121,7 @@ class SalesOrderController extends Controller
 
         if ($request->has('submit')) {
 
-            return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar','header' , 'type','sel_av','availability','tags','sel_tag'));
+            return view('so.area', compact('inventories','frm', 'to', 'areas', 'sel_ar','header' , 'type','sel_av','availability','tags','sel_tag','sel_reg','regions'));
         }
         
         if ($request->has('download')) {
@@ -190,6 +202,7 @@ class SalesOrderController extends Controller
         $report_type = 1;
         $sel_av = [];
         $sel_tag = [];
+        $sel_reg = [];
         $tags = ['1' => 'OSA', '2' => 'NPI'];
         $availability =['1'=>'oos','2'=>'osa'];
         if((is_null($type)) || ($type != 'assortment')){
@@ -199,10 +212,12 @@ class SalesOrderController extends Controller
             $areas = StoreInventories::getAreaList();
             $sel_ar = StoreInventories::getStoreCodes('area');
             $sel_st = StoreInventories::getStoreCodes('store_id');
+            $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
             $sel_ar = AssortmentInventories::getStoreCodes('area');
             $sel_st = AssortmentInventories::getStoreCodes('store_id');
+            $regions = AssortmentInventories::getRegionList();
         }
         
         if(!empty($sel_ar)){
@@ -223,6 +238,9 @@ class SalesOrderController extends Controller
          if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+        if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
 
         if($report_type == 2){
             $header = 'MKL SO Per Store Report';
@@ -233,12 +251,13 @@ class SalesOrderController extends Controller
         }
 
         
-        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av','sel_tag','tags'));
+        return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st', 'header', 'type','availability','sel_av','sel_tag','tags','sel_reg','regions'));
     }
 
     public function postStore(Request $request,$type = null){
         // dd($request->all());
         $sel_ar = $request->ar;
+         $sel_reg = $request->reg;
         $sel_st = $request->st;
         $frm = $request->fr;
         $to = $request->to;
@@ -255,8 +274,10 @@ class SalesOrderController extends Controller
         }
         if($report_type == 2){
             $areas = StoreInventories::getAreaList();
+            $regions = StoreInventories::getRegionList();
         }else{
             $areas = AssortmentInventories::getAreaList();
+            $regions = AssortmentInventories::getRegionList();
         }
 
         if(!empty($sel_ar)){
@@ -279,17 +300,20 @@ class SalesOrderController extends Controller
          if(!empty($sel_tag)){
             $data['tags'] = $sel_tag;
         }
+         if(!empty($sel_reg)){
+            $data['regions'] = $sel_reg;
+        }
         if($report_type == 2){
             $header = 'MKL SO Per Store Report';
             $inventories = ItemInventories::getSoPerStores($data);
-        }else{
+        }else {
             $header = 'Assortment SO Per Store Report';
             $inventories = AssortmentItemInventories::getSoPerStores($data);
         }
 
         if ($request->has('submit')) {
             
-            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header', 'type','availability','sel_av','sel_tag','tags'));
+            return view('so.store', compact('inventories','frm', 'to', 'areas', 'sel_ar', 'sel_st','header', 'type','availability','sel_av','sel_tag','tags','sel_reg','regions'));
         }
         
         if ($request->has('download')) {
