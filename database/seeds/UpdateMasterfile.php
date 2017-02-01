@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\UpdateHash;
+use Mail;
 
 class UpdateMasterfile extends Seeder
 {
@@ -31,7 +32,7 @@ class UpdateMasterfile extends Seeder
         $message = [];
 
         Mail::send('emails.masterfile', $data, function($message) use ($data){
-            $message->to('rbautista@chasetech.com')->subject('Masterfile successfully updated.');
+            $message->to('jpoxcz@gmail.com')->subject('Masterfile successfully updated.');
         });
     }
 }
