@@ -49,10 +49,14 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('export/storeitems', ['as' => 'export.storeitems', 'uses' => 'ExportController@storeitems']);
 		Route::get('export/storeosa', ['as' => 'export.storeosa', 'uses' => 'ExportController@storeosa']);
 		Route::get('export/storeassortment', ['as' => 'export.storeassortment', 'uses' => 'ExportController@storeassortment']);
-	  Route::post('store_user/changestatus', ['as' => 'changestatus','uses' => 'StoreUserController@changestatus']);
+	 	 Route::post('store_user/changestatus', ['as' => 'changestatus','uses' => 'StoreUserController@changestatus']);
 		Route::get('store/invalid', array('as' => 'store.invalid', 'uses' => 'StoreController@invalid'));
 		Route::get('store/{id}/mkl', 'StoreController@mkl');
 		Route::get('store/{id}/assortment', 'StoreController@assortment');
+		Route::get('channel/{id}/mkl', 'ChannelController@mkl');
+		Route::get('channel/{id}/assortment', 'ChannelController@assortment');
+		Route::resource('channel', 'ChannelController');
+
 		Route::resource('store', 'StoreController');
 
 		Route::get('item/removeig', array('as' => 'item.removeig', 'uses' => 'ItemController@removeig'));

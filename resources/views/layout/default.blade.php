@@ -42,6 +42,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>{!! Html::linkRoute('store.index', 'Stores', array(), array()) !!}</li>
+                     <li>{!! Html::linkRoute('channel.index', 'Channel', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('item.index', 'Items', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('store_user.index', 'Users', array(), array()) !!}</li>
                     <li>{!! Html::linkRoute('roles.index', 'Roles', array(), array()) !!}</li>
