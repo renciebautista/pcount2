@@ -32,6 +32,7 @@ class UpdateMasterfile extends Seeder
         $message = [];
 
         \Mail::send('emails.masterfile', $data, function($message) use ($data){
+              
             $message->to('jpoxcz@gmail.com')->subject('Masterfile successfully updated.');
         });
     }
