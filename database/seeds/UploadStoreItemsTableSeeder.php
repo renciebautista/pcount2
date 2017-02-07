@@ -128,8 +128,12 @@ class UploadStoreItemsTableSeeder extends Seeder
 											'npi_tagged' => $npi_tagging
 										]);
 
+										if(trim($row[0]) != '') {
+											$channel_id = Channel::where('channel_code', trim($row[0]))->first();
+										}
+
 		                   				 ChannelItem::firstOrCreate([
-		                      				'channel_id' => $store->channel_id,
+		                      				'channel_id' => $channel_id->id,
 		                      				'item_id' => $item->id,
 		                      				'item_type_id' => $item_type->id,
 		                      				'ig' => trim($row[4]),

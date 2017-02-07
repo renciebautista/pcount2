@@ -107,32 +107,41 @@ class UploadAssortmentTableSeeder extends Seeder
 									$item_type = ItemType::where('type',"ASSORTMENT")->first();
 									foreach ($stores as $store) {
 										$w_mkl = StoreItem::where('store_id',$store->id)->where('item_id',$item->id)->get();
-
 										$cw_mkl = ChannelItem::where('channel_id',$store->channel_id)->where('item_id',$item->id)->get();
-										if(count($w_mkl) == 0){
+
+										if(count($w_mkl) == 0) {
+
 											StoreItem::firstOrCreate([
-												'store_id' => $store->id,
-												'item_id' => $item->id,
+												'store_id'     => $store->id,
+												'item_id'      => $item->id,
 												'item_type_id' =>$item_type->id,
-												'ig' => trim($row[4]),
+												'ig'             => trim($row[4]),
 												'fso_multiplier' => trim($row[5]),
-												'min_stock' => trim($row[6]),
-												'osa_tagged' => 0,
-												'npi_tagged' => 0
+												'min_stock'      => trim($row[6]),
+												'osa_tagged'     => 0,
+												'npi_tagged'     => 0
 											]);
 
                       				
 										}
-										if(count($cw_mkl) == 0){
+
+										if(count($cw_mkl) == 0) {
+
+											if(trim($row[0]) != '') {
+											$channel_id = Channel::where('channel_code', trim($row[0]))->first();
+
+										}
+
+
 										ChannelItem::firstOrCreate([
-                      				  		 'channel_id' => $store->channel_id,
-                       						 'item_id' => $item->id,
-                        					 'item_type_id' => $item_type->id,
-                        					 'ig' => trim($row[4]),
+                      				  		 'channel_id'     =>  $channel_id->id,
+                       						 'item_id'        =>  $item->id,
+                        					 'item_type_id'   => $item_type->id,
+                        					 'ig'             => trim($row[4]),
                         					 'fso_multiplier' => trim($row[5]),
-                        					 'min_stock' => trim($row[6]),
-                        					 'osa_tagged' => 0,
-                        					 'npi_tagged' => 0
+                        					 'min_stock'      => trim($row[6]),
+                        					 'osa_tagged'     => 0,
+                        					 'npi_tagged'     => 0
                       						]);
 										}
 									}
