@@ -38,7 +38,7 @@ class UploadStoresTableSeeder extends Seeder
 			$name = $_dir[$cnt - 1];
 			$latest_date = DateTime::createFromFormat('mdY', $latest);
 			$now = DateTime::createFromFormat('mdY', $name);
-			if($now > $latest_date){
+			if($now > $latest_date) {
 				$latest = $name;
 
 			}

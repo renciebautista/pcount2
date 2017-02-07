@@ -7,7 +7,7 @@
 <div id="banner">
 	<div class="row">
 		<div class="col-lg-12">
-			<h3>Store List</h3>
+			<h3>Channel List</h3>
 		</div>
 	</div>
 </div>
@@ -18,7 +18,7 @@
 
 
         <div class="form-group">
-         	<label>Search Store Name</label>
+         	<label>Search Channel Name</label>
           	{!! Form::text('search',null,['class' => 'form-control', 'placeholder' => 'Keywords']) !!}
         </div>
       
@@ -66,7 +66,7 @@
 		@endforeach
 		@else
 		<tr>
-			<td colspan="11">No record found.</td>
+			<td colspan="2">No record found.</td>
 		</tr>
 		@endif
 	</tbody>
